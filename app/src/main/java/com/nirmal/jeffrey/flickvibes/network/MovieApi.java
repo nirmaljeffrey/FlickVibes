@@ -18,5 +18,9 @@ public interface MovieApi {
   //Upcoming Movie List
   @GET(NetworkConstants.UPCOMING_MOVIE_PATH)
   Call<MovieListResponse> getUpcomingMovieList(@Query(NetworkConstants.PAGE_PARAMETER)int page);
+  //Now Playing Movie List
+  @GET(NetworkConstants.NOW_PLAYING_MOVIE_PATH)
+  Call<MovieListResponse> getNowPlayingMovieList(@Query(NetworkConstants.PAGE_PARAMETER)int page);
+
 
 }
