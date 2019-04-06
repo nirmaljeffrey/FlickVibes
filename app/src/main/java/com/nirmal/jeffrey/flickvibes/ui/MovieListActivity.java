@@ -1,7 +1,8 @@
-package com.nirmal.jeffrey.flickvibes;
+package com.nirmal.jeffrey.flickvibes.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import com.nirmal.jeffrey.flickvibes.R;
 
 public class MovieListActivity extends AppCompatActivity {
 
