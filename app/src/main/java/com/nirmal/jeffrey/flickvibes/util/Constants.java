@@ -1,15 +1,21 @@
-package com.nirmal.jeffrey.flickvibes.network.NetworkUtil;
+package com.nirmal.jeffrey.flickvibes.util;
 
 import com.nirmal.jeffrey.flickvibes.BuildConfig;
 
-public class NetworkConstants {
+public class Constants {
+
+                    /** Constants used in web service **/
+
+  //Timeout in milliseconds
+  public static final int NETWORK_TIMEOUT=3000;//3sec
   //Base Url
-  public static final String MOVIE_BASE_URL="https://api.themoviedb.org/3/movie/";
+  public static final String MOVIE_BASE_URL="https://api.themoviedb.org/3/";
   // Query Key Value
   public static final String API_KEY_VALUE= BuildConfig.ApiKey;
   //Query key Parameters
   public static final String API_KEY_PARAMETER ="api_key";
   public static final String PAGE_PARAMETER="page";
+
   //Url Path
   public static final String TOP_RATER_MOVIE_PATH="top_rated";
   public static final String POPULAR_MOVIE_PATH ="popular";

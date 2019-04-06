@@ -1,7 +1,7 @@
 package com.nirmal.jeffrey.flickvibes.network;
 
 
-import com.nirmal.jeffrey.flickvibes.network.NetworkUtil.NetworkConstants;
+import com.nirmal.jeffrey.flickvibes.util.Constants;
 
 
 import java.io.IOException;
@@ -28,7 +28,7 @@ public class WebServiceGenerator {
          HttpUrl originalUrl = original.url();
          // Add api key as a query parameter to the url that we got from the request
          HttpUrl url= originalUrl.newBuilder()
-             .addQueryParameter(NetworkConstants.API_KEY_PARAMETER,NetworkConstants.API_KEY_VALUE)
+             .addQueryParameter(Constants.API_KEY_PARAMETER, Constants.API_KEY_VALUE)
              .build();
          // Build a new request from the url appended with api key
          Request.Builder requestBuilder = original.newBuilder().url(url);
@@ -39,7 +39,7 @@ public class WebServiceGenerator {
 
 
  private static Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
-      .baseUrl(NetworkConstants.MOVIE_BASE_URL)
+      .baseUrl(Constants.MOVIE_BASE_URL)
       .addConverterFactory(GsonConverterFactory.create())
      //Interceptor to add api key as a query parameter to the base url
       .client(okHttpClient.build());
