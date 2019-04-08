@@ -14,9 +14,6 @@ public class AppExecutor {
     }
     return instance;
   }
-  private final ScheduledExecutorService networkIO = Executors.newScheduledThreadPool(3);
-  public  ScheduledExecutorService getNetworkIO(){
-    return networkIO;
-  }
+
 
 }

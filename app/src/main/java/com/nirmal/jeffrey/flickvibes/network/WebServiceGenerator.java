@@ -5,6 +5,7 @@ import com.nirmal.jeffrey.flickvibes.util.Constants;
 
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 import okhttp3.HttpUrl;
 
 
@@ -35,7 +36,10 @@ public class WebServiceGenerator {
         Request request= requestBuilder.build();
          return chain.proceed(request);
        }
-     });
+     })
+     .connectTimeout(10, TimeUnit.SECONDS)
+     .readTimeout(2,TimeUnit.SECONDS)
+     .writeTimeout(2,TimeUnit.SECONDS);
 
 
  private static Retrofit.Builder retrofitBuilder = new Retrofit.Builder()

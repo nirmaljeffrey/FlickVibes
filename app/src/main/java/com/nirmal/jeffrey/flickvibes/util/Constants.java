@@ -6,8 +6,7 @@ public class Constants {
 
                     /** Constants used in web service **/
 
-  //Timeout in milliseconds
-  public static final int NETWORK_TIMEOUT=3000;//3sec
+
   //Base Url
   public static final String MOVIE_BASE_URL="https://api.themoviedb.org/3/";
   // Query Key Value
@@ -20,5 +19,5 @@ public class Constants {
   public static final String TOP_RATER_MOVIE_PATH="top_rated";
   public static final String POPULAR_MOVIE_PATH ="popular";
   public static final String UPCOMING_MOVIE_PATH="upcoming";
-  public static final String NOW_PLAYING_MOVIE_PATH="now_playing";
+
 }

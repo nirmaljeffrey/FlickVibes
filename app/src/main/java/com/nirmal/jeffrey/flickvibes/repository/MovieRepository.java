@@ -1,33 +1,21 @@
 package com.nirmal.jeffrey.flickvibes.repository;
 
-import androidx.lifecycle.LiveData;
-import com.nirmal.jeffrey.flickvibes.model.Movie;
-
-import com.nirmal.jeffrey.flickvibes.network.MovieApiClient;
-import java.util.List;
+import android.content.Context;
 
 public class MovieRepository {
   private static MovieRepository instance;
-  private MovieApiClient movieApiClient;
-  private MovieRepository(){
-    movieApiClient= MovieApiClient.getInstance();
+
+  private MovieRepository(Context context){
+
 
   }
-  public static MovieRepository getInstance(){
+  public static MovieRepository getInstance(Context context){
     if(instance==null){
-      instance=new MovieRepository();
+      instance=new MovieRepository(context);
     }
     return instance;
   }
-  public LiveData<List<Movie>> getMoviesList(){
-    return movieApiClient.getMoviesList();
-  }
-  public void getMovieListApi(String pathType, int pageNumber){
-    if(pageNumber==0){
-      pageNumber=1;
-    }
-    movieApiClient.getMovieListApi(pathType,pageNumber);
-  }
+
 
 
 }
