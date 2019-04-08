@@ -9,6 +9,10 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Observer;
 import com.nirmal.jeffrey.flickvibes.executor.AppExecutor;
 import com.nirmal.jeffrey.flickvibes.network.response.ApiResponse;
+import com.nirmal.jeffrey.flickvibes.network.response.ApiResponse.ApiEmptyResponse;
+import com.nirmal.jeffrey.flickvibes.network.response.ApiResponse.ApiErrorResponse;
+import com.nirmal.jeffrey.flickvibes.network.response.ApiResponse.ApiSuccessResponse;
+import okhttp3.internal.ws.RealWebSocket;
 import retrofit2.Response;
 
 // CacheObject: Type for the Resource data.
@@ -22,6 +26,13 @@ public abstract class NetworkBoundResource<CacheObject, RequestObject> {
     init();
   }
 
+  /**
+   * 1) Update loading status and Observe Local database
+   * 2) if(condition) - stop observing the local database
+   *                  - insert new data into th database from network
+   *                  - start observing the database
+   * 3) else          - Update success status with existing cacheObject
+   */
   private void init(){
     //Update LiveData for loading status
     results.setValue((Resource<CacheObject>) Resource.loading(null));
@@ -34,6 +45,7 @@ public abstract class NetworkBoundResource<CacheObject, RequestObject> {
         results.removeSource(dbSource);
         if(shouldFetch(cacheObject)){
                 //get data from the network
+          fetchFromNetwork(dbSource);
         }else {
           results.addSource(dbSource, new Observer<CacheObject>() {
             @Override
@@ -45,6 +57,79 @@ public abstract class NetworkBoundResource<CacheObject, RequestObject> {
       }
     });
 
+  }
+  private void fetchFromNetwork( final LiveData<CacheObject> dbSource){
+    results.addSource(dbSource, new Observer<CacheObject>() {
+      @Override
+      public void onChanged(CacheObject cacheObject) {
+        setValue(( Resource.loading(cacheObject)));
+
+      }
+    });
+    final LiveData<ApiResponse<RequestObject>> apiResponse =createCall();
+    results.addSource(apiResponse, new Observer<ApiResponse<RequestObject>>() {
+      @Override
+      public void onChanged(final ApiResponse<RequestObject> requestObjectApiResponse) {
+        results.removeSource(dbSource);
+        results.removeSource(apiResponse);
+        /*
+         3 cases:
+         1) ApiSuccessResponse
+         2) ApiErrorResponse
+         3) ApiEmptyResponse
+         */
+        if(requestObjectApiResponse instanceof ApiResponse.ApiSuccessResponse){
+
+          appExecutor.diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+              //save the response to local database
+
+              saveCallResult((RequestObject) processResponse((ApiResponse.ApiSuccessResponse)requestObjectApiResponse));
+              appExecutor.mainThread().execute(new Runnable() {
+                @Override
+                public void run() {
+                  results.addSource(loadFromDb(), new Observer<CacheObject>() {
+                    @Override
+                    public void onChanged(CacheObject cacheObject) {
+                      setValue(Resource.success(cacheObject));
+                    }
+                  });
+                }
+              });
+            }
+          });
+
+
+
+        }else if(requestObjectApiResponse instanceof ApiResponse.ApiEmptyResponse){
+          appExecutor.mainThread().execute(new Runnable() {
+            @Override
+            public void run() {
+              results.addSource(loadFromDb(), new Observer<CacheObject>() {
+                @Override
+                public void onChanged(CacheObject cacheObject) {
+                  setValue(Resource.success(cacheObject));
+                }
+              });
+            }
+          });
+
+        }else if(requestObjectApiResponse instanceof ApiResponse.ApiErrorResponse){
+          results.addSource(dbSource, new Observer<CacheObject>() {
+            @Override
+            public void onChanged(CacheObject cacheObject) {
+              setValue(
+                  Resource.error(((ApiResponse.ApiErrorResponse)requestObjectApiResponse).getErrorMessage(),cacheObject));
+            }
+          });
+        }
+      }
+    });
+
+  }
+  private CacheObject processResponse(ApiResponse.ApiSuccessResponse response){
+    return (CacheObject) response.getBody();
   }
   private void setValue(Resource<CacheObject> newValue){
     if(results.getValue()!=newValue){
