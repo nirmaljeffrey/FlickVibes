@@ -1,19 +1,44 @@
 package com.nirmal.jeffrey.flickvibes.executor;
 
+import android.os.Handler;
+import android.os.Looper;
+import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
+
 
 public class AppExecutor {
+
   private static AppExecutor instance;
-  private AppExecutor(){
+  private final Executor mDiskIO = Executors.newSingleThreadExecutor();
+  private final Executor mMainThreadExecutor = new MainThreadExecutor();
+
+  private AppExecutor() {
 
   }
-  public static AppExecutor getInstance(){
-    if(instance==null){
-      instance=new AppExecutor();
+
+  public static AppExecutor getInstance() {
+    if (instance == null) {
+      instance = new AppExecutor();
     }
     return instance;
   }
 
+  public Executor diskIO() {
+    return mDiskIO;
+  }
+
+  public Executor mainThread() {
+    return mMainThreadExecutor;
+  }
+
+  private class MainThreadExecutor implements Executor {
+
+    private Handler mainThreadHandler = new Handler(Looper.getMainLooper());
+
+    @Override
+    public void execute(Runnable runnable) {
+      mainThreadHandler.post(runnable);
+    }
+  }
 
 }
