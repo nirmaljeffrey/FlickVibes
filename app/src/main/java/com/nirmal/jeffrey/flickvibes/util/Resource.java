@@ -1,12 +1,15 @@
 package com.nirmal.jeffrey.flickvibes.util;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 // A generic class that contains data and status about loading this data.
 public class Resource<T> {
-  @NonNull public final Status status;
-  @Nullable public final T data;
+  @NonNull
+  public final Status status;
+  @Nullable
+  public final T data;
   @Nullable public final String message;
   private Resource(@NonNull Status status, @Nullable T data,
       @Nullable String message) {

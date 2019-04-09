@@ -1,17 +1,19 @@
 package com.nirmal.jeffrey.flickvibes.ui;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import com.nirmal.jeffrey.flickvibes.R;
 import com.nirmal.jeffrey.flickvibes.model.Movie;
 import com.nirmal.jeffrey.flickvibes.util.Constants;
 import com.nirmal.jeffrey.flickvibes.viewmodel.MovieListViewModel;
 import java.util.List;
+
+i
 
 public class MovieListActivity extends AppCompatActivity {
 
