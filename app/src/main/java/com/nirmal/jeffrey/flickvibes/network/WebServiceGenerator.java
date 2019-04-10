@@ -1,6 +1,7 @@
 package com.nirmal.jeffrey.flickvibes.network;
 
 
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.nirmal.jeffrey.flickvibes.util.Constants;
@@ -36,7 +37,8 @@ public class WebServiceGenerator {
       })
       .connectTimeout(10, TimeUnit.SECONDS)
       .readTimeout(7, TimeUnit.SECONDS)
-      .writeTimeout(7, TimeUnit.SECONDS);
+      .writeTimeout(7, TimeUnit.SECONDS)
+      .addNetworkInterceptor(new StethoInterceptor());
 
   //Create a Gson object to exclude the variables without annotation inside model class
   private static Gson gson = new GsonBuilder()
