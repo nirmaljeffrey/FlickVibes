@@ -47,6 +47,7 @@ public class WebServiceGenerator {
       .baseUrl(Constants.MOVIE_BASE_URL)
       .addConverterFactory(GsonConverterFactory.create(gson))
       //Interceptor to add api key as a query parameter to the base url
+      //and to set Timeout for the network request
       .client(okHttpClient.build());
   private static Retrofit retrofit = retrofitBuilder.build();
   private static MovieApi movieApi = retrofit.create(MovieApi.class);

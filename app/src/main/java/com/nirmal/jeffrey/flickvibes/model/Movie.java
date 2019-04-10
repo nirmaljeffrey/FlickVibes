@@ -1,11 +1,17 @@
 package com.nirmal.jeffrey.flickvibes.model;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+@Entity(tableName = "movie_table")
 public class Movie implements Parcelable {
+
 
   public static final Creator<Movie> CREATOR = new Creator<Movie>() {
     @Override
@@ -20,27 +26,32 @@ public class Movie implements Parcelable {
   };
   @SerializedName("id")
   @Expose
-  private Integer id;
+  @PrimaryKey
+  private int id;
   @SerializedName("vote_average")
   @Expose
+  @ColumnInfo(name = "vote_average")
   private Double voteAverage;
   @SerializedName("title")
   @Expose
   private String title;
   @SerializedName("poster_path")
   @Expose
+  @ColumnInfo(name = "poster_path")
   private String posterPath;
   @SerializedName("backdrop_path")
   @Expose
+  @ColumnInfo(name = "backdrop_path")
   private String backdropPath;
   @SerializedName("overview")
   @Expose
   private String overview;
   @SerializedName("release_date")
   @Expose
+  @ColumnInfo(name = "release_date")
   private String releaseDate;
 
-  public Movie(Integer id, Double voteAverage, String title, String posterPath,
+  public Movie(int id, Double voteAverage, String title, String posterPath,
       String backdropPath, String overview, String releaseDate) {
     this.id = id;
     this.voteAverage = voteAverage;
@@ -51,15 +62,13 @@ public class Movie implements Parcelable {
     this.releaseDate = releaseDate;
   }
 
+
+  @Ignore
   public Movie() {
   }
 
   protected Movie(Parcel in) {
-    if (in.readByte() == 0) {
-      id = null;
-    } else {
-      id = in.readInt();
-    }
+    id = in.readInt();
     if (in.readByte() == 0) {
       voteAverage = null;
     } else {
@@ -72,11 +81,11 @@ public class Movie implements Parcelable {
     releaseDate = in.readString();
   }
 
-  public Integer getId() {
+  public int getId() {
     return id;
   }
 
-  public void setId(Integer id) {
+  public void setId(int id) {
     this.id = id;
   }
 
@@ -128,6 +137,7 @@ public class Movie implements Parcelable {
     this.releaseDate = releaseDate;
   }
 
+
   @Override
   public int describeContents() {
     return 0;
@@ -135,12 +145,7 @@ public class Movie implements Parcelable {
 
   @Override
   public void writeToParcel(Parcel parcel, int i) {
-    if (id == null) {
-      parcel.writeByte((byte) 0);
-    } else {
-      parcel.writeByte((byte) 1);
-      parcel.writeInt(id);
-    }
+    parcel.writeInt(id);
     if (voteAverage == null) {
       parcel.writeByte((byte) 0);
     } else {

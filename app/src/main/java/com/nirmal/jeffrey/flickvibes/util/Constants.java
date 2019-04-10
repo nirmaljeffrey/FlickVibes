@@ -14,6 +14,7 @@ public class Constants {
   //Query key Parameters
   public static final String API_KEY_PARAMETER ="api_key";
   public static final String PAGE_PARAMETER="page";
+  public static final String MOVIE_QUERY_PARAMETER="query";
 
   //Url Path
   public static final String TOP_RATER_MOVIE_PATH="top_rated";
