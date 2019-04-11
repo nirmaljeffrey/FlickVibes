@@ -1,0 +1,125 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "d5dd6da91046bb8dea00cd716de8c250",
+    "entities": [
+      {
+        "tableName": "movie_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `vote_average` REAL, `title` TEXT, `poster_path` TEXT, `backdrop_path` TEXT, `overview` TEXT, `release_date` TEXT, `movie_list_type` TEXT, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "voteAverage",
+            "columnName": "vote_average",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "posterPath",
+            "columnName": "poster_path",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "backdropPath",
+            "columnName": "backdrop_path",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "overview",
+            "columnName": "overview",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "releaseDate",
+            "columnName": "release_date",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "movieListType",
+            "columnName": "movie_list_type",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "review_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`review_author` TEXT, `review_content` TEXT, `room_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `movie_id` INTEGER NOT NULL, FOREIGN KEY(`movie_id`) REFERENCES `movie_table`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "reviewAuthor",
+            "columnName": "review_author",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "reviewContent",
+            "columnName": "review_content",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "roomId",
+            "columnName": "room_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "movieId",
+            "columnName": "movie_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "room_id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": [
+          {
+            "table": "movie_table",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "movie_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"d5dd6da91046bb8dea00cd716de8c250\")"
+    ]
+  }
+}

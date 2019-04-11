@@ -12,9 +12,6 @@ public class AppExecutor {
   private final Executor mDiskIO = Executors.newSingleThreadExecutor();
   private final Executor mMainThreadExecutor = new MainThreadExecutor();
 
-  private AppExecutor() {
-
-  }
 
   public static AppExecutor getInstance() {
     if (instance == null) {

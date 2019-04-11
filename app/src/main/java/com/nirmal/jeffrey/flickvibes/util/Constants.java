@@ -21,4 +21,6 @@ public class Constants {
   public static final String POPULAR_MOVIE_PATH ="popular";
   public static final String UPCOMING_MOVIE_PATH="upcoming";
 
+
+
 }

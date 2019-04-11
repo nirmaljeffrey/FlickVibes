@@ -50,7 +50,22 @@ public class Movie implements Parcelable {
   @Expose
   @ColumnInfo(name = "release_date")
   private String releaseDate;
+  @ColumnInfo(name = "movie_list_type")
+  private String movieListType;
 
+  public Movie(int id, Double voteAverage, String title, String posterPath,
+      String backdropPath, String overview, String releaseDate, String movieListType) {
+    this.id = id;
+    this.voteAverage = voteAverage;
+    this.title = title;
+    this.posterPath = posterPath;
+    this.backdropPath = backdropPath;
+    this.overview = overview;
+    this.releaseDate = releaseDate;
+    this.movieListType = movieListType;
+  }
+
+  @Ignore
   public Movie(int id, Double voteAverage, String title, String posterPath,
       String backdropPath, String overview, String releaseDate) {
     this.id = id;
@@ -61,7 +76,6 @@ public class Movie implements Parcelable {
     this.overview = overview;
     this.releaseDate = releaseDate;
   }
-
 
   @Ignore
   public Movie() {
@@ -79,6 +93,14 @@ public class Movie implements Parcelable {
     backdropPath = in.readString();
     overview = in.readString();
     releaseDate = in.readString();
+  }
+
+  public String getMovieListType() {
+    return movieListType;
+  }
+
+  public void setMovieListType(String movieListType) {
+    this.movieListType = movieListType;
   }
 
   public int getId() {

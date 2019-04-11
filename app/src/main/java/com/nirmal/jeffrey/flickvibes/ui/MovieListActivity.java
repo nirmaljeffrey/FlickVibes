@@ -3,6 +3,7 @@ package com.nirmal.jeffrey.flickvibes.ui;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -10,10 +11,11 @@ import android.view.View.OnClickListener;
 import com.nirmal.jeffrey.flickvibes.R;
 import com.nirmal.jeffrey.flickvibes.model.Movie;
 import com.nirmal.jeffrey.flickvibes.util.Constants;
+import com.nirmal.jeffrey.flickvibes.util.Resource;
 import com.nirmal.jeffrey.flickvibes.viewmodel.MovieListViewModel;
 import java.util.List;
 
-i
+
 
 public class MovieListActivity extends AppCompatActivity {
 
@@ -28,32 +30,35 @@ public class MovieListActivity extends AppCompatActivity {
     findViewById(R.id.click_button).setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View view) {
-        testRetrofitResponses();
+          getMovieListByTypeApi(Constants.POPULAR_MOVIE_PATH);
       }
     });
   }
   private void subscribeObservers(){
-    movieListViewModel.getMoviesList().observe(this, new Observer<List<Movie>>() {
+    movieListViewModel.getMovies().observe(this, new Observer<Resource<List<Movie>>>() {
       @Override
-      public void onChanged(List<Movie> movies) {
-        if(movies!=null){
-          for(Movie movie:movies){
-            Log.d(TAG, "onChanged: "+movie.getTitle());
-          }
-        }
+      public void onChanged(@Nullable Resource<List<Movie>> listResource) {
+        if(listResource!=null){
+          Log.d(TAG, "onChanged: "+listResource.status);
+          if(listResource.data!=null){
+            for(Movie movie: listResource.data){
+              Log.d(TAG, "onChanged: " + movie.getTitle());
+            }
 
+          }
+
+        }
       }
     });
-  }
-
-    private void getMovieListApi(String pathType, int pageNumber){
-      movieListViewModel.getMovieListApi(pathType,pageNumber);
-    }
-
-
-  private void testRetrofitResponses() {
-    getMovieListApi(Constants.POPULAR_MOVIE_PATH,1);
 
   }
+
+  private void getMovieListByTypeApi(String type){
+    movieListViewModel.getMovieListByTypeApi(type,1);
+  }
+
+
+
+
 }
 

@@ -8,6 +8,7 @@ import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
+import android.util.Log;
 import com.nirmal.jeffrey.flickvibes.executor.AppExecutor;
 import com.nirmal.jeffrey.flickvibes.network.response.ApiResponse;
 
@@ -15,6 +16,7 @@ import com.nirmal.jeffrey.flickvibes.network.response.ApiResponse;
 // RequestObject: Type for the API response.
 public abstract class NetworkBoundResource<CacheObject, RequestObject> {
 
+  private static final String TAG = "NetworkBoundResource";
   private MediatorLiveData<Resource<CacheObject>> results = new MediatorLiveData<>();
   private AppExecutor appExecutor;
 
@@ -55,6 +57,7 @@ public abstract class NetworkBoundResource<CacheObject, RequestObject> {
   }
 
   private void fetchFromNetwork(final LiveData<CacheObject> dbSource) {
+    Log.d(TAG, "fetchFromNetwork: Called.");
     results.addSource(dbSource, new Observer<CacheObject>() {
       @Override
       public void onChanged(CacheObject cacheObject) {
@@ -68,6 +71,8 @@ public abstract class NetworkBoundResource<CacheObject, RequestObject> {
       public void onChanged(final ApiResponse<RequestObject> requestObjectApiResponse) {
         results.removeSource(dbSource);
         results.removeSource(apiResponse);
+
+        Log.d(TAG, "run: Attempting to refresh data from network");
         /*
          3 cases:
          1) ApiSuccessResponse
@@ -75,14 +80,12 @@ public abstract class NetworkBoundResource<CacheObject, RequestObject> {
          3) ApiEmptyResponse
          */
         if (requestObjectApiResponse instanceof ApiResponse.ApiSuccessResponse) {
-
+          Log.d(TAG, "onChanged: onApiSucess");
           appExecutor.diskIO().execute(new Runnable() {
             @Override
             public void run() {
               //save the response to local database
-
-              saveCallResult((RequestObject) processResponse(
-                  (ApiResponse.ApiSuccessResponse) requestObjectApiResponse));
+              saveCallResult((RequestObject)processResponse((ApiResponse.ApiSuccessResponse)requestObjectApiResponse));
               appExecutor.mainThread().execute(new Runnable() {
                 @Override
                 public void run() {
@@ -99,6 +102,7 @@ public abstract class NetworkBoundResource<CacheObject, RequestObject> {
 
 
         } else if (requestObjectApiResponse instanceof ApiResponse.ApiEmptyResponse) {
+          Log.d(TAG, "onChanged: onApiEmpty");
           appExecutor.mainThread().execute(new Runnable() {
             @Override
             public void run() {
@@ -112,6 +116,7 @@ public abstract class NetworkBoundResource<CacheObject, RequestObject> {
           });
 
         } else if (requestObjectApiResponse instanceof ApiResponse.ApiErrorResponse) {
+          Log.d(TAG, "onChanged: onApiError");
           results.addSource(dbSource, new Observer<CacheObject>() {
             @Override
             public void onChanged(CacheObject cacheObject) {

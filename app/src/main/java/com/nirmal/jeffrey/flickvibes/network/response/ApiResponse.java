@@ -1,6 +1,5 @@
 package com.nirmal.jeffrey.flickvibes.network.response;
 
-import com.nirmal.jeffrey.flickvibes.R;
 import java.io.IOException;
 import retrofit2.Response;
 
@@ -9,7 +8,7 @@ public class ApiResponse<T> {
     return new ApiErrorResponse<>(error.getMessage().equals("")? "Unknown error \n Check the network Connection":error.getMessage());
   }
   public ApiResponse<T> create(Response<T> response){
-    // check if the response is sucessful(HTTP CODES between 200 and 200)
+    // check if the response is successful(HTTP CODES between 200 and 200)
     if(response.isSuccessful()){
       T body = response.body();
       //Check for null response
