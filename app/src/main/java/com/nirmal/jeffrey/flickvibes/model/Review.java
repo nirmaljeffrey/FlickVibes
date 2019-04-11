@@ -12,10 +12,11 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-@Entity(foreignKeys = @ForeignKey(entity = Movie.class,
-                                  parentColumns = "id",
-                                  childColumns = "movie_id",
-                                  onDelete = CASCADE),tableName = "review_table")
+@Entity(tableName = "review_table",foreignKeys = @ForeignKey(entity = Movie.class,
+                                   parentColumns = "id",
+                                   childColumns = "movie_id",
+                                   onDelete = CASCADE))
+
 public class Review implements Parcelable {
 
   public static final Creator<Review> CREATOR = new Creator<Review>() {
@@ -29,6 +30,11 @@ public class Review implements Parcelable {
       return new Review[size];
     }
   };
+
+  @ColumnInfo(name = "room_id")
+  @PrimaryKey(autoGenerate = true)
+  private int roomId;
+
   @SerializedName("author")
   @Expose
   @ColumnInfo(name = "review_author")
@@ -37,11 +43,9 @@ public class Review implements Parcelable {
   @Expose
   @ColumnInfo(name = "review_content")
   private String reviewContent;
-  @ColumnInfo(name = "room_id")
-  @PrimaryKey(autoGenerate = true)
-  private int roomId;
   @ColumnInfo(name = "movie_id")
   private int movieId;
+
 @Ignore
   public Review(String reviewAuthor, String reviewContent) {
     this.reviewAuthor = reviewAuthor;

@@ -68,8 +68,14 @@
       },
       {
         "tableName": "review_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`review_author` TEXT, `review_content` TEXT, `room_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `movie_id` INTEGER NOT NULL, FOREIGN KEY(`movie_id`) REFERENCES `movie_table`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`room_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `review_author` TEXT, `review_content` TEXT, `movie_id` INTEGER NOT NULL, FOREIGN KEY(`movie_id`) REFERENCES `movie_table`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
+          {
+            "fieldPath": "roomId",
+            "columnName": "room_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
           {
             "fieldPath": "reviewAuthor",
             "columnName": "review_author",
@@ -81,12 +87,6 @@
             "columnName": "review_content",
             "affinity": "TEXT",
             "notNull": false
-          },
-          {
-            "fieldPath": "roomId",
-            "columnName": "room_id",
-            "affinity": "INTEGER",
-            "notNull": true
           },
           {
             "fieldPath": "movieId",

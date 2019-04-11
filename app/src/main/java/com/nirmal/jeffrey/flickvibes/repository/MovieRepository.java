@@ -23,7 +23,7 @@ public class MovieRepository {
 
   private MovieRepository(Context context){
        movieDao= MovieDatabase.getInstance(context).getMovieDao();
-       reviewDao=MovieDatabase.getInstance(context).getReviewDao();
+      // reviewDao=MovieDatabase.getInstance(context).getReviewDao();
 
   }
   public static MovieRepository getInstance(Context context){
@@ -35,6 +35,9 @@ public class MovieRepository {
 
 public LiveData<Resource<List<Movie>>> getMovieListByTypeApi(final String type, final int pageNumber){
     return new NetworkBoundResource<List<Movie>, MovieListResponse>(AppExecutor.getInstance()){
+
+
+
       @Override
       protected void saveCallResult(@NonNull MovieListResponse item) {
        if(item.getMovieList()!=null){//if apiKey is expired the movieList will be null

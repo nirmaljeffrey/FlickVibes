@@ -4,20 +4,18 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import com.nirmal.jeffrey.flickvibes.R;
 import com.nirmal.jeffrey.flickvibes.model.Movie;
-import com.nirmal.jeffrey.flickvibes.util.Constants;
 import com.nirmal.jeffrey.flickvibes.util.Resource;
 import com.nirmal.jeffrey.flickvibes.viewmodel.MovieListViewModel;
 import java.util.List;
 
 
 
-public class MovieListActivity extends AppCompatActivity {
+public class MovieListActivity extends BaseActivity {
 
   private static final String TAG = "MovieListActivity";
   private MovieListViewModel movieListViewModel;
@@ -30,7 +28,7 @@ public class MovieListActivity extends AppCompatActivity {
     findViewById(R.id.click_button).setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View view) {
-          getMovieListByTypeApi(Constants.POPULAR_MOVIE_PATH);
+
       }
     });
   }
