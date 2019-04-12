@@ -7,4 +7,8 @@
   <string name="nav_bar_upcoming">Upcoming</string>
   <string name="nav_bar_now_playing">Now Playing</string>
   <string name="nav_bar_favourites">Favorites</string>
+
+
+  <!-- Content Description -->
+  <string name="poster_image_view_info">Movie Poster</string>
 </resources>

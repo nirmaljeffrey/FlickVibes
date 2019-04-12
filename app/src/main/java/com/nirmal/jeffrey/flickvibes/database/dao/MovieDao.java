@@ -20,7 +20,7 @@ public interface MovieDao {
   @Insert(onConflict = REPLACE)
   void insertMovies(List<Movie> movies);
 
-  @Query("SELECT * FROM movie_table WHERE movie_list_type =:type LIMIT (:PageNumber *20)")
+  @Query("SELECT * FROM movie_table WHERE movie_list_type =:type  LIMIT (:PageNumber *20)")
   LiveData<List<Movie>> getAllMovies(String type, int PageNumber);
 
   @Query("DELETE  FROM review_table")

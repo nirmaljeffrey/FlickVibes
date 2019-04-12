@@ -4,7 +4,7 @@ package com.nirmal.jeffrey.flickvibes.network;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.nirmal.jeffrey.flickvibes.util.Constants;
+import com.nirmal.jeffrey.flickvibes.util.NetworkUtils;
 import com.nirmal.jeffrey.flickvibes.util.LiveDataCallAdapterFactory;
 import java.io.IOException;
 import okhttp3.HttpUrl;
@@ -30,7 +30,7 @@ public class WebServiceGenerator {
           HttpUrl originalUrl = original.url();
           // Add api key as a query parameter to the url that we got from the request
           HttpUrl url = originalUrl.newBuilder()
-              .addQueryParameter(Constants.API_KEY_PARAMETER, Constants.API_KEY_VALUE)
+              .addQueryParameter(NetworkUtils.API_KEY_PARAMETER, NetworkUtils.API_KEY_VALUE)
               .build();
           // Build a new request from the url appended with api key
           Request.Builder requestBuilder = original.newBuilder().url(url);
@@ -49,7 +49,7 @@ public class WebServiceGenerator {
 
 
   private static Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
-      .baseUrl(Constants.MOVIE_BASE_URL)
+      .baseUrl(NetworkUtils.MOVIE_BASE_URL)
       //Interceptor to add api key as a query parameter to the base url
       //and to set Timeout for the network request
       .client(okHttpClient.build())

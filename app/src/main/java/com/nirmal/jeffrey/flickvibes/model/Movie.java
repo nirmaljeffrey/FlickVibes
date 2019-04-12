@@ -1,11 +1,11 @@
 package com.nirmal.jeffrey.flickvibes.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
-import android.os.Parcel;
-import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -50,11 +50,16 @@ public class Movie implements Parcelable {
   @Expose
   @ColumnInfo(name = "release_date")
   private String releaseDate;
+  @SerializedName("popularity")
+  @Expose
+  @ColumnInfo(name = "popularity")
+  private Double popularity;
   @ColumnInfo(name = "movie_list_type")
   private String movieListType;
 
   public Movie(int id, Double voteAverage, String title, String posterPath,
-      String backdropPath, String overview, String releaseDate, String movieListType) {
+      String backdropPath, String overview, String releaseDate, Double popularity,
+      String movieListType) {
     this.id = id;
     this.voteAverage = voteAverage;
     this.title = title;
@@ -62,12 +67,13 @@ public class Movie implements Parcelable {
     this.backdropPath = backdropPath;
     this.overview = overview;
     this.releaseDate = releaseDate;
+    this.popularity = popularity;
     this.movieListType = movieListType;
   }
 
   @Ignore
   public Movie(int id, Double voteAverage, String title, String posterPath,
-      String backdropPath, String overview, String releaseDate) {
+      String backdropPath, String overview, String releaseDate, Double popularity) {
     this.id = id;
     this.voteAverage = voteAverage;
     this.title = title;
@@ -75,7 +81,9 @@ public class Movie implements Parcelable {
     this.backdropPath = backdropPath;
     this.overview = overview;
     this.releaseDate = releaseDate;
+    this.popularity = popularity;
   }
+
 
   @Ignore
   public Movie() {
@@ -93,6 +101,20 @@ public class Movie implements Parcelable {
     backdropPath = in.readString();
     overview = in.readString();
     releaseDate = in.readString();
+    if (in.readByte() == 0) {
+      popularity = null;
+    } else {
+      popularity = in.readDouble();
+    }
+    movieListType = in.readString();
+  }
+
+  public Double getPopularity() {
+    return popularity;
+  }
+
+  public void setPopularity(Double popularity) {
+    this.popularity = popularity;
   }
 
   public String getMovieListType() {
@@ -179,6 +201,13 @@ public class Movie implements Parcelable {
     parcel.writeString(backdropPath);
     parcel.writeString(overview);
     parcel.writeString(releaseDate);
+    if (popularity == null) {
+      parcel.writeByte((byte) 0);
+    } else {
+      parcel.writeByte((byte) 1);
+      parcel.writeDouble(popularity);
+    }
+    parcel.writeString(movieListType);
   }
 }
 

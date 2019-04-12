@@ -8,7 +8,7 @@ import com.nirmal.jeffrey.flickvibes.network.response.GenreListResponse;
 import com.nirmal.jeffrey.flickvibes.network.response.MovieListResponse;
 import com.nirmal.jeffrey.flickvibes.network.response.ReviewListResponse;
 import com.nirmal.jeffrey.flickvibes.network.response.TrailerListResponse;
-import com.nirmal.jeffrey.flickvibes.util.Constants;
+import com.nirmal.jeffrey.flickvibes.util.NetworkUtils;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -20,12 +20,12 @@ public interface MovieApi {
   @GET("movie/{type}")
   LiveData<ApiResponse<MovieListResponse>> getMovieList(
       @Path("type")String type,
-      @Query(Constants.PAGE_PARAMETER)int page);
+      @Query(NetworkUtils.PAGE_PARAMETER)int page);
 //Search Movies
   @GET("search/movie")
   LiveData<ApiResponse<MovieListResponse>>searchMovieList
-      (@Query(Constants.MOVIE_QUERY_PARAMETER)String query,
-          @Query(Constants.PAGE_PARAMETER)int page);
+      (@Query(NetworkUtils.MOVIE_QUERY_PARAMETER)String query,
+          @Query(NetworkUtils.PAGE_PARAMETER)int page);
  //Trailer
  @GET("movie/{movie_id}/videos")
   LiveData<ApiResponse<TrailerListResponse>> getTrailerList(@Path("movie_id")int id);

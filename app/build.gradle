@@ -44,10 +44,11 @@ android {
 
 dependencies {
 
-    def retrofit_version="2.5.0"
+    def retrofit_version = "2.5.0"
     def lifecycle_version = '2.0.0'
-    def design_version= '1.0.0'
-    def butter_knife_version="10.1.0"
+    def design_version = '1.0.0'
+    def butter_knife_version = "10.1.0"
+    def glide_version = "4.9.0"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "androidx.appcompat:appcompat:1.0.2"
@@ -74,10 +75,11 @@ dependencies {
     //ButterKnife
     implementation "com.jakewharton:butterknife:$butter_knife_version"
     annotationProcessor "com.jakewharton:butterknife-compiler:$butter_knife_version"
+    //Glide
+    implementation "com.github.bumptech.glide:glide:$glide_version"
+    annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
     //Stetho
-    implementation'com.facebook.stetho:stetho:1.5.1'
+    implementation 'com.facebook.stetho:stetho:1.5.1'
     implementation 'com.facebook.stetho:stetho-okhttp3:1.5.1'
 
 }
-
-
