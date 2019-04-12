@@ -1,6 +1,7 @@
 package com.nirmal.jeffrey.flickvibes.network;
 
-import android.arch.lifecycle.LiveData;
+
+import androidx.lifecycle.LiveData;
 import com.nirmal.jeffrey.flickvibes.network.response.ApiResponse;
 import com.nirmal.jeffrey.flickvibes.network.response.CastListResponse;
 import com.nirmal.jeffrey.flickvibes.network.response.GenreListResponse;
@@ -18,7 +19,7 @@ public interface MovieApi {
 //Movies by popularity, ratings, upcoming etc
   @GET("movie/{type}")
   LiveData<ApiResponse<MovieListResponse>> getMovieList(
-      @Path ("type")String type,
+      @Path("type")String type,
       @Query(Constants.PAGE_PARAMETER)int page);
 //Search Movies
   @GET("search/movie")

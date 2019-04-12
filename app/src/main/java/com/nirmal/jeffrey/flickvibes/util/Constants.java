@@ -20,6 +20,7 @@ public class Constants {
   public static final String TOP_RATER_MOVIE_PATH="top_rated";
   public static final String POPULAR_MOVIE_PATH ="popular";
   public static final String UPCOMING_MOVIE_PATH="upcoming";
+  public static final String NOW_PLAYING_MOVIE_PATH="now_playing";
 
 
 

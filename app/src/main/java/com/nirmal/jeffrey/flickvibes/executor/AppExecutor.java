@@ -1,10 +1,10 @@
 package com.nirmal.jeffrey.flickvibes.executor;
 
+
 import android.os.Handler;
 import android.os.Looper;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-
 
 public class AppExecutor {
 

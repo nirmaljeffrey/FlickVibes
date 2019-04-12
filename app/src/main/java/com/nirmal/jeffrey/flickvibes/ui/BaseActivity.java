@@ -1,10 +1,11 @@
 package com.nirmal.jeffrey.flickvibes.ui;
 
-import android.support.constraint.ConstraintLayout;
-import android.support.v7.app.AppCompatActivity;
+
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import com.nirmal.jeffrey.flickvibes.R;
 
 public abstract class BaseActivity extends AppCompatActivity {

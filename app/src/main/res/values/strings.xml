@@ -1,3 +1,10 @@
 <resources>
   <string name="app_name">FlickVibes</string>
+
+  <!-- Bottom Navigation Bar -->
+  <string name="nav_bar_popular">Popular</string>
+  <string name="nav_bar_top_rated">Top Rated</string>
+  <string name="nav_bar_upcoming">Upcoming</string>
+  <string name="nav_bar_now_playing">Now Playing</string>
+  <string name="nav_bar_favourites">Favorites</string>
 </resources>
