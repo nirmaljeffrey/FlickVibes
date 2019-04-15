@@ -16,7 +16,9 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.nirmal.jeffrey.flickvibes.R;
 import com.nirmal.jeffrey.flickvibes.adapter.CastAdapter;
+import com.nirmal.jeffrey.flickvibes.adapter.GenreAdapter;
 import com.nirmal.jeffrey.flickvibes.adapter.ReviewAdapter;
+import com.nirmal.jeffrey.flickvibes.adapter.TrailerAdapter;
 import com.nirmal.jeffrey.flickvibes.model.Movie;
 import com.nirmal.jeffrey.flickvibes.util.Constants;
 import com.nirmal.jeffrey.flickvibes.util.NetworkUtils;
@@ -52,6 +54,8 @@ ImageView posterImage;
 private Movie movie;
 private ReviewAdapter reviewAdapter;
 private CastAdapter castAdapter;
+private TrailerAdapter trailerAdapter;
+private GenreAdapter genreAdapter;
 private MovieDetailViewModel movieDetailViewModel;
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +76,12 @@ private MovieDetailViewModel movieDetailViewModel;
     castAdapter=new CastAdapter(initGlide());
     castList.setLayoutManager(new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false));
     castList.setAdapter(castAdapter);
+    trailerAdapter=new TrailerAdapter(initGlide());
+    trailerList.setLayoutManager(new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false));
+    trailerList.setAdapter(trailerAdapter);
+    genreAdapter = new GenreAdapter();
+    genreList.setLayoutManager(new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false));
+    genreList.setAdapter(genreAdapter);
   }
   private void subscribeObservers(){
 
