@@ -4,8 +4,11 @@ package com.nirmal.jeffrey.flickvibes.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.SearchView;
+import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -78,8 +81,50 @@ public class MovieListActivity extends BaseActivity implements OnMovieItemClickL
     getMovieListByTypeApi(NetworkUtils.POPULAR_MOVIE_PATH);
   }
 
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    getMenuInflater().inflate(R.menu.movie_list_activity_menu,menu);
+    MenuItem searchItem = menu.findItem(R.id.action_search);
+    SearchView searchView= (SearchView)searchItem.getActionView();
+    searchView.setQueryHint(getString(R.string.menu_search_hint));
+    searchView.setIconified(false);
+    searchView.setOnQueryTextListener(new OnQueryTextListener() {
+      @Override
+      public boolean onQueryTextSubmit(String s) {
+        getMovieListFromSearch(s);
+        return true;
+      }
+
+      @Override
+      public boolean onQueryTextChange(String s) {
+        return false;
+      }
+    });
+    return true;
+  }
+
   private void subscribeObservers() {
-    movieListViewModel.getMovies().observe(this, (Resource<List<Movie>> listResource) -> {
+    movieListViewModel.getMoviesFromSearch().observe(this, listResource -> {
+      if(listResource!=null){
+        if(listResource.data!=null){
+          switch (listResource.status){
+            case LOADING:
+              displayLoading();
+              break;
+            case ERROR:
+              displayError(listResource.message);
+              movieListAdapter.setMovieData(new ArrayList<>(listResource.data));
+              break;
+            case SUCCESS:
+              displayMovies();
+              movieListAdapter.setMovieData(new ArrayList<>(listResource.data));
+              break;
+          }
+
+        }
+      }
+    });
+    movieListViewModel.getMoviesByType().observe(this, (Resource<List<Movie>> listResource) -> {
       if (listResource != null) {
 
         if (listResource.data != null) {
@@ -87,21 +132,18 @@ public class MovieListActivity extends BaseActivity implements OnMovieItemClickL
           switch (listResource.status){
             case LOADING:
               Log.d(TAG, "subscribeObservers: ApiLoading");
-              displayLoading();
-
+             displayLoading();
               break;
             case ERROR:
               Log.d(TAG, "subscribeObservers: ApiError");
-              mProgressBar.setVisibility(View.GONE);
-              recyclerView.setVisibility(View.VISIBLE);
+              displayError(listResource.message);
               movieListAdapter.setMovieData(new ArrayList<>(listResource.data));
-              toastMessage(listResource.message);
+
 
               break;
             case SUCCESS:
               Log.d(TAG, "subscribeObservers: APiSuccess");
-              mProgressBar.setVisibility(View.GONE);
-              recyclerView.setVisibility(View.VISIBLE);
+              displayMovies();
               movieListAdapter.setMovieData(new ArrayList<>(listResource.data));
 
               break;
@@ -115,15 +157,26 @@ public class MovieListActivity extends BaseActivity implements OnMovieItemClickL
     });
 
   }
+  private void displayLoading(){
+    mProgressBar.setVisibility(View.VISIBLE);
+    recyclerView.setVisibility(View.GONE);
+
+  }
+  private void displayError(String message){
+    mProgressBar.setVisibility(View.GONE);
+    recyclerView.setVisibility(View.VISIBLE);
+    toastMessage(message);
+  }
+  private void displayMovies(){
+    mProgressBar.setVisibility(View.GONE);
+    recyclerView.setVisibility(View.VISIBLE);
+  }
 
   private void toastMessage(String message){
     Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
   }
 
-  private void displayLoading(){
-    mProgressBar.setVisibility(View.VISIBLE);
-    recyclerView.setVisibility(View.GONE);
-  }
+
 
   private void initRecyclerView(){
     int spanCount = getResources().getInteger(R.integer.grid_span_count);
@@ -134,6 +187,9 @@ public class MovieListActivity extends BaseActivity implements OnMovieItemClickL
 
   private void getMovieListByTypeApi(String type) {
     movieListViewModel.getMovieListByTypeApi(type, 1);
+  }
+  private void getMovieListFromSearch(String query){
+    movieListViewModel.getMovieListFromSearchApi(query,1);
   }
 
   /**

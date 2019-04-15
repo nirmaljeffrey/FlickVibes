@@ -56,10 +56,13 @@ public class Movie implements Parcelable {
   private Double popularity;
   @ColumnInfo(name = "movie_list_type")
   private String movieListType;
+  @ColumnInfo(name = "is_favorite")
+  private boolean isFavorite;
+
 
   public Movie(int id, Double voteAverage, String title, String posterPath,
       String backdropPath, String overview, String releaseDate, Double popularity,
-      String movieListType) {
+      String movieListType, boolean isFavorite) {
     this.id = id;
     this.voteAverage = voteAverage;
     this.title = title;
@@ -69,7 +72,9 @@ public class Movie implements Parcelable {
     this.releaseDate = releaseDate;
     this.popularity = popularity;
     this.movieListType = movieListType;
+    this.isFavorite = isFavorite;
   }
+
 
   @Ignore
   public Movie(int id, Double voteAverage, String title, String posterPath,
@@ -83,7 +88,6 @@ public class Movie implements Parcelable {
     this.releaseDate = releaseDate;
     this.popularity = popularity;
   }
-
 
   @Ignore
   public Movie() {
@@ -107,6 +111,15 @@ public class Movie implements Parcelable {
       popularity = in.readDouble();
     }
     movieListType = in.readString();
+    isFavorite = in.readByte() != 0;
+  }
+
+  public boolean isFavorite() {
+    return isFavorite;
+  }
+
+  public void setFavorite(boolean favorite) {
+    isFavorite = favorite;
   }
 
   public Double getPopularity() {
@@ -208,6 +221,7 @@ public class Movie implements Parcelable {
       parcel.writeDouble(popularity);
     }
     parcel.writeString(movieListType);
+    parcel.writeByte((byte) (isFavorite ? 1 : 0));
   }
 }
 

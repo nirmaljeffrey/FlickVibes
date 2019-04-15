@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_margin="8dp"
+    android:layout_height="wrap_content">
+
+    <TextView
+      android:id="@+id/reviewer_name"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="8dp"
+      android:layout_marginEnd="8dp"
+      android:layout_marginTop="16dp"
+      app:layout_constraintStart_toEndOf="@+id/review_account_profile_image"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:text="Nirmal Jeffrey"/>
+
+    <at.blogc.android.views.ExpandableTextView
+      android:id="@+id/review_content"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+     android:layout_margin="16dp"
+      android:gravity="start"
+      android:textAlignment="textStart"
+      android:maxLines="4"
+      android:ellipsize="end"
+      app:layout_constraintBottom_toBottomOf="@id/divider"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="@+id/review_account_profile_image"
+      app:layout_constraintTop_toBottomOf="@+id/reviewer_name"
+      app:layout_constraintWidth_default="wrap"
+      tools:text="jgjjgjjgjhdjkgjdkjjgdkgdgjdkgjdkjgkdjgkjdkgjdkgjdkgkdjgkdjgkdkgdkjgkdjgkjdgjdkgjkdjgkdjgkjdkgjdkgjdkjgkdjgkdjgdjgkjdkgjdkgkdjkdjgkdkjgkdjgkdjgkdjgkdjkgjdgdkjgkdjgkjdkgjkdjgkdjgkjdgkjdkjgkdjgkdjkjdkjgkdjgkdjgkjdkgjkdjgkdjgkjdkjgkdjgkdgkjdkgjkdjgkjdkgjkdjgkjdkgdkjgkdjgkjdkgjdkjgkdjgkdjgkjdkjgkd"/>
+
+    <ImageView
+      android:id="@+id/review_account_profile_image"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="8dp"
+      android:layout_marginEnd="8dp"
+      android:background="@drawable/ic_reviewer_24dp"
+      android:contentDescription="@string/review_profile_info"
+      app:layout_constraintBottom_toBottomOf="@+id/reviewer_name"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="@+id/reviewer_name" />
+  <ImageView
+    android:id="@+id/review_expand_collapse_button"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="8dp"
+    android:background="@drawable/ic_expand_more_24dp"
+    android:contentDescription="@string/expand_collapse_info"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="@+id/review_account_profile_image"/>
+  <View
+    android:id="@+id/divider"
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:background="@color/colorAccent"
+    android:layout_margin="8dp"
+    app:layout_constraintBottom_toBottomOf="parent"/>
+  </androidx.constraintlayout.widget.ConstraintLayout>
+

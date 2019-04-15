@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
@@ -7,10 +7,11 @@
   android:layout_height="match_parent"
   tools:context=".ui.MovieListActivity">
 
+
   <FrameLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_above="@id/bottom_navigation">
+    android:layout_marginBottom="56dp">
 
     <androidx.recyclerview.widget.RecyclerView
       android:id="@+id/movies_recycler_view"
@@ -24,12 +25,26 @@
       android:layout_height="wrap_content"
       android:layout_gravity="center"/>
   </FrameLayout>
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:fabSize="normal"
+    app:elevation="4dp"
+    android:layout_margin="16dp"
+    android:src="@drawable/ic_fab_magic_24dp"
+    android:layout_gravity="end|bottom"
+    android:clickable="true"
+    android:focusable="true"/>
 
  <com.google.android.material.bottomnavigation.BottomNavigationView
    android:id="@+id/bottom_navigation"
    android:layout_width="match_parent"
    android:layout_height="wrap_content"
-   android:layout_alignParentBottom="true"
+   android:layout_gravity="bottom"
+   app:layout_insetEdge="bottom"
+   android:background="?android:attr/windowBackground"
    app:menu="@menu/bottom_navigation"/>
 
-</RelativeLayout>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

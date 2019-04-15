@@ -1,10 +1,9 @@
 package com.nirmal.jeffrey.flickvibes.ui;
 
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import com.nirmal.jeffrey.flickvibes.R;
 
-public class MovieDetailActivity extends AppCompatActivity {
+public class MovieDetailActivity extends BaseActivity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
