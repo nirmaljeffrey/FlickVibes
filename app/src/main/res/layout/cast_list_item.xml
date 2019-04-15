@@ -15,14 +15,14 @@
     android:orientation="vertical">
 
     <ImageView
-      android:id="@+id/cast_iv"
+      android:id="@+id/cast_image_view"
       android:layout_width="match_parent"
       android:layout_height="160dp"
       android:contentDescription="@string/cast_image_info"
       android:scaleType="centerCrop"/>
 
     <TextView
-      android:id="@+id/cast_tv"
+      android:id="@+id/cast_text_view"
       android:layout_width="match_parent"
       android:layout_height="50dp"
       android:gravity="center"

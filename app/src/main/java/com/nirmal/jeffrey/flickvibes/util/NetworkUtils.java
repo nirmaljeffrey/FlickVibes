@@ -33,8 +33,8 @@ public final class NetworkUtils {
   /**
    * @return the url link in string format to access the thumbnail for the movies from movies db web server.
    */
-  public static String buildMovieImageURLString(String imagePath) {
-    Uri builtUri = Uri.parse(NetworkUtils.POSTER_BASE_URL).buildUpon()
+  public static String buildMovieImageURLString(String url,String imagePath) {
+    Uri builtUri = Uri.parse(url).buildUpon()
         .appendEncodedPath(imagePath)
         .build();
     return builtUri.toString();

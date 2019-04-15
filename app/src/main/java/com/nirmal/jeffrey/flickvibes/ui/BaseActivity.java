@@ -9,7 +9,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.nirmal.jeffrey.flickvibes.R;
 
 public abstract class BaseActivity extends AppCompatActivity {
-  public ProgressBar mProgressBar;
+  private ProgressBar mProgressBar;
 
   @Override
   public void setContentView(int layoutResID) {

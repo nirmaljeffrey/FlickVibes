@@ -22,6 +22,7 @@
   <string name="similar_movies_label">SIMILAR MOVIES</string>
   <string name="review_label">REVIEWS</string>
   <string name="storyline_label">StoryLine</string>
+  <string name="rating_label" translatable="false">/10</string>
   <!-- Content Description -->
   <string name="poster_image_view_info">Movie Poster</string>
   <string name="trailer_image_info">Movie Trailer</string>

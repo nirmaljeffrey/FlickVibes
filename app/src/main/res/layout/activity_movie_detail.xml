@@ -6,6 +6,7 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:fitsSystemWindows="true"
+  android:id="@+id/movie_detail_coordinator_layout"
   tools:context=".ui.MovieDetailActivity">
   <com.google.android.material.appbar.AppBarLayout
     android:id="@+id/app_bar"
@@ -58,16 +59,17 @@
 
         <TextView
           android:id="@+id/movie_title"
-          android:layout_width="wrap_content"
+          android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_marginTop="8dp"
           android:layout_marginStart="8dp"
           android:layout_marginEnd="16dp"
-          tools:text="Geem Bhoomba"
-          android:textSize="32sp"
+          android:textSize="24sp"
+          app:layout_constraintWidth_default="wrap"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="@+id/guideline"
-          app:layout_constraintTop_toTopOf="parent"/>
+          app:layout_constraintTop_toTopOf="parent"
+          tools:text="Geem Bhoomba"/>
         <androidx.constraintlayout.widget.Guideline
           android:id="@+id/guideline"
           android:layout_width="wrap_content"
@@ -102,7 +104,7 @@
           android:layout_height="wrap_content"
           android:layout_marginStart="4dp"
           android:layout_marginEnd="8dp"
-          android:text="/10"
+          android:text="@string/rating_label"
           app:layout_constraintBaseline_toBaselineOf="@+id/rating_text_view"
           app:layout_constraintEnd_toStartOf="@+id/guideline6"
           app:layout_constraintStart_toEndOf="@+id/rating_text_view"/>
@@ -142,11 +144,11 @@
           android:id="@+id/storyline_label"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_marginTop="100dp"
+          android:layout_marginTop="32dp"
           android:layout_marginStart="8dp"
           android:text="@string/storyline_label"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent"/>
+          app:layout_constraintTop_toBottomOf="@+id/rating_text_view"/>
 
 
       </androidx.constraintlayout.widget.ConstraintLayout>

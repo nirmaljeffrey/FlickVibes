@@ -23,8 +23,8 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener;
 import com.nirmal.jeffrey.flickvibes.R;
-import com.nirmal.jeffrey.flickvibes.adapter.MovieListAdapter;
-import com.nirmal.jeffrey.flickvibes.adapter.MovieListAdapter.OnMovieItemClickLister;
+import com.nirmal.jeffrey.flickvibes.adapter.MovieAdapter;
+import com.nirmal.jeffrey.flickvibes.adapter.MovieAdapter.OnMovieItemClickLister;
 import com.nirmal.jeffrey.flickvibes.model.Movie;
 import com.nirmal.jeffrey.flickvibes.util.Constants;
 import com.nirmal.jeffrey.flickvibes.util.NetworkUtils;
@@ -42,7 +42,7 @@ public class MovieListActivity extends BaseActivity implements OnMovieItemClickL
   RecyclerView recyclerView;
   @BindView(R.id.bottom_navigation)
   BottomNavigationView bottomNavigationBar;
-  private MovieListAdapter movieListAdapter;
+  private MovieAdapter movieAdapter;
   private MovieListViewModel movieListViewModel;
   private BottomNavigationView.OnNavigationItemSelectedListener navListener = new OnNavigationItemSelectedListener() {
     @Override
@@ -113,11 +113,11 @@ public class MovieListActivity extends BaseActivity implements OnMovieItemClickL
               break;
             case ERROR:
               displayError(listResource.message);
-              movieListAdapter.setMovieData(new ArrayList<>(listResource.data));
+              movieAdapter.setMovieData(new ArrayList<>(listResource.data));
               break;
             case SUCCESS:
               displayMovies();
-              movieListAdapter.setMovieData(new ArrayList<>(listResource.data));
+              movieAdapter.setMovieData(new ArrayList<>(listResource.data));
               break;
           }
 
@@ -137,14 +137,14 @@ public class MovieListActivity extends BaseActivity implements OnMovieItemClickL
             case ERROR:
               Log.d(TAG, "subscribeObservers: ApiError");
               displayError(listResource.message);
-              movieListAdapter.setMovieData(new ArrayList<>(listResource.data));
+              movieAdapter.setMovieData(new ArrayList<>(listResource.data));
 
 
               break;
             case SUCCESS:
               Log.d(TAG, "subscribeObservers: APiSuccess");
               displayMovies();
-              movieListAdapter.setMovieData(new ArrayList<>(listResource.data));
+              movieAdapter.setMovieData(new ArrayList<>(listResource.data));
 
               break;
           }
@@ -158,17 +158,20 @@ public class MovieListActivity extends BaseActivity implements OnMovieItemClickL
 
   }
   private void displayLoading(){
-    mProgressBar.setVisibility(View.VISIBLE);
+    //Method from BaseActivity.java
+    showProgressBar(true);
     recyclerView.setVisibility(View.GONE);
 
   }
   private void displayError(String message){
-    mProgressBar.setVisibility(View.GONE);
+    //Method from BaseActivity.java
+    showProgressBar(false);
     recyclerView.setVisibility(View.VISIBLE);
     toastMessage(message);
   }
   private void displayMovies(){
-    mProgressBar.setVisibility(View.GONE);
+    //Method from BaseActivity.java
+    showProgressBar(false);
     recyclerView.setVisibility(View.VISIBLE);
   }
 
@@ -181,8 +184,8 @@ public class MovieListActivity extends BaseActivity implements OnMovieItemClickL
   private void initRecyclerView(){
     int spanCount = getResources().getInteger(R.integer.grid_span_count);
     recyclerView.setLayoutManager(new GridLayoutManager(this,spanCount));
-    movieListAdapter = new MovieListAdapter(initGlide(),this);
-    recyclerView.setAdapter(movieListAdapter);
+    movieAdapter = new MovieAdapter(initGlide(),this);
+    recyclerView.setAdapter(movieAdapter);
   }
 
   private void getMovieListByTypeApi(String type) {

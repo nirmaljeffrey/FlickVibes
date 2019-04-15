@@ -2,7 +2,6 @@ package com.nirmal.jeffrey.flickvibes.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import androidx.annotation.NonNull;
@@ -11,18 +10,18 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.bumptech.glide.RequestManager;
 import com.nirmal.jeffrey.flickvibes.R;
-import com.nirmal.jeffrey.flickvibes.adapter.MovieListAdapter.MovieListViewHolder;
+import com.nirmal.jeffrey.flickvibes.adapter.MovieAdapter.MovieListViewHolder;
 import com.nirmal.jeffrey.flickvibes.model.Movie;
 import com.nirmal.jeffrey.flickvibes.util.NetworkUtils;
 import java.util.ArrayList;
 
-public class MovieListAdapter extends RecyclerView.Adapter<MovieListViewHolder> {
+public class MovieAdapter extends RecyclerView.Adapter<MovieListViewHolder> {
 
   private OnMovieItemClickLister onMovieItemClickLister;
 private ArrayList<Movie> movieArrayList;
 private RequestManager requestManager;
 
-public MovieListAdapter(RequestManager requestManager,OnMovieItemClickLister onMovieItemClickLister){
+public MovieAdapter(RequestManager requestManager,OnMovieItemClickLister onMovieItemClickLister){
 this.onMovieItemClickLister=onMovieItemClickLister;
 this.requestManager=requestManager;
 }
@@ -44,7 +43,7 @@ public void setMovieData(ArrayList<Movie> movieData){
        Movie movie= movieArrayList.get(position);
        if(movie.getPosterPath()!=null){
          // Method to create complete url string of the poster
-         String posterUrl = NetworkUtils.buildMovieImageURLString(movie.getPosterPath());
+         String posterUrl = NetworkUtils.buildMovieImageURLString(NetworkUtils.POSTER_BASE_URL,movie.getPosterPath());
               requestManager
                   .load(posterUrl)
                   .into(holder.posterImageView);
@@ -60,27 +59,25 @@ public void setMovieData(ArrayList<Movie> movieData){
     return movieArrayList.size();
   }
 
-  public static class MovieListViewHolder extends RecyclerView.ViewHolder {
+  static class MovieListViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.poster_image_view)
     ImageView posterImageView;
 
-    public MovieListViewHolder(@NonNull View itemView,OnMovieItemClickLister itemClickLister,ArrayList<Movie> movies) {
+    MovieListViewHolder(@NonNull View itemView, OnMovieItemClickLister itemClickLister,
+        ArrayList<Movie> movies) {
       super(itemView);
       ButterKnife.bind(this, itemView);
-        posterImageView.setOnClickListener(new OnClickListener() {
-          @Override
-          public void onClick (View view){
-            if(itemClickLister!=null) {
-              int adapterPosition = getAdapterPosition();
-              if(adapterPosition!=RecyclerView.NO_POSITION){
-                if(movies!=null){
-                  itemClickLister.onClickItem(movies.get(adapterPosition));
-                }
-
+        posterImageView.setOnClickListener(view -> {
+          if(itemClickLister!=null) {
+            int adapterPosition = getAdapterPosition();
+            if(adapterPosition!=RecyclerView.NO_POSITION){
+              if(movies!=null && movies.size()>0){
+                itemClickLister.onClickItem(movies.get(adapterPosition));
               }
-            }
 
+            }
           }
+
         });
 
     }

@@ -12,7 +12,7 @@
   app:cardElevation="4dp">
 
   <TextView
-    android:id="@+id/genre_tv"
+    android:id="@+id/genre_text_view"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="16dp"
