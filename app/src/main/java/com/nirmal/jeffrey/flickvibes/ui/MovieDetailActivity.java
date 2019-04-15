@@ -18,6 +18,7 @@ import com.nirmal.jeffrey.flickvibes.R;
 import com.nirmal.jeffrey.flickvibes.adapter.CastAdapter;
 import com.nirmal.jeffrey.flickvibes.adapter.GenreAdapter;
 import com.nirmal.jeffrey.flickvibes.adapter.ReviewAdapter;
+import com.nirmal.jeffrey.flickvibes.adapter.SimilarMoviesAdapter;
 import com.nirmal.jeffrey.flickvibes.adapter.TrailerAdapter;
 import com.nirmal.jeffrey.flickvibes.model.Movie;
 import com.nirmal.jeffrey.flickvibes.util.Constants;
@@ -56,6 +57,7 @@ private ReviewAdapter reviewAdapter;
 private CastAdapter castAdapter;
 private TrailerAdapter trailerAdapter;
 private GenreAdapter genreAdapter;
+private SimilarMoviesAdapter similarMoviesAdapter;
 private MovieDetailViewModel movieDetailViewModel;
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -70,18 +72,26 @@ private MovieDetailViewModel movieDetailViewModel;
 
   }
   private void initRecyclerViews(){
+    //Reviews
     reviewAdapter = new ReviewAdapter();
     reviewList.setAdapter(reviewAdapter);
     reviewList.setLayoutManager(new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false));
+    //Cast
     castAdapter=new CastAdapter(initGlide());
     castList.setLayoutManager(new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false));
     castList.setAdapter(castAdapter);
+    //Trailer
     trailerAdapter=new TrailerAdapter(initGlide());
     trailerList.setLayoutManager(new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false));
     trailerList.setAdapter(trailerAdapter);
+    //Genre
     genreAdapter = new GenreAdapter();
     genreList.setLayoutManager(new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false));
     genreList.setAdapter(genreAdapter);
+    //Similar movies
+    similarMoviesAdapter=new SimilarMoviesAdapter(initGlide());
+    similarMovieList.setLayoutManager(new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false));
+    similarMovieList.setAdapter(similarMoviesAdapter);
   }
   private void subscribeObservers(){
 
