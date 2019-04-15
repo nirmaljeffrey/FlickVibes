@@ -13,8 +13,8 @@ public final class NetworkUtils {
 
   //Base Url
   public static final String MOVIE_BASE_URL="https://api.themoviedb.org/3/";
-  public static String POSTER_BASE_URL = "http://image.tmdb.org/t/p/w342/";
-  public static String BACKDROP_BASE_URL = "http://image.tmdb.org/t/p/w500/";
+  public static final String POSTER_BASE_URL = "http://image.tmdb.org/t/p/w342/";
+  public static final String BACKDROP_BASE_URL = "http://image.tmdb.org/t/p/w500/";
   // Query Key Value
   public static final String API_KEY_VALUE= BuildConfig.ApiKey;
   //Query key Parameters
@@ -28,6 +28,12 @@ public final class NetworkUtils {
   public static final String UPCOMING_MOVIE_PATH="upcoming";
   public static final String NOW_PLAYING_MOVIE_PATH="now_playing";
 
+  // Base url used for sharing trailer video links online
+  public static final String MOVIE_YOUTUBE_TRAILER_URL = "https://www.youtube.com/watch?v=";
+  public static final String MOVIE_TRAILER_KEY_PARAM = "v";
+  public static final String MOVIE_TRAILER_THUMBNAIL_URL_PART_ONE = "https://img.youtube.com/vi/";
+  public static final String MOVIE_TRAILER_THUMBNAIL_URL_PART_TWO = "/0.jpg";
+
 
 
   /**
@@ -38,6 +44,18 @@ public final class NetworkUtils {
         .appendEncodedPath(imagePath)
         .build();
     return builtUri.toString();
+  }
+  /**
+   * @return the url link in string format to access the thumbnail for the movies from movies db web server.
+   */
+  public static String buildTrailerThumbnailUrl(String key){
+    return MOVIE_TRAILER_THUMBNAIL_URL_PART_ONE + key+ MOVIE_TRAILER_THUMBNAIL_URL_PART_TWO;
+  }
+  /**
+   * @return the url link to access the trailer video for the movies from youtube.com.
+   */
+  public static String buildTrailerVideoUrl(String key){
+    return MOVIE_YOUTUBE_TRAILER_URL+key;
   }
 
 

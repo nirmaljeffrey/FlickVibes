@@ -9,7 +9,7 @@
    android:layout_width="match_parent"
    android:layout_height="match_parent">
    <ImageView
-     android:id="@+id/trailerImage"
+     android:id="@+id/trailer_image_view"
      android:layout_width="0dp"
      android:layout_height="170dp"
      android:contentDescription="@string/trailer_image_info"
@@ -21,7 +21,7 @@
      tools:src="@drawable/trailer"/>
 
    <TextView
-     android:id="@+id/trailerTitle"
+     android:id="@+id/trailer_title_text_view"
      android:layout_width="0dp"
      android:layout_height="wrap_content"
      android:layout_marginStart="8dp"
@@ -33,14 +33,14 @@
      android:ellipsize="end"
      android:maxLines="2"
      app:layout_constraintBottom_toBottomOf="parent"
-     app:layout_constraintEnd_toStartOf="@+id/shareButtonImage"
+     app:layout_constraintEnd_toStartOf="@+id/share_button_image_view"
      app:layout_constraintHorizontal_bias="0.087"
      app:layout_constraintStart_toStartOf="parent"
-     app:layout_constraintTop_toBottomOf="@+id/trailerImage"
+     app:layout_constraintTop_toBottomOf="@+id/trailer_image_view"
      tools:text="Mary Poppins Returns Official Trailer" />
 
    <TextView
-     android:id="@+id/trailerSiteLabel"
+     android:id="@+id/trailer_site_label"
      style="@style/TextAppearance.AppCompat.Headline"
      android:layout_width="wrap_content"
      android:layout_height="wrap_content"
@@ -49,12 +49,12 @@
      android:layout_marginBottom="8dp"
      android:textColor="#fff"
      android:textStyle="bold"
-     app:layout_constraintBottom_toBottomOf="@+id/trailerImage"
-     app:layout_constraintStart_toStartOf="@+id/trailerImage"
+     app:layout_constraintBottom_toBottomOf="@+id/trailer_image_view"
+     app:layout_constraintStart_toStartOf="@+id/trailer_image_view"
      tools:text="youtube" />
 
    <ImageView
-     android:id="@+id/shareButtonImage"
+     android:id="@+id/share_button_image_view"
      android:layout_width="24dp"
      android:layout_height="wrap_content"
      android:layout_marginEnd="8dp"
@@ -63,17 +63,17 @@
      android:background="@drawable/ic_share_button_24dp"
      android:contentDescription="@string/trailer_share_info"
      app:layout_constraintBottom_toBottomOf="parent"
-     app:layout_constraintEnd_toEndOf="@+id/trailerImage"
-     app:layout_constraintTop_toTopOf="@+id/trailerTitle" />
+     app:layout_constraintEnd_toEndOf="@+id/trailer_image_view"
+     app:layout_constraintTop_toTopOf="@+id/trailer_title_text_view" />
 
    <ImageView
      android:layout_width="wrap_content"
      android:layout_height="wrap_content"
      android:background="@drawable/ic_play_button_24dp"
-     app:layout_constraintBottom_toBottomOf="@+id/trailerImage"
-     app:layout_constraintEnd_toEndOf="@+id/trailerImage"
-     app:layout_constraintStart_toStartOf="@+id/trailerImage"
-     app:layout_constraintTop_toTopOf="@+id/trailerImage"
+     app:layout_constraintBottom_toBottomOf="@+id/trailer_image_view"
+     app:layout_constraintEnd_toEndOf="@+id/trailer_image_view"
+     app:layout_constraintStart_toStartOf="@+id/trailer_image_view"
+     app:layout_constraintTop_toTopOf="@+id/trailer_image_view"
      tools:ignore="ContentDescription" />
 
 

@@ -11,9 +11,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.nirmal.jeffrey.flickvibes.R;
+import com.nirmal.jeffrey.flickvibes.adapter.CastAdapter;
 import com.nirmal.jeffrey.flickvibes.adapter.ReviewAdapter;
 import com.nirmal.jeffrey.flickvibes.model.Movie;
 import com.nirmal.jeffrey.flickvibes.util.Constants;
@@ -49,6 +51,7 @@ FloatingActionButton favoriteButton;
 ImageView posterImage;
 private Movie movie;
 private ReviewAdapter reviewAdapter;
+private CastAdapter castAdapter;
 private MovieDetailViewModel movieDetailViewModel;
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +69,9 @@ private MovieDetailViewModel movieDetailViewModel;
     reviewAdapter = new ReviewAdapter();
     reviewList.setAdapter(reviewAdapter);
     reviewList.setLayoutManager(new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false));
+    castAdapter=new CastAdapter(initGlide());
+    castList.setLayoutManager(new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false));
+    castList.setAdapter(castAdapter);
   }
   private void subscribeObservers(){
 
@@ -85,6 +91,7 @@ private MovieDetailViewModel movieDetailViewModel;
     String posterUrl =NetworkUtils.buildMovieImageURLString(NetworkUtils.POSTER_BASE_URL,movie.getPosterPath());
     setImageUsingGlide(backdropUrl,backdropImage);
     setImageUsingGlide(posterUrl,posterImage);
+    initRecyclerViews();
     coordinatorLayout.setVisibility(View.VISIBLE);
     showProgressBar(false);
 
@@ -100,6 +107,18 @@ private MovieDetailViewModel movieDetailViewModel;
          .centerCrop()
          .into(imageView);
 
+
+  }
+  /**
+   * Method for creating request manager for recycler view
+   * @return RequestManager (Glide)
+   */
+  private RequestManager initGlide() {
+    RequestOptions requestOptions = new RequestOptions()
+        .error(R.drawable.poster_place_holder)
+        .fallback(R.drawable.poster_place_holder);
+    return Glide.with(this)
+        .setDefaultRequestOptions(requestOptions);
 
   }
 }
