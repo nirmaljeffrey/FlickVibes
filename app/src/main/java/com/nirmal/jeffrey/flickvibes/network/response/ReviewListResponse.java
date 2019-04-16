@@ -6,6 +6,7 @@ import com.nirmal.jeffrey.flickvibes.model.Review;
 import java.util.ArrayList;
 
 public class ReviewListResponse {
+
   @SerializedName("results")
   @Expose
   private ArrayList<Review> reviewList;

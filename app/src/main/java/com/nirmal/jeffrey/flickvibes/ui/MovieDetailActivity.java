@@ -1,9 +1,11 @@
 package com.nirmal.jeffrey.flickvibes.ui;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -24,8 +26,11 @@ import com.nirmal.jeffrey.flickvibes.model.Movie;
 import com.nirmal.jeffrey.flickvibes.util.Constants;
 import com.nirmal.jeffrey.flickvibes.util.NetworkUtils;
 import com.nirmal.jeffrey.flickvibes.viewmodel.MovieDetailViewModel;
+import java.util.ArrayList;
 
 public class MovieDetailActivity extends BaseActivity {
+
+  private static final String TAG = "MovieId";
   @BindView(R.id.movie_detail_coordinator_layout)
   CoordinatorLayout coordinatorLayout;
 @BindView(R.id.back_drop_image_view)
@@ -66,16 +71,18 @@ private MovieDetailViewModel movieDetailViewModel;
     ButterKnife.bind(this);
     movieDetailViewModel= ViewModelProviders.of(this).get(MovieDetailViewModel.class);
     getIncomingIntent();
-    showProgressBar(true);
-    coordinatorLayout.setVisibility(View.INVISIBLE);
     setMoviePropertiesToWidgets();
+
+
+
 
   }
   private void initRecyclerViews(){
+
     //Reviews
     reviewAdapter = new ReviewAdapter();
     reviewList.setAdapter(reviewAdapter);
-    reviewList.setLayoutManager(new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false));
+    reviewList.setLayoutManager(new LinearLayoutManager(this,RecyclerView.VERTICAL,false));
     //Cast
     castAdapter=new CastAdapter(initGlide());
     castList.setLayoutManager(new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false));
@@ -93,13 +100,43 @@ private MovieDetailViewModel movieDetailViewModel;
     similarMovieList.setLayoutManager(new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false));
     similarMovieList.setAdapter(similarMoviesAdapter);
   }
-  private void subscribeObservers(){
+  private void subscribeObservers(int movieId){
+    movieDetailViewModel.getReviewsApi(movieId).observe(this,
+        listResource -> {
+          if(listResource!=null){
+            if(listResource.data!=null){
+              switch (listResource.status){
+                case LOADING:
+                  showProgressBar(true);
+                  break;
+                case ERROR:
+                  coordinatorLayout.setVisibility(View.VISIBLE);
+                  showProgressBar(false);
+                  toastMessage(listResource.message);
+                  reviewAdapter.setReviewData(new ArrayList<>(listResource.data));
+
+
+                  break;
+                case SUCCESS:
+                  coordinatorLayout.setVisibility(View.VISIBLE);
+                  showProgressBar(false);
+                  reviewAdapter.setReviewData(new ArrayList<>(listResource.data));
+
+
+                  break;
+              }
+            }
+          }
+        });
 
   }
 
   private void getIncomingIntent(){
     if(getIntent().hasExtra(Constants.MOVIE_LIST_INTENT)){
        movie= getIntent().getParcelableExtra(Constants.MOVIE_LIST_INTENT);
+      Log.d(TAG, "movieDetail: movieId"+movie.getId());
+      Log.d(TAG, "movieDetail: movieId"+movie.getPosterPath());
+      subscribeObservers(movie.getId());
     }
   }
   private void setMoviePropertiesToWidgets(){
@@ -140,5 +177,8 @@ private MovieDetailViewModel movieDetailViewModel;
     return Glide.with(this)
         .setDefaultRequestOptions(requestOptions);
 
+  }
+  private void toastMessage(String message){
+    Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
   }
 }

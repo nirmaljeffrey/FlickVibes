@@ -7,10 +7,13 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import com.nirmal.jeffrey.flickvibes.database.dao.MovieDao;
 import com.nirmal.jeffrey.flickvibes.database.dao.ReviewDao;
+import com.nirmal.jeffrey.flickvibes.model.Cast;
+import com.nirmal.jeffrey.flickvibes.model.Genre;
 import com.nirmal.jeffrey.flickvibes.model.Movie;
 import com.nirmal.jeffrey.flickvibes.model.Review;
+import com.nirmal.jeffrey.flickvibes.model.Trailer;
 
-@Database(entities = {Movie.class, Review.class}, version = 1)
+@Database(entities = {Movie.class, Review.class, Trailer.class, Cast.class, Genre.class}, version = 1)
 public abstract class MovieDatabase extends RoomDatabase {
 
   private static final String DATABASE_NAME = "movies_db";

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "8fea927166809809362e8cad9c428251",
+    "identityHash": "32667514b557a37111d0f3b10925403a",
     "entities": [
       {
         "tableName": "movie_table",
@@ -127,11 +127,131 @@
             ]
           }
         ]
+      },
+      {
+        "tableName": "trailer_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`room_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `movie_id` INTEGER NOT NULL, `key` TEXT, `name` TEXT, `site` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "roomId",
+            "columnName": "room_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "movieId",
+            "columnName": "movie_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "key",
+            "columnName": "key",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "site",
+            "columnName": "site",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "room_id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "cast_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`room_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `movie_id` INTEGER NOT NULL, `castName` TEXT, `castProfilePath` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "roomId",
+            "columnName": "room_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "movieId",
+            "columnName": "movie_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "castName",
+            "columnName": "castName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "castProfilePath",
+            "columnName": "castProfilePath",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "room_id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "genre_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`room_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `movie_id` INTEGER NOT NULL, `genreId` INTEGER NOT NULL, `genreName` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "roomId",
+            "columnName": "room_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "movieId",
+            "columnName": "movie_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "genreId",
+            "columnName": "genreId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "genreName",
+            "columnName": "genreName",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "room_id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"8fea927166809809362e8cad9c428251\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"32667514b557a37111d0f3b10925403a\")"
     ]
   }
 }

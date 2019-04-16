@@ -35,7 +35,7 @@ import java.util.List;
 
 public class MovieListActivity extends BaseActivity implements OnMovieItemClickLister {
 
-  private static final String TAG = "MovieListActivity";
+  private static final String TAG = "MovieId";
   @BindView(R.id.error_text_view)
   TextView errorTextView;
   @BindView(R.id.movies_recycler_view)
@@ -211,6 +211,8 @@ public class MovieListActivity extends BaseActivity implements OnMovieItemClickL
 
   @Override
   public void onClickItem(Movie movie) {
+    Log.d(TAG, "MainActivity: movieId"+movie.getId());
+    Log.d(TAG, "MainActivity: movieId"+movie.getPosterPath());
     Intent intent = new Intent(MovieListActivity.this,MovieDetailActivity.class);
     intent.putExtra(Constants.MOVIE_LIST_INTENT,movie);
     startActivity(intent);

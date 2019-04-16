@@ -11,22 +11,26 @@ import com.nirmal.jeffrey.flickvibes.database.dao.MovieDao;
 import com.nirmal.jeffrey.flickvibes.database.dao.ReviewDao;
 import com.nirmal.jeffrey.flickvibes.executor.AppExecutor;
 import com.nirmal.jeffrey.flickvibes.model.Movie;
+import com.nirmal.jeffrey.flickvibes.model.Review;
 import com.nirmal.jeffrey.flickvibes.network.WebServiceGenerator;
 import com.nirmal.jeffrey.flickvibes.network.response.ApiResponse;
 import com.nirmal.jeffrey.flickvibes.network.response.MovieListResponse;
+import com.nirmal.jeffrey.flickvibes.network.response.ReviewListResponse;
 import com.nirmal.jeffrey.flickvibes.util.DatabaseUtils;
 import com.nirmal.jeffrey.flickvibes.util.NetworkBoundResource;
 import com.nirmal.jeffrey.flickvibes.util.Resource;
 import java.util.List;
 
 public class MovieRepository {
+
+  private static final String TAG = "MovieRepository";
   private static MovieRepository instance;
   private MovieDao movieDao;
   private ReviewDao reviewDao;
 
   private MovieRepository(Context context){
        movieDao= MovieDatabase.getInstance(context).getMovieDao();
-      // reviewDao=MovieDatabase.getInstance(context).getReviewDao();
+       reviewDao=MovieDatabase.getInstance(context).getReviewDao();
 
   }
   public static MovieRepository getInstance(Context context){
@@ -117,6 +121,41 @@ public LiveData<Resource<List<Movie>>> searchMoviesApi(String query,int pageNumb
       @Override
       protected LiveData<ApiResponse<MovieListResponse>> createCall() {
         return WebServiceGenerator.getMovieApi().searchMovieList(query,pageNumber);
+      }
+    }.getAsLiveData();
+}
+public LiveData<Resource<List<Review>>> getReviewsApi(int movieId){
+    return new  NetworkBoundResource<List<Review>, ReviewListResponse>(AppExecutor.getInstance()){
+
+      @Override
+      protected void saveCallResult(@NonNull ReviewListResponse item) {
+        if(item.getReviewList()!=null){
+         List<Review> reviews =  item.getReviewList();
+         for (Review review: reviews){
+           review.setMovieId(movieId);
+
+         }
+         reviewDao.insertReviews(reviews);
+
+        }
+      }
+
+      @Override
+      protected boolean shouldFetch(@Nullable List<Review> data) {
+        return true;
+        }
+
+
+      @NonNull
+      @Override
+      protected LiveData<List<Review>> loadFromDb() {
+        return reviewDao.getAllReviewsForMovie(movieId);
+      }
+
+      @NonNull
+      @Override
+      protected LiveData<ApiResponse<ReviewListResponse>> createCall() {
+        return WebServiceGenerator.getMovieApi().getReviewList(movieId);
       }
     }.getAsLiveData();
 }

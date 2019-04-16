@@ -2,22 +2,21 @@ package com.nirmal.jeffrey.flickvibes.model;
 
 import static androidx.room.ForeignKey.CASCADE;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
-import android.os.Parcel;
-import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-@Entity(tableName = "review_table",foreignKeys = @ForeignKey(entity = Movie.class,
-                                   parentColumns = "id",
-                                   childColumns = "movie_id",
-                                   onDelete = CASCADE))
+@Entity(tableName = "review_table", foreignKeys = @ForeignKey(parentColumns = "id",
+    childColumns = "movie_id", entity = Movie.class, onDelete = CASCADE))
 
 public class Review implements Parcelable {
+
 
   public static final Creator<Review> CREATOR = new Creator<Review>() {
     @Override
@@ -30,11 +29,9 @@ public class Review implements Parcelable {
       return new Review[size];
     }
   };
-
   @ColumnInfo(name = "room_id")
   @PrimaryKey(autoGenerate = true)
   private int roomId;
-
   @SerializedName("author")
   @Expose
   @ColumnInfo(name = "review_author")
@@ -46,21 +43,25 @@ public class Review implements Parcelable {
   @ColumnInfo(name = "movie_id")
   private int movieId;
 
-@Ignore
+  public Review(String reviewAuthor, String reviewContent, int movieId) {
+    this.reviewAuthor = reviewAuthor;
+    this.reviewContent = reviewContent;
+    this.movieId = movieId;
+
+  }
+
+
+  @Ignore
   public Review(String reviewAuthor, String reviewContent) {
     this.reviewAuthor = reviewAuthor;
     this.reviewContent = reviewContent;
   }
 
-  public Review(String reviewAuthor, String reviewContent, int movieId) {
-    this.reviewAuthor = reviewAuthor;
-    this.reviewContent = reviewContent;
-    this.movieId = movieId;
-  }
-
   protected Review(Parcel in) {
+    roomId = in.readInt();
     reviewAuthor = in.readString();
     reviewContent = in.readString();
+    movieId = in.readInt();
   }
 
   public int getRoomId() {
@@ -95,6 +96,7 @@ public class Review implements Parcelable {
     this.reviewContent = reviewContent;
   }
 
+
   @Override
   public int describeContents() {
     return 0;
@@ -102,7 +104,9 @@ public class Review implements Parcelable {
 
   @Override
   public void writeToParcel(Parcel parcel, int i) {
+    parcel.writeInt(roomId);
     parcel.writeString(reviewAuthor);
     parcel.writeString(reviewContent);
+    parcel.writeInt(movieId);
   }
 }

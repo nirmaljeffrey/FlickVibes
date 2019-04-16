@@ -75,7 +75,6 @@ public class Movie implements Parcelable {
     this.isFavorite = isFavorite;
   }
 
-
   @Ignore
   public Movie(int id, Double voteAverage, String title, String posterPath,
       String backdropPath, String overview, String releaseDate, Double popularity) {
@@ -88,6 +87,7 @@ public class Movie implements Parcelable {
     this.releaseDate = releaseDate;
     this.popularity = popularity;
   }
+
 
   @Ignore
   public Movie() {
