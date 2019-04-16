@@ -1,15 +1,19 @@
 package com.nirmal.jeffrey.flickvibes.model;
 
+import static androidx.room.ForeignKey.CASCADE;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-@Entity(tableName = "trailer_table")
+@Entity(tableName = "trailer_table",foreignKeys = @ForeignKey(parentColumns = "id",
+    childColumns = "movie_id",entity = Movie.class,onDelete = CASCADE))
 public class Trailer implements Parcelable {
 
 

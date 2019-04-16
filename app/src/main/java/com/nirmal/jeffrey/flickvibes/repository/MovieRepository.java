@@ -9,13 +9,16 @@ import androidx.sqlite.db.SimpleSQLiteQuery;
 import com.nirmal.jeffrey.flickvibes.database.MovieDatabase;
 import com.nirmal.jeffrey.flickvibes.database.dao.MovieDao;
 import com.nirmal.jeffrey.flickvibes.database.dao.ReviewDao;
+import com.nirmal.jeffrey.flickvibes.database.dao.TrailerDao;
 import com.nirmal.jeffrey.flickvibes.executor.AppExecutor;
 import com.nirmal.jeffrey.flickvibes.model.Movie;
 import com.nirmal.jeffrey.flickvibes.model.Review;
+import com.nirmal.jeffrey.flickvibes.model.Trailer;
 import com.nirmal.jeffrey.flickvibes.network.WebServiceGenerator;
 import com.nirmal.jeffrey.flickvibes.network.response.ApiResponse;
 import com.nirmal.jeffrey.flickvibes.network.response.MovieListResponse;
 import com.nirmal.jeffrey.flickvibes.network.response.ReviewListResponse;
+import com.nirmal.jeffrey.flickvibes.network.response.TrailerListResponse;
 import com.nirmal.jeffrey.flickvibes.util.DatabaseUtils;
 import com.nirmal.jeffrey.flickvibes.util.NetworkBoundResource;
 import com.nirmal.jeffrey.flickvibes.util.Resource;
@@ -27,10 +30,12 @@ public class MovieRepository {
   private static MovieRepository instance;
   private MovieDao movieDao;
   private ReviewDao reviewDao;
+  private TrailerDao trailerDao;
 
   private MovieRepository(Context context){
        movieDao= MovieDatabase.getInstance(context).getMovieDao();
        reviewDao=MovieDatabase.getInstance(context).getReviewDao();
+       trailerDao=MovieDatabase.getInstance(context).getTrailerDao();
 
   }
   public static MovieRepository getInstance(Context context){
@@ -158,6 +163,40 @@ public LiveData<Resource<List<Review>>> getReviewsApi(int movieId){
         return WebServiceGenerator.getMovieApi().getReviewList(movieId);
       }
     }.getAsLiveData();
+}
+public LiveData<Resource<List<Trailer>>> getTrailersApi(int movieId){
+    return new NetworkBoundResource<List<Trailer>, TrailerListResponse>(AppExecutor.getInstance()){
+
+      @Override
+      protected void saveCallResult(@NonNull TrailerListResponse item) {
+        if(item.getTrailerList()!=null){
+          List<Trailer> trailerList = item.getTrailerList();
+          for (Trailer trailer: trailerList){
+            trailer.setMovieId(movieId);
+          }
+          trailerDao.insertTrailers(trailerList);
+
+        }
+      }
+
+      @Override
+      protected boolean shouldFetch(@Nullable List<Trailer> data) {
+        return true;
+      }
+
+      @NonNull
+      @Override
+      protected LiveData<List<Trailer>> loadFromDb() {
+        return trailerDao.getAllTrailerForMovie(movieId);
+      }
+
+      @NonNull
+      @Override
+      protected LiveData<ApiResponse<TrailerListResponse>> createCall() {
+        return WebServiceGenerator.getMovieApi().getTrailerList(movieId);
+      }
+    }.getAsLiveData();
+
 }
 
 }

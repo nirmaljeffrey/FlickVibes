@@ -22,6 +22,10 @@ private RequestManager requestManager;
 public TrailerAdapter(RequestManager requestManager){
   this.requestManager=requestManager;
 }
+public void setTrailerData(ArrayList<Trailer> trailerArrayList){
+  this.trailerArrayList=trailerArrayList;
+  notifyDataSetChanged();
+}
   @NonNull
   @Override
   public TrailerListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

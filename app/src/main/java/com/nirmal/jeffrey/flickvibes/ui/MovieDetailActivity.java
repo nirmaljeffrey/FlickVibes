@@ -128,6 +128,30 @@ private MovieDetailViewModel movieDetailViewModel;
             }
           }
         });
+    movieDetailViewModel.getTrailersApi(movieId).observe(this,
+        listResource -> {
+          if(listResource!=null){
+            if(listResource.data!=null){
+              switch (listResource.status){
+                case LOADING:
+                  showProgressBar(true);
+                  break;
+                case ERROR:
+                  coordinatorLayout.setVisibility(View.VISIBLE);
+                  showProgressBar(false);
+                  toastMessage(listResource.message);
+                  trailerAdapter.setTrailerData(new ArrayList<>(listResource.data));
+
+                  break;
+                case SUCCESS:
+                  coordinatorLayout.setVisibility(View.VISIBLE);
+                  showProgressBar(false);
+                  trailerAdapter.setTrailerData(new ArrayList<>(listResource.data));
+                  break;
+              }
+            }
+          }
+        });
 
   }
 

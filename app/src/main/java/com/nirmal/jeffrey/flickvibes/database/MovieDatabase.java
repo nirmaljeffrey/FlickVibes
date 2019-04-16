@@ -7,6 +7,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import com.nirmal.jeffrey.flickvibes.database.dao.MovieDao;
 import com.nirmal.jeffrey.flickvibes.database.dao.ReviewDao;
+import com.nirmal.jeffrey.flickvibes.database.dao.TrailerDao;
 import com.nirmal.jeffrey.flickvibes.model.Cast;
 import com.nirmal.jeffrey.flickvibes.model.Genre;
 import com.nirmal.jeffrey.flickvibes.model.Movie;
@@ -31,4 +32,5 @@ public abstract class MovieDatabase extends RoomDatabase {
 
   public abstract MovieDao getMovieDao();
   public abstract ReviewDao getReviewDao();
+  public abstract TrailerDao getTrailerDao();
 }
