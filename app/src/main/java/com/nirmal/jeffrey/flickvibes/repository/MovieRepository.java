@@ -7,15 +7,21 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.sqlite.db.SimpleSQLiteQuery;
 import com.nirmal.jeffrey.flickvibes.database.MovieDatabase;
+import com.nirmal.jeffrey.flickvibes.database.dao.CastDao;
+import com.nirmal.jeffrey.flickvibes.database.dao.GenreDao;
 import com.nirmal.jeffrey.flickvibes.database.dao.MovieDao;
 import com.nirmal.jeffrey.flickvibes.database.dao.ReviewDao;
 import com.nirmal.jeffrey.flickvibes.database.dao.TrailerDao;
 import com.nirmal.jeffrey.flickvibes.executor.AppExecutor;
+import com.nirmal.jeffrey.flickvibes.model.Cast;
+import com.nirmal.jeffrey.flickvibes.model.Genre;
 import com.nirmal.jeffrey.flickvibes.model.Movie;
 import com.nirmal.jeffrey.flickvibes.model.Review;
 import com.nirmal.jeffrey.flickvibes.model.Trailer;
 import com.nirmal.jeffrey.flickvibes.network.WebServiceGenerator;
 import com.nirmal.jeffrey.flickvibes.network.response.ApiResponse;
+import com.nirmal.jeffrey.flickvibes.network.response.CastListResponse;
+import com.nirmal.jeffrey.flickvibes.network.response.GenreListResponse;
 import com.nirmal.jeffrey.flickvibes.network.response.MovieListResponse;
 import com.nirmal.jeffrey.flickvibes.network.response.ReviewListResponse;
 import com.nirmal.jeffrey.flickvibes.network.response.TrailerListResponse;
@@ -31,34 +37,38 @@ public class MovieRepository {
   private MovieDao movieDao;
   private ReviewDao reviewDao;
   private TrailerDao trailerDao;
+  private CastDao castDao;
+  private GenreDao genreDao;
 
-  private MovieRepository(Context context){
-       movieDao= MovieDatabase.getInstance(context).getMovieDao();
-       reviewDao=MovieDatabase.getInstance(context).getReviewDao();
-       trailerDao=MovieDatabase.getInstance(context).getTrailerDao();
-
+  private MovieRepository(Context context) {
+    movieDao = MovieDatabase.getInstance(context).getMovieDao();
+    reviewDao = MovieDatabase.getInstance(context).getReviewDao();
+    trailerDao = MovieDatabase.getInstance(context).getTrailerDao();
+    castDao = MovieDatabase.getInstance(context).getCastDao();
+    genreDao = MovieDatabase.getInstance(context).getGenreDao();
   }
-  public static MovieRepository getInstance(Context context){
-    if(instance==null){
-      instance=new MovieRepository(context);
+
+  public static MovieRepository getInstance(Context context) {
+    if (instance == null) {
+      instance = new MovieRepository(context);
     }
     return instance;
   }
 
-public LiveData<Resource<List<Movie>>> getMovieListByTypeApi(final String type, final int pageNumber){
-    return new NetworkBoundResource<List<Movie>, MovieListResponse>(AppExecutor.getInstance()){
-
+  public LiveData<Resource<List<Movie>>> getMovieListByTypeApi(final String type,
+      final int pageNumber) {
+    return new NetworkBoundResource<List<Movie>, MovieListResponse>(AppExecutor.getInstance()) {
 
 
       @Override
       protected void saveCallResult(@NonNull MovieListResponse item) {
-       if(item.getMovieList()!=null){//if apiKey is expired the movieList will be null
-         List<Movie> movieList =item.getMovieList();
-         for(Movie movie:movieList){
-           movie.setMovieListType(type);
-         }
-         movieDao.insertMovies(movieList);
-       }
+        if (item.getMovieList() != null) {//if apiKey is expired the movieList will be null
+          List<Movie> movieList = item.getMovieList();
+          for (Movie movie : movieList) {
+            movie.setMovieListType(type);
+          }
+          movieDao.insertMovies(movieList);
+        }
       }
 
       @Override
@@ -69,9 +79,9 @@ public LiveData<Resource<List<Movie>>> getMovieListByTypeApi(final String type, 
       @NonNull
       @Override
       protected LiveData<List<Movie>> loadFromDb() {
-        SimpleSQLiteQuery query =DatabaseUtils.getSQLiteQuery(type,pageNumber);
+        SimpleSQLiteQuery query = DatabaseUtils.getSQLiteQuery(type, pageNumber);
 
-          return movieDao.getMoviesByType(query);
+        return movieDao.getMoviesByType(query);
 
 
       }
@@ -80,32 +90,34 @@ public LiveData<Resource<List<Movie>>> getMovieListByTypeApi(final String type, 
       @NonNull
       @Override
       protected LiveData<ApiResponse<MovieListResponse>> createCall() {
-        return WebServiceGenerator.getMovieApi().getMovieList(type,pageNumber);
+        return WebServiceGenerator.getMovieApi().getMovieList(type, pageNumber);
       }
     }.getAsLiveData();
 
-}
-public LiveData<Resource<List<Movie>>> searchMoviesApi(String query,int pageNumber){
-    return new NetworkBoundResource<List<Movie>,MovieListResponse>(AppExecutor.getInstance()){
+  }
+
+  public LiveData<Resource<List<Movie>>> searchMoviesApi(String query, int pageNumber) {
+    return new NetworkBoundResource<List<Movie>, MovieListResponse>(AppExecutor.getInstance()) {
       @Override
       protected void saveCallResult(@NonNull MovieListResponse item) {
-        if(item.getMovieList()!=null){//if apiKey is expired the movieList will be null
-          Movie[] movies =new Movie[item.getMovieList().size()];
-          int index =0;
-          for(long rowId:movieDao.insertMovies((Movie[])(item.getMovieList().toArray(movies)))){
-             if(rowId == -1){
-               Movie movie = movies[index];
-               // if the movies already exists, update them
-                  movieDao.updateMovies(movie.getId(),
-                                        movie.getTitle(),
-                                        movie.getPosterPath(),
-                                        movie.getBackdropPath(),
-                                        movie.getOverview(),
-                                        movie.getReleaseDate(),
-                                        movie.getVoteAverage(),
-                                        movie.getPopularity());
-             }
-             index++;
+        if (item.getMovieList() != null) {//if apiKey is expired the movieList will be null
+          Movie[] movies = new Movie[item.getMovieList().size()];
+          int index = 0;
+          for (long rowId : movieDao
+              .insertMovies((Movie[]) (item.getMovieList().toArray(movies)))) {
+            if (rowId == -1) {
+              Movie movie = movies[index];
+              // if the movies already exists, update them
+              movieDao.updateMovies(movie.getId(),
+                  movie.getTitle(),
+                  movie.getPosterPath(),
+                  movie.getBackdropPath(),
+                  movie.getOverview(),
+                  movie.getReleaseDate(),
+                  movie.getVoteAverage(),
+                  movie.getPopularity());
+            }
+            index++;
           }
 
         }
@@ -119,28 +131,29 @@ public LiveData<Resource<List<Movie>>> searchMoviesApi(String query,int pageNumb
       @NonNull
       @Override
       protected LiveData<List<Movie>> loadFromDb() {
-        return movieDao.searchMovies(query,pageNumber);
+        return movieDao.searchMovies(query, pageNumber);
       }
 
       @NonNull
       @Override
       protected LiveData<ApiResponse<MovieListResponse>> createCall() {
-        return WebServiceGenerator.getMovieApi().searchMovieList(query,pageNumber);
+        return WebServiceGenerator.getMovieApi().searchMovieList(query, pageNumber);
       }
     }.getAsLiveData();
-}
-public LiveData<Resource<List<Review>>> getReviewsApi(int movieId){
-    return new  NetworkBoundResource<List<Review>, ReviewListResponse>(AppExecutor.getInstance()){
+  }
+
+  public LiveData<Resource<List<Review>>> getReviewsApi(int movieId) {
+    return new NetworkBoundResource<List<Review>, ReviewListResponse>(AppExecutor.getInstance()) {
 
       @Override
       protected void saveCallResult(@NonNull ReviewListResponse item) {
-        if(item.getReviewList()!=null){
-         List<Review> reviews =  item.getReviewList();
-         for (Review review: reviews){
-           review.setMovieId(movieId);
+        if (item.getReviewList() != null) {
+          List<Review> reviews = item.getReviewList();
+          for (Review review : reviews) {
+            review.setMovieId(movieId);
 
-         }
-         reviewDao.insertReviews(reviews);
+          }
+          reviewDao.insertReviews(reviews);
 
         }
       }
@@ -148,7 +161,7 @@ public LiveData<Resource<List<Review>>> getReviewsApi(int movieId){
       @Override
       protected boolean shouldFetch(@Nullable List<Review> data) {
         return true;
-        }
+      }
 
 
       @NonNull
@@ -163,15 +176,16 @@ public LiveData<Resource<List<Review>>> getReviewsApi(int movieId){
         return WebServiceGenerator.getMovieApi().getReviewList(movieId);
       }
     }.getAsLiveData();
-}
-public LiveData<Resource<List<Trailer>>> getTrailersApi(int movieId){
-    return new NetworkBoundResource<List<Trailer>, TrailerListResponse>(AppExecutor.getInstance()){
+  }
+
+  public LiveData<Resource<List<Trailer>>> getTrailersApi(int movieId) {
+    return new NetworkBoundResource<List<Trailer>, TrailerListResponse>(AppExecutor.getInstance()) {
 
       @Override
       protected void saveCallResult(@NonNull TrailerListResponse item) {
-        if(item.getTrailerList()!=null){
+        if (item.getTrailerList() != null) {
           List<Trailer> trailerList = item.getTrailerList();
-          for (Trailer trailer: trailerList){
+          for (Trailer trailer : trailerList) {
             trailer.setMovieId(movieId);
           }
           trailerDao.insertTrailers(trailerList);
@@ -197,6 +211,74 @@ public LiveData<Resource<List<Trailer>>> getTrailersApi(int movieId){
       }
     }.getAsLiveData();
 
-}
+  }
 
+  public LiveData<Resource<List<Cast>>> getCastApi(int movieId) {
+    return new NetworkBoundResource<List<Cast>, CastListResponse>(AppExecutor.getInstance()) {
+
+      @Override
+      protected void saveCallResult(@NonNull CastListResponse item) {
+        if (item.getCastList() != null) {
+          List<Cast> castList = item.getCastList();
+          for (Cast cast : castList) {
+            cast.setMovieId(movieId);
+          }
+          castDao.insertCasts(castList);
+
+        }
+      }
+
+      @Override
+      protected boolean shouldFetch(@Nullable List<Cast> data) {
+        return true;
+      }
+
+      @NonNull
+      @Override
+      protected LiveData<List<Cast>> loadFromDb() {
+        return castDao.getAllCastForMovie(movieId);
+      }
+
+      @NonNull
+      @Override
+      protected LiveData<ApiResponse<CastListResponse>> createCall() {
+        return WebServiceGenerator.getMovieApi().getCastList(movieId);
+      }
+    }.getAsLiveData();
+  }
+
+  public LiveData<Resource<List<Genre>>> getGenreApi(int movieId) {
+    return new NetworkBoundResource<List<Genre>, GenreListResponse>(AppExecutor.getInstance()) {
+
+      @Override
+      protected void saveCallResult(@NonNull GenreListResponse item) {
+        if (item.getGenreList() != null) {
+          List<Genre> genreList = item.getGenreList();
+          for (Genre genre : genreList) {
+            genre.setMovieId(movieId);
+          }
+          genreDao.insertGenres(genreList);
+        }
+      }
+
+        @Override
+        protected boolean shouldFetch (@Nullable List < Genre > data) {
+          return true;
+        }
+
+        @NonNull
+        @Override
+        protected LiveData<List<Genre>> loadFromDb () {
+          return genreDao.getAllGenreForMovie(movieId);
+        }
+
+        @NonNull
+        @Override
+        protected LiveData<ApiResponse<GenreListResponse>> createCall () {
+          return WebServiceGenerator.getMovieApi().getGenreList(movieId);
+        }
+
+    }.getAsLiveData();
+
+  }
 }

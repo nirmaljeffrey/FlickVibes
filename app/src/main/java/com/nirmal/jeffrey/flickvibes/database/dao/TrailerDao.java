@@ -16,7 +16,7 @@ public interface TrailerDao {
   @Query("SELECT * FROM trailer_table WHERE movie_id=:movieId")
   LiveData<List<Trailer>> getAllTrailerForMovie(int movieId);
 
-  @Query("DELETE  FROM review_table")
+  @Query("DELETE  FROM trailer_table")
   void deleteAllTrailers();
 
 }

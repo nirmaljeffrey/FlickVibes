@@ -152,7 +152,52 @@ private MovieDetailViewModel movieDetailViewModel;
             }
           }
         });
+    movieDetailViewModel.getCastApi(movieId).observe(this, listResource -> {
+      if(listResource!=null){
+        if(listResource.data!=null){
+          switch (listResource.status){
+            case LOADING:
+              showProgressBar(true);
+              break;
+            case ERROR:
+              coordinatorLayout.setVisibility(View.VISIBLE);
+              showProgressBar(false);
+              toastMessage(listResource.message);
+              castAdapter.setCastData(new ArrayList<>(listResource.data));
 
+              break;
+            case SUCCESS:
+              coordinatorLayout.setVisibility(View.VISIBLE);
+              showProgressBar(false);
+              castAdapter.setCastData(new ArrayList<>(listResource.data));
+              break;
+          }
+        }
+      }
+    });
+    movieDetailViewModel.getGenresApi(movieId).observe(this, listResource -> {
+      if(listResource!=null){
+        if(listResource.data!=null){
+          switch (listResource.status){
+            case LOADING:
+              showProgressBar(true);
+              break;
+            case ERROR:
+              coordinatorLayout.setVisibility(View.VISIBLE);
+              showProgressBar(false);
+              toastMessage(listResource.message);
+              genreAdapter.setGenreData(new ArrayList<>(listResource.data));
+
+              break;
+            case SUCCESS:
+              coordinatorLayout.setVisibility(View.VISIBLE);
+              showProgressBar(false);
+              genreAdapter.setGenreData(new ArrayList<>(listResource.data));
+              break;
+          }
+        }
+      }
+    });
   }
 
   private void getIncomingIntent(){

@@ -4,6 +4,8 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import com.nirmal.jeffrey.flickvibes.model.Cast;
+import com.nirmal.jeffrey.flickvibes.model.Genre;
 import com.nirmal.jeffrey.flickvibes.model.Review;
 import com.nirmal.jeffrey.flickvibes.model.Trailer;
 import com.nirmal.jeffrey.flickvibes.repository.MovieRepository;
@@ -23,5 +25,11 @@ public class MovieDetailViewModel extends AndroidViewModel {
   }
   public LiveData<Resource<List<Trailer>>> getTrailersApi(int movieId){
     return movieRepository.getTrailersApi(movieId);
+  }
+  public LiveData<Resource<List<Cast>>> getCastApi(int movieId){
+    return movieRepository.getCastApi(movieId);
+  }
+  public LiveData<Resource<List<Genre>>> getGenresApi(int movieId){
+    return movieRepository.getGenreApi(movieId);
   }
 }
