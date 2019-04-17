@@ -14,6 +14,10 @@
   <string name="menu_action_search">Search</string>
   <string name="menu_search_hint">Movie..</string>
 
+  <!-- MovieListActivity Dialog -->
+  <string name="dialog_action_camera">Camera</string>
+  <string name="dialog_action_gallery">Gallery</string>
+
 
   <!--activity_detail_movie.xml -->
   <string name="genre_label">GENRES</string>
@@ -31,4 +35,6 @@
   <string name="review_profile_info">Reviewer</string>
   <string name="expand_collapse_info">Read Full Review</string>
   <string name="release_date_image_info">Release date</string>
+  <string name="dialog_camera_info">Take a photo</string>
+  <string name="dialog_gallery_info">Choose Image from gallery</string>
 </resources>

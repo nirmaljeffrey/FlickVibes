@@ -1,17 +1,21 @@
 package com.nirmal.jeffrey.flickvibes.ui;
 
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,6 +26,7 @@ import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.nirmal.jeffrey.flickvibes.R;
 import com.nirmal.jeffrey.flickvibes.adapter.MovieAdapter;
 import com.nirmal.jeffrey.flickvibes.adapter.MovieAdapter.OnMovieItemClickLister;
@@ -32,16 +37,21 @@ import com.nirmal.jeffrey.flickvibes.util.Resource;
 import com.nirmal.jeffrey.flickvibes.viewmodel.MovieListViewModel;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class MovieListActivity extends BaseActivity implements OnMovieItemClickLister {
 
   private static final String TAG = "MovieId";
+  private static final int PHOTO_PICKER_CONSTANT=1;
   @BindView(R.id.error_text_view)
   TextView errorTextView;
   @BindView(R.id.movies_recycler_view)
   RecyclerView recyclerView;
   @BindView(R.id.bottom_navigation)
   BottomNavigationView bottomNavigationBar;
+  @BindView(R.id.prediction_fab)
+  FloatingActionButton predictionFab;
+
   private MovieAdapter movieAdapter;
   private MovieListViewModel movieListViewModel;
   private BottomNavigationView.OnNavigationItemSelectedListener navListener = new OnNavigationItemSelectedListener() {
@@ -75,10 +85,22 @@ public class MovieListActivity extends BaseActivity implements OnMovieItemClickL
     ButterKnife.bind(this);
     initRecyclerView();
     bottomNavigationBar.setOnNavigationItemSelectedListener(navListener);
+    initFab();
     movieListViewModel = ViewModelProviders.of(this).get(MovieListViewModel.class);
     subscribeObservers();
 
     getMovieListByTypeApi(NetworkUtils.POPULAR_MOVIE_PATH);
+  }
+
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    if(requestCode==PHOTO_PICKER_CONSTANT && resultCode==RESULT_OK){
+      Uri selectedImageUri =data.getData();
+      Intent intent = new Intent(this,MoviePredictionActivity.class);
+      intent.putExtra(Constants.GALLERY_ACTIVITY_INTENT,selectedImageUri);
+      startActivity(intent);
+    }
   }
 
   @Override
@@ -187,14 +209,35 @@ public class MovieListActivity extends BaseActivity implements OnMovieItemClickL
     movieAdapter = new MovieAdapter(initGlide(),this);
     recyclerView.setAdapter(movieAdapter);
   }
+private void initFab(){
+    predictionFab.setOnClickListener(view -> {
+      Dialog dialog =new Dialog(this);
+      Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawableResource(android.R.color.transparent);
+      dialog.setContentView(R.layout.dialog_chooser);
 
+      ImageView cameraView = dialog.findViewById(R.id.dialog_camera_image_view);
+      ImageView galleryView = dialog.findViewById(R.id.dialog_gallery_image_view);
+      cameraView.setOnClickListener(view1 -> {
+
+      });
+      galleryView.setOnClickListener(view12 -> {
+          launchGallery();
+      });
+      dialog.show();
+    });
+}
   private void getMovieListByTypeApi(String type) {
     movieListViewModel.getMovieListByTypeApi(type, 1);
   }
   private void getMovieListFromSearch(String query){
     movieListViewModel.getMovieListFromSearchApi(query,1);
   }
-
+  private void launchGallery(){
+    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+    intent.setType(Constants.GALLERY_INTENT_TYPE);
+    intent.putExtra(Intent.EXTRA_LOCAL_ONLY,true);
+    startActivityForResult(Intent.createChooser(intent,"Complete Action Using"),PHOTO_PICKER_CONSTANT);
+  }
   /**
    * Method for creating request manager for recycler view
    * @return RequestManager (Glide)
