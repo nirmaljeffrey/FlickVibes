@@ -17,6 +17,7 @@ import com.nirmal.jeffrey.flickvibes.util.NetworkUtils;
 import java.util.ArrayList;
 
 public class TrailerAdapter extends RecyclerView.Adapter<TrailerListViewHolder> {
+
 private ArrayList<Trailer> trailerArrayList;
 private RequestManager requestManager;
 public TrailerAdapter(RequestManager requestManager){
@@ -38,15 +39,19 @@ public void setTrailerData(ArrayList<Trailer> trailerArrayList){
   public void onBindViewHolder(@NonNull TrailerListViewHolder holder, int position) {
     Trailer trailer = trailerArrayList.get(position);
     holder.trailerTitleTextView.setText(trailer.getName());
+    holder.trailerSite.setText(trailer.getSite());
     if(trailer.getKey()!=null){
       String trailerUrl = NetworkUtils.buildTrailerThumbnailUrl(trailer.getKey());
+
       requestManager.load(trailerUrl).centerCrop().into(holder.trailerImageView);
     }
   }
 
+
   @Override
   public int getItemCount() {
-    return 0;
+  if(trailerArrayList==null)return 0;
+    return trailerArrayList.size();
   }
 
   static class TrailerListViewHolder extends RecyclerView.ViewHolder{
@@ -54,9 +59,12 @@ public void setTrailerData(ArrayList<Trailer> trailerArrayList){
     ImageView trailerImageView;
 @BindView(R.id.trailer_title_text_view)
     TextView trailerTitleTextView;
+@BindView(R.id.trailer_site_label)
+    TextView trailerSite;
   TrailerListViewHolder(@NonNull View itemView) {
     super(itemView);
     ButterKnife.bind(this,itemView);
   }
+
 }
 }

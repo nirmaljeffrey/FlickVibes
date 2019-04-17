@@ -2,6 +2,7 @@ package com.nirmal.jeffrey.flickvibes.repository;
 
 
 import android.content.Context;
+import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
@@ -79,8 +80,9 @@ public class MovieRepository {
       @NonNull
       @Override
       protected LiveData<List<Movie>> loadFromDb() {
-        SimpleSQLiteQuery query = DatabaseUtils.getSQLiteQuery(type, pageNumber);
 
+        SimpleSQLiteQuery query = DatabaseUtils.getSQLiteQuery(type, pageNumber);
+        Log.d(TAG, "loadFromDb: Sql query"+ query.getSql());
         return movieDao.getMoviesByType(query);
 
 

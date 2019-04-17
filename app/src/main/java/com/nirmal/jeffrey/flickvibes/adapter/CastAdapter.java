@@ -29,19 +29,18 @@ public void setCastData(ArrayList<Cast> castArrayList){
   @NonNull
   @Override
   public CastListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-  View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.trailer_list_item,parent,false);
-
-    return new CastListViewHolder(view);
+  View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cast_list_item,parent,false);
+  return new CastListViewHolder(view);
   }
 
   @Override
   public void onBindViewHolder(@NonNull CastListViewHolder holder, int position) {
     Cast cast= castArrayList.get(position);
-    holder.castNameTextView.setText(cast.getCastName());
+    holder.castName.setText(cast.getCastName());
     if(cast.getCastProfilePath()!=null) {
       String castUrl = NetworkUtils
           .buildMovieImageURLString(NetworkUtils.POSTER_BASE_URL, cast.getCastProfilePath());
-      requestManager.load(castUrl).centerCrop().into(holder.castImageView);
+      requestManager.load(castUrl).centerCrop().into(holder.castImage);
     }
   }
 
@@ -52,10 +51,10 @@ public void setCastData(ArrayList<Cast> castArrayList){
   }
 
   static class CastListViewHolder extends RecyclerView.ViewHolder{
-@BindView(R.id.cast_image_view)
-    ImageView castImageView;
+@BindView(R.id.cast_image_View)
+    ImageView castImage;
 @BindView(R.id.cast_text_view)
-    TextView castNameTextView;
+    TextView castName;
   CastListViewHolder(@NonNull View itemView) {
     super(itemView);
     ButterKnife.bind(this,itemView);

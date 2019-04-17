@@ -40,7 +40,7 @@
   </com.google.android.material.appbar.AppBarLayout>
   <androidx.core.widget.NestedScrollView
     android:id="@+id/nested_scroll_view"
-    android:layout_marginTop="210dp"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -59,13 +59,13 @@
 
         <TextView
           android:id="@+id/movie_title"
-          android:layout_width="0dp"
+          android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginTop="8dp"
           android:layout_marginStart="8dp"
           android:layout_marginEnd="16dp"
           android:textSize="24sp"
-          app:layout_constraintWidth_default="wrap"
+          app:layout_constrainedWidth="true"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="@+id/guideline"
           app:layout_constraintTop_toTopOf="parent"
@@ -129,7 +129,7 @@
           app:layout_constraintGuide_end="144dp"/>
         <TextView
           android:id="@+id/storyline_text_view"
-          android:layout_width="0dp"
+          android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_margin="8dp"
           android:gravity="center_horizontal"
@@ -138,7 +138,7 @@
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toBottomOf="@+id/storyline_label"
-          app:layout_constraintWidth_default="wrap"
+          app:layout_constrainedWidth="true"
           tools:text="jgjjgjjgjhdjkgjdkjjgdkgdgjdkgjdkjgkdjgkjdkgjdkgjdkgkdjgkdjgkdkgdkjgkdjgkjdgjdkgjkdjgkdjgkjdkgjdkgjdkjgkdjgkdjgdjgkjdkgjdkgkdjkdjgkdkjgkdjgkdjgkdjgkdjkgjdgdkjgkdjgkjdkgjkdjgkdjgkjdgkjdkjgkdjgkdjkjdkjgkdjgkdjgkjdkgjkdjgkdjgkjdkjgkdjgkdgkjdkgjkdjgkjdkgjkdjgkjdkgdkjgkdjgkjdkgjdkjgkdjgkdjgkjdkjgkd"/>
         <TextView
           android:id="@+id/storyline_label"
@@ -159,8 +159,7 @@
       <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/genre_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scrollbars="horizontal"/>
+        android:layout_height="wrap_content"/>
       <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -168,8 +167,7 @@
       <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/trailer_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scrollbars="horizontal"/>
+        android:layout_height="wrap_content"/>
       <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -177,8 +175,7 @@
       <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cast_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scrollbars="horizontal"/>
+        android:layout_height="wrap_content"/>
       <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -186,8 +183,7 @@
       <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/similar_movies_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scrollbars="horizontal"/>
+        android:layout_height="wrap_content"/>
       <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -195,8 +191,7 @@
       <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/review_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scrollbars="vertical"/>
+        android:layout_height="wrap_content"/>
     </LinearLayout>
 
   </androidx.core.widget.NestedScrollView>

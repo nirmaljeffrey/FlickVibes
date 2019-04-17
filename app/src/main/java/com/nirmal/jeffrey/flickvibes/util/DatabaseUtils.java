@@ -12,12 +12,12 @@ public final class DatabaseUtils {
     switch (type) {
       case NetworkUtils.POPULAR_MOVIE_PATH:
         return new SimpleSQLiteQuery(
-            "SELECT * FROM movie_table WHERE movie_list_type = ? ORDER BY ? DESC LIMIT (? *20)",
-            new Object[]{type, "popularity", pageNumber});
+            "SELECT * FROM movie_table WHERE movie_list_type = ? ORDER BY popularity DESC LIMIT (? *20)",
+            new Object[]{type,pageNumber});
       case NetworkUtils.TOP_RATER_MOVIE_PATH:
         return new SimpleSQLiteQuery(
-            "SELECT * FROM movie_table WHERE movie_list_type = ? ORDER BY ? DESC LIMIT (? *20)",
-            new Object[]{type, "vote_average", pageNumber});
+            "SELECT * FROM movie_table WHERE movie_list_type = ? ORDER BY vote_average DESC LIMIT (? *20)",
+            new Object[]{type, pageNumber});
       default:
         return new SimpleSQLiteQuery(
             "SELECT * FROM movie_table WHERE movie_list_type = ?  LIMIT (? *20)",

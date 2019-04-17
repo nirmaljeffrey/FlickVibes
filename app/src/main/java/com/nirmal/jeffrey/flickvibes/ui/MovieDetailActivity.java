@@ -22,7 +22,9 @@ import com.nirmal.jeffrey.flickvibes.adapter.GenreAdapter;
 import com.nirmal.jeffrey.flickvibes.adapter.ReviewAdapter;
 import com.nirmal.jeffrey.flickvibes.adapter.SimilarMoviesAdapter;
 import com.nirmal.jeffrey.flickvibes.adapter.TrailerAdapter;
+import com.nirmal.jeffrey.flickvibes.model.Genre;
 import com.nirmal.jeffrey.flickvibes.model.Movie;
+import com.nirmal.jeffrey.flickvibes.model.Trailer;
 import com.nirmal.jeffrey.flickvibes.util.Constants;
 import com.nirmal.jeffrey.flickvibes.util.NetworkUtils;
 import com.nirmal.jeffrey.flickvibes.viewmodel.MovieDetailViewModel;
@@ -89,6 +91,7 @@ private MovieDetailViewModel movieDetailViewModel;
     castList.setAdapter(castAdapter);
     //Trailer
     trailerAdapter=new TrailerAdapter(initGlide());
+
     trailerList.setLayoutManager(new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false));
     trailerList.setAdapter(trailerAdapter);
     //Genre
@@ -135,18 +138,29 @@ private MovieDetailViewModel movieDetailViewModel;
               switch (listResource.status){
                 case LOADING:
                   showProgressBar(true);
+                  coordinatorLayout.setVisibility(View.INVISIBLE);
                   break;
                 case ERROR:
                   coordinatorLayout.setVisibility(View.VISIBLE);
                   showProgressBar(false);
                   toastMessage(listResource.message);
+                  ArrayList<Trailer> trailerList =new ArrayList<>(listResource.data);
+                  for (Trailer trailer:trailerList){
+                    Log.d(TAG, "subscribeObservers: error :trailer Name "+ trailer.getName());
+                  }
                   trailerAdapter.setTrailerData(new ArrayList<>(listResource.data));
 
                   break;
                 case SUCCESS:
                   coordinatorLayout.setVisibility(View.VISIBLE);
                   showProgressBar(false);
+                  ArrayList<Trailer> trailers =new ArrayList<>(listResource.data);
+                  for (Trailer trailer:trailers){
+                    Log.d(TAG, "subscribeObservers: success :trailer Name "+ trailer.getName());
+
+                  }
                   trailerAdapter.setTrailerData(new ArrayList<>(listResource.data));
+
                   break;
               }
             }
@@ -158,6 +172,7 @@ private MovieDetailViewModel movieDetailViewModel;
           switch (listResource.status){
             case LOADING:
               showProgressBar(true);
+              coordinatorLayout.setVisibility(View.INVISIBLE);
               break;
             case ERROR:
               coordinatorLayout.setVisibility(View.VISIBLE);
@@ -181,17 +196,26 @@ private MovieDetailViewModel movieDetailViewModel;
           switch (listResource.status){
             case LOADING:
               showProgressBar(true);
+              coordinatorLayout.setVisibility(View.INVISIBLE);
               break;
             case ERROR:
               coordinatorLayout.setVisibility(View.VISIBLE);
               showProgressBar(false);
               toastMessage(listResource.message);
+              ArrayList<Genre> genreList =new ArrayList<>(listResource.data);
+              for (Genre genre:genreList){
+                Log.d(TAG, "subscribeObservers: error :trailer Name "+ genre.getGenreName());
+              }
               genreAdapter.setGenreData(new ArrayList<>(listResource.data));
 
               break;
             case SUCCESS:
               coordinatorLayout.setVisibility(View.VISIBLE);
               showProgressBar(false);
+              ArrayList<Genre> genres =new ArrayList<>(listResource.data);
+              for (Genre genre:genres){
+                Log.d(TAG, "subscribeObservers: success :trailer Name "+ genre.getGenreName());
+              }
               genreAdapter.setGenreData(new ArrayList<>(listResource.data));
               break;
           }

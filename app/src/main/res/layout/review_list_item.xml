@@ -21,7 +21,7 @@
 
     <at.blogc.android.views.ExpandableTextView
       android:id="@+id/review_content"
-      android:layout_width="0dp"
+      android:layout_width="wrap_content"
       android:layout_height="wrap_content"
      android:layout_margin="16dp"
       android:gravity="start"
@@ -32,7 +32,8 @@
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="@+id/review_account_profile_image"
       app:layout_constraintTop_toBottomOf="@+id/reviewer_name"
-      app:layout_constraintWidth_default="wrap"
+      app:layout_constrainedWidth="true"
+
       tools:text="jgjjgjjgjhdjkgjdkjjgdkgdgjdkgjdkjgkdjgkjdkgjdkgjdkgkdjgkdjgkdkgdkjgkdjgkjdgjdkgjkdjgkdjgkjdkgjdkgjdkjgkdjgkdjgdjgkjdkgjdkgkdjkdjgkdkjgkdjgkdjgkdjgkdjkgjdgdkjgkdjgkjdkgjkdjgkdjgkjdgkjdkjgkdjgkdjkjdkjgkdjgkdjgkjdkgjkdjgkdjgkjdkjgkdjgkdgkjdkgjkdjgkjdkgjkdjgkjdkgdkjgkdjgkjdkgjdkjgkdjgkdjgkjdkjgkd"/>
 
     <ImageView
