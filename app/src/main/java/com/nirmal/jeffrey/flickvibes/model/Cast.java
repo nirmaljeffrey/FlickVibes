@@ -29,9 +29,11 @@ public class Cast implements Parcelable {
       return new Cast[size];
     }
   };
-  @ColumnInfo(name = "room_id")
-  @PrimaryKey(autoGenerate = true)
-  private int roomId;
+  @SerializedName("cast_id")
+  @Expose
+  @ColumnInfo(name = "cast_id")
+ @PrimaryKey
+  private int castId;
   @ColumnInfo(name = "movie_id")
   private int movieId;
   @SerializedName("name")
@@ -55,18 +57,18 @@ public class Cast implements Parcelable {
   }
 
   protected Cast(Parcel in) {
-    roomId = in.readInt();
+    castId = in.readInt();
     movieId = in.readInt();
     castName = in.readString();
     castProfilePath = in.readString();
   }
 
-  public int getRoomId() {
-    return roomId;
+  public int getCastId() {
+    return castId;
   }
 
-  public void setRoomId(int roomId) {
-    this.roomId = roomId;
+  public void setCastId(int castId) {
+    this.castId = castId;
   }
 
   public int getMovieId() {
@@ -101,7 +103,7 @@ public class Cast implements Parcelable {
 
   @Override
   public void writeToParcel(Parcel parcel, int i) {
-    parcel.writeInt(roomId);
+    parcel.writeInt(castId);
     parcel.writeInt(movieId);
     parcel.writeString(castName);
     parcel.writeString(castProfilePath);

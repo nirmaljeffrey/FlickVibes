@@ -6,17 +6,24 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Transaction;
 import com.nirmal.jeffrey.flickvibes.model.Genre;
 import java.util.List;
 
 @Dao
-public interface GenreDao {
+public abstract class GenreDao {
   @Insert(onConflict = REPLACE)
-  void insertGenres(List<Genre> genres);
+ public abstract void _insertGenres(List<Genre> genres);
 
   @Query("SELECT * FROM genre_table WHERE movie_id=:movieId")
-  LiveData<List<Genre>> getAllGenreForMovie(int movieId);
+ public abstract LiveData<List<Genre>> getAllGenreForMovie(int movieId);
 
   @Query("DELETE  FROM genre_table")
-  void deleteAllGenre();
+  public  abstract void deleteAllGenre();
+  @Transaction
+  public void insertGenres(List<Genre> genres){
+    deleteAllGenre();
+    _insertGenres(genres);
+  }
+
 }

@@ -12,9 +12,10 @@ import androidx.room.PrimaryKey;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-@Entity(tableName = "genre_table",foreignKeys = @ForeignKey(parentColumns = "id",
+@Entity(tableName = "genre_table", foreignKeys = @ForeignKey(parentColumns = "id",
     childColumns = "movie_id", entity = Movie.class, onDelete = CASCADE))
 public class Genre implements Parcelable {
+
 
   public static final Creator<Genre> CREATOR = new Creator<Genre>() {
     @Override
@@ -27,13 +28,11 @@ public class Genre implements Parcelable {
       return new Genre[size];
     }
   };
-  @ColumnInfo(name = "room_id")
-  @PrimaryKey(autoGenerate = true)
-  private int roomId;
   @ColumnInfo(name = "movie_id")
   private int movieId;
   @SerializedName("id")
   @Expose
+  @PrimaryKey
   private int genreId;
   @SerializedName("name")
   @Expose
@@ -45,6 +44,7 @@ public class Genre implements Parcelable {
     this.genreName = genreName;
   }
 
+
   @Ignore
   public Genre(int genreId, String genreName) {
     this.genreId = genreId;
@@ -52,18 +52,9 @@ public class Genre implements Parcelable {
   }
 
   protected Genre(Parcel in) {
-    roomId = in.readInt();
     movieId = in.readInt();
     genreId = in.readInt();
     genreName = in.readString();
-  }
-
-  public int getRoomId() {
-    return roomId;
-  }
-
-  public void setRoomId(int roomId) {
-    this.roomId = roomId;
   }
 
   public int getMovieId() {
@@ -98,7 +89,6 @@ public class Genre implements Parcelable {
 
   @Override
   public void writeToParcel(Parcel parcel, int i) {
-    parcel.writeInt(roomId);
     parcel.writeInt(movieId);
     parcel.writeInt(genreId);
     parcel.writeString(genreName);

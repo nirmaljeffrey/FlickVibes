@@ -63,32 +63,16 @@ public class MovieRepository {
 
       @Override
       protected void saveCallResult(@NonNull MovieListResponse item) {
+
         if (item.getMovieList() != null) {//if apiKey is expired the movieList will be null
-          List<Movie> movieList = item.getMovieList();
-          for (Movie movie: movieList){
-            DatabaseUtils.setMovieType(type,movie);
-          }
-          Movie[] movies = new Movie[movieList.size()];
-          int index = 0;
-          for (long rowId : movieDao
-              .insertMovies((Movie[]) (movieList.toArray(movies)))) {
+              List<Movie> movieList = item.getMovieList();
 
-            if (rowId == -1) {
-              Movie movie = movies[index];
-              // if the movies already exists, update them
-              movieDao.updateMovies(movie.getId(),
-                  movie.getTitle(),
-                  movie.getPosterPath(),
-                  movie.getBackdropPath(),
-                  movie.getOverview(),
-                  movie.getReleaseDate(),
-                  movie.getVoteAverage(),
-                  movie.getPopularity());
-            }
-            index++;
-          }
 
-        }
+              for (Movie movie : movieList) {
+               DatabaseUtils.setMovieType(type,movie);
+             }
+              movieDao.insertMovies(movieList);
+           }
       }
 
       @Override
@@ -303,15 +287,7 @@ public class MovieRepository {
 
   }
   /**
-   *   if (item.getMovieList() != null) {//if apiKey is expired the movieList will be null
-   *           List<Movie> movieList = item.getMovieList();
    *
-   *
-   *           for (Movie movie : movieList) {
-   *             DatabaseUtils.setMovieType(type,movie);
-   *           }
-   *           movieDao.insertMovies(movieList);
-   *         }
    */
 
 

@@ -20,7 +20,6 @@ import com.nirmal.jeffrey.flickvibes.R;
 import com.nirmal.jeffrey.flickvibes.adapter.CastAdapter;
 import com.nirmal.jeffrey.flickvibes.adapter.GenreAdapter;
 import com.nirmal.jeffrey.flickvibes.adapter.ReviewAdapter;
-import com.nirmal.jeffrey.flickvibes.adapter.SimilarMoviesAdapter;
 import com.nirmal.jeffrey.flickvibes.adapter.TrailerAdapter;
 import com.nirmal.jeffrey.flickvibes.model.Genre;
 import com.nirmal.jeffrey.flickvibes.model.Movie;
@@ -51,8 +50,6 @@ TextView storyLineTextView;
 RecyclerView trailerList;
 @BindView(R.id.cast_recycler_view)
 RecyclerView castList;
-@BindView(R.id.similar_movies_recycler_view)
-RecyclerView similarMovieList;
 @BindView(R.id.review_recycler_view)
 RecyclerView reviewList;
 @BindView(R.id.favorite_fab_button)
@@ -64,7 +61,6 @@ private ReviewAdapter reviewAdapter;
 private CastAdapter castAdapter;
 private TrailerAdapter trailerAdapter;
 private GenreAdapter genreAdapter;
-private SimilarMoviesAdapter similarMoviesAdapter;
 private MovieDetailViewModel movieDetailViewModel;
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -98,10 +94,7 @@ private MovieDetailViewModel movieDetailViewModel;
     genreAdapter = new GenreAdapter();
     genreList.setLayoutManager(new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false));
     genreList.setAdapter(genreAdapter);
-    //Similar movies
-    similarMoviesAdapter=new SimilarMoviesAdapter(initGlide());
-    similarMovieList.setLayoutManager(new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false));
-    similarMovieList.setAdapter(similarMoviesAdapter);
+
   }
   private void subscribeObservers(int movieId){
     movieDetailViewModel.getReviewsApi(movieId).observe(this,

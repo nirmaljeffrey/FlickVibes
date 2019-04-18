@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "89655b294253f94e2669661e3591f2cf",
+    "identityHash": "e820925a8d00f04196460a3a0ff8896e",
     "entities": [
       {
         "tableName": "movie_table",
@@ -98,12 +98,12 @@
       },
       {
         "tableName": "review_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`room_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `review_author` TEXT, `review_content` TEXT, `movie_id` INTEGER NOT NULL, FOREIGN KEY(`movie_id`) REFERENCES `movie_table`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`review_id` TEXT NOT NULL, `review_author` TEXT, `review_content` TEXT, `movie_id` INTEGER NOT NULL, PRIMARY KEY(`review_id`), FOREIGN KEY(`movie_id`) REFERENCES `movie_table`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
-            "fieldPath": "roomId",
-            "columnName": "room_id",
-            "affinity": "INTEGER",
+            "fieldPath": "reviewId",
+            "columnName": "review_id",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -127,9 +127,9 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "room_id"
+            "review_id"
           ],
-          "autoGenerate": true
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": [
@@ -148,18 +148,18 @@
       },
       {
         "tableName": "trailer_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`room_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `movie_id` INTEGER NOT NULL, `key` TEXT, `name` TEXT, `site` TEXT, FOREIGN KEY(`movie_id`) REFERENCES `movie_table`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`movie_id` INTEGER NOT NULL, `trailer_id` TEXT NOT NULL, `key` TEXT, `name` TEXT, `site` TEXT, PRIMARY KEY(`trailer_id`), FOREIGN KEY(`movie_id`) REFERENCES `movie_table`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
-          {
-            "fieldPath": "roomId",
-            "columnName": "room_id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
           {
             "fieldPath": "movieId",
             "columnName": "movie_id",
             "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "trailerId",
+            "columnName": "trailer_id",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -183,9 +183,9 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "room_id"
+            "trailer_id"
           ],
-          "autoGenerate": true
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": [
@@ -204,11 +204,11 @@
       },
       {
         "tableName": "cast_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`room_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `movie_id` INTEGER NOT NULL, `castName` TEXT, `castProfilePath` TEXT, FOREIGN KEY(`movie_id`) REFERENCES `movie_table`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`cast_id` INTEGER NOT NULL, `movie_id` INTEGER NOT NULL, `castName` TEXT, `castProfilePath` TEXT, PRIMARY KEY(`cast_id`), FOREIGN KEY(`movie_id`) REFERENCES `movie_table`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
-            "fieldPath": "roomId",
-            "columnName": "room_id",
+            "fieldPath": "castId",
+            "columnName": "cast_id",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -233,9 +233,9 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "room_id"
+            "cast_id"
           ],
-          "autoGenerate": true
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": [
@@ -254,14 +254,8 @@
       },
       {
         "tableName": "genre_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`room_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `movie_id` INTEGER NOT NULL, `genreId` INTEGER NOT NULL, `genreName` TEXT, FOREIGN KEY(`movie_id`) REFERENCES `movie_table`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`movie_id` INTEGER NOT NULL, `genreId` INTEGER NOT NULL, `genreName` TEXT, PRIMARY KEY(`genreId`), FOREIGN KEY(`movie_id`) REFERENCES `movie_table`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
-          {
-            "fieldPath": "roomId",
-            "columnName": "room_id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
           {
             "fieldPath": "movieId",
             "columnName": "movie_id",
@@ -283,9 +277,9 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "room_id"
+            "genreId"
           ],
-          "autoGenerate": true
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": [
@@ -305,7 +299,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"89655b294253f94e2669661e3591f2cf\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"e820925a8d00f04196460a3a0ff8896e\")"
     ]
   }
 }

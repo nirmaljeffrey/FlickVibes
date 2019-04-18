@@ -27,7 +27,13 @@ this.requestManager=requestManager;
 }
 
 public void setMovieData(ArrayList<Movie> movieData){
-  this.movieArrayList=movieData;
+  //Clear the previous data before swapping
+  if(movieArrayList!=null) {
+    this.movieArrayList.clear();
+    this.movieArrayList.addAll(movieData);
+  }else {
+    this.movieArrayList =movieData;
+  }
   notifyDataSetChanged();
 }
   @NonNull

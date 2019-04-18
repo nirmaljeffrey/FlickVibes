@@ -4,6 +4,7 @@ import static androidx.room.ForeignKey.CASCADE;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -12,8 +13,8 @@ import androidx.room.PrimaryKey;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-@Entity(tableName = "trailer_table",foreignKeys = @ForeignKey(parentColumns = "id",
-    childColumns = "movie_id",entity = Movie.class,onDelete = CASCADE))
+@Entity(tableName = "trailer_table", foreignKeys = @ForeignKey(parentColumns = "id",
+    childColumns = "movie_id", entity = Movie.class, onDelete = CASCADE))
 public class Trailer implements Parcelable {
 
 
@@ -28,11 +29,14 @@ public class Trailer implements Parcelable {
       return new Trailer[size];
     }
   };
-  @ColumnInfo(name = "room_id")
-  @PrimaryKey(autoGenerate = true)
-  private int roomId;
   @ColumnInfo(name = "movie_id")
   private int movieId;
+  @SerializedName("id")
+  @Expose
+  @ColumnInfo(name = "trailer_id")
+  @PrimaryKey
+  @NonNull
+  private String trailerId;
   @SerializedName("key")
   @Expose
   private String key;
@@ -42,6 +46,7 @@ public class Trailer implements Parcelable {
   @SerializedName("site")
   @Expose
   private String site;
+
 
   public Trailer(int movieId, String key, String name, String site) {
     this.movieId = movieId;
@@ -59,19 +64,20 @@ public class Trailer implements Parcelable {
   }
 
   protected Trailer(Parcel in) {
-    roomId = in.readInt();
     movieId = in.readInt();
+    trailerId = in.readString();
     key = in.readString();
     name = in.readString();
     site = in.readString();
   }
 
-  public int getRoomId() {
-    return roomId;
+  @NonNull
+  public String getTrailerId() {
+    return trailerId;
   }
 
-  public void setRoomId(int roomId) {
-    this.roomId = roomId;
+  public void setTrailerId(@NonNull String trailerId) {
+    this.trailerId = trailerId;
   }
 
   public int getMovieId() {
@@ -114,8 +120,8 @@ public class Trailer implements Parcelable {
 
   @Override
   public void writeToParcel(Parcel parcel, int i) {
-    parcel.writeInt(roomId);
     parcel.writeInt(movieId);
+    parcel.writeString(trailerId);
     parcel.writeString(key);
     parcel.writeString(name);
     parcel.writeString(site);

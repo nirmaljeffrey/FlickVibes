@@ -4,6 +4,7 @@ import static androidx.room.ForeignKey.CASCADE;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -17,21 +18,12 @@ import com.google.gson.annotations.SerializedName;
 
 public class Review implements Parcelable {
 
-
-  public static final Creator<Review> CREATOR = new Creator<Review>() {
-    @Override
-    public Review createFromParcel(Parcel in) {
-      return new Review(in);
-    }
-
-    @Override
-    public Review[] newArray(int size) {
-      return new Review[size];
-    }
-  };
-  @ColumnInfo(name = "room_id")
-  @PrimaryKey(autoGenerate = true)
-  private int roomId;
+  @SerializedName("id")
+  @Expose
+  @ColumnInfo(name = "review_id")
+  @PrimaryKey
+  @NonNull
+  private String reviewId;
   @SerializedName("author")
   @Expose
   @ColumnInfo(name = "review_author")
@@ -57,19 +49,33 @@ public class Review implements Parcelable {
     this.reviewContent = reviewContent;
   }
 
+
   protected Review(Parcel in) {
-    roomId = in.readInt();
+    reviewId = in.readString();
     reviewAuthor = in.readString();
     reviewContent = in.readString();
     movieId = in.readInt();
   }
 
-  public int getRoomId() {
-    return roomId;
+  public static final Creator<Review> CREATOR = new Creator<Review>() {
+    @Override
+    public Review createFromParcel(Parcel in) {
+      return new Review(in);
+    }
+
+    @Override
+    public Review[] newArray(int size) {
+      return new Review[size];
+    }
+  };
+
+
+  public String getReviewId() {
+    return reviewId;
   }
 
-  public void setRoomId(int roomId) {
-    this.roomId = roomId;
+  public void setReviewId(String reviewId) {
+    this.reviewId = reviewId;
   }
 
   public int getMovieId() {
@@ -104,7 +110,7 @@ public class Review implements Parcelable {
 
   @Override
   public void writeToParcel(Parcel parcel, int i) {
-    parcel.writeInt(roomId);
+    parcel.writeString(reviewId);
     parcel.writeString(reviewAuthor);
     parcel.writeString(reviewContent);
     parcel.writeInt(movieId);
