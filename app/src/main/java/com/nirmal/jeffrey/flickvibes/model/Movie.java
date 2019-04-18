@@ -13,6 +13,7 @@ import com.google.gson.annotations.SerializedName;
 public class Movie implements Parcelable {
 
 
+
   public static final Creator<Movie> CREATOR = new Creator<Movie>() {
     @Override
     public Movie createFromParcel(Parcel in) {
@@ -54,15 +55,21 @@ public class Movie implements Parcelable {
   @Expose
   @ColumnInfo(name = "popularity")
   private Double popularity;
-  @ColumnInfo(name = "movie_list_type")
-  private String movieListType;
   @ColumnInfo(name = "is_favorite")
   private boolean isFavorite;
-
+  @ColumnInfo(name = "is_popular")
+  private boolean isPopular;
+  @ColumnInfo(name = "is_top_rated")
+  private boolean isTopRated;
+  @ColumnInfo(name = "is_upcoming")
+  private boolean isUpcoming;
+  @ColumnInfo(name = "is_now_playing")
+  private boolean isNowPlaying;
 
   public Movie(int id, Double voteAverage, String title, String posterPath,
       String backdropPath, String overview, String releaseDate, Double popularity,
-      String movieListType, boolean isFavorite) {
+      boolean isFavorite,
+      boolean isPopular, boolean isTopRated, boolean isUpcoming, boolean isNowPlaying) {
     this.id = id;
     this.voteAverage = voteAverage;
     this.title = title;
@@ -71,9 +78,13 @@ public class Movie implements Parcelable {
     this.overview = overview;
     this.releaseDate = releaseDate;
     this.popularity = popularity;
-    this.movieListType = movieListType;
     this.isFavorite = isFavorite;
+    this.isPopular = isPopular;
+    this.isTopRated = isTopRated;
+    this.isUpcoming = isUpcoming;
+    this.isNowPlaying = isNowPlaying;
   }
+
 
   @Ignore
   public Movie(int id, Double voteAverage, String title, String posterPath,
@@ -110,8 +121,11 @@ public class Movie implements Parcelable {
     } else {
       popularity = in.readDouble();
     }
-    movieListType = in.readString();
     isFavorite = in.readByte() != 0;
+    isPopular = in.readByte() != 0;
+    isTopRated = in.readByte() != 0;
+    isUpcoming = in.readByte() != 0;
+    isNowPlaying = in.readByte() != 0;
   }
 
   public boolean isFavorite() {
@@ -130,13 +144,6 @@ public class Movie implements Parcelable {
     this.popularity = popularity;
   }
 
-  public String getMovieListType() {
-    return movieListType;
-  }
-
-  public void setMovieListType(String movieListType) {
-    this.movieListType = movieListType;
-  }
 
   public int getId() {
     return id;
@@ -195,6 +202,38 @@ public class Movie implements Parcelable {
   }
 
 
+  public boolean isPopular() {
+    return isPopular;
+  }
+
+  public void setPopular(boolean popular) {
+    isPopular = popular;
+  }
+
+  public boolean isTopRated() {
+    return isTopRated;
+  }
+
+  public void setTopRated(boolean topRated) {
+    isTopRated = topRated;
+  }
+
+  public boolean isUpcoming() {
+    return isUpcoming;
+  }
+
+  public void setUpcoming(boolean upcoming) {
+    isUpcoming = upcoming;
+  }
+
+  public boolean isNowPlaying() {
+    return isNowPlaying;
+  }
+
+  public void setNowPlaying(boolean nowPlaying) {
+    isNowPlaying = nowPlaying;
+  }
+
   @Override
   public int describeContents() {
     return 0;
@@ -220,9 +259,14 @@ public class Movie implements Parcelable {
       parcel.writeByte((byte) 1);
       parcel.writeDouble(popularity);
     }
-    parcel.writeString(movieListType);
     parcel.writeByte((byte) (isFavorite ? 1 : 0));
+    parcel.writeByte((byte) (isPopular ? 1 : 0));
+    parcel.writeByte((byte) (isTopRated ? 1 : 0));
+    parcel.writeByte((byte) (isUpcoming ? 1 : 0));
+    parcel.writeByte((byte) (isNowPlaying ? 1 : 0));
   }
+
+
 }
 
 

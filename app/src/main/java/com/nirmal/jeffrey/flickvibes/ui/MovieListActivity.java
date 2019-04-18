@@ -3,8 +3,10 @@ package com.nirmal.jeffrey.flickvibes.ui;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,10 +34,13 @@ import com.nirmal.jeffrey.flickvibes.R;
 import com.nirmal.jeffrey.flickvibes.adapter.MovieAdapter;
 import com.nirmal.jeffrey.flickvibes.adapter.MovieAdapter.OnMovieItemClickLister;
 import com.nirmal.jeffrey.flickvibes.model.Movie;
+import com.nirmal.jeffrey.flickvibes.util.BitmapUtils;
 import com.nirmal.jeffrey.flickvibes.util.Constants;
 import com.nirmal.jeffrey.flickvibes.util.NetworkUtils;
 import com.nirmal.jeffrey.flickvibes.util.Resource;
 import com.nirmal.jeffrey.flickvibes.viewmodel.MovieListViewModel;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -42,7 +48,8 @@ import java.util.Objects;
 public class MovieListActivity extends BaseActivity implements OnMovieItemClickLister {
 
   private static final String TAG = "MovieId";
-  private static final int PHOTO_PICKER_CONSTANT=1;
+  private static final int REQUEST_PHOTO_PICKER =1;
+  private static final int REQUEST_IMAGE_CAPTURE=2;
   @BindView(R.id.error_text_view)
   TextView errorTextView;
   @BindView(R.id.movies_recycler_view)
@@ -95,12 +102,35 @@ public class MovieListActivity extends BaseActivity implements OnMovieItemClickL
   @Override
   protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
-    if(requestCode==PHOTO_PICKER_CONSTANT && resultCode==RESULT_OK){
-      Uri selectedImageUri =data.getData();
-      Intent intent = new Intent(this,MoviePredictionActivity.class);
-      intent.putExtra(Constants.GALLERY_ACTIVITY_INTENT,selectedImageUri);
-      startActivity(intent);
+    if(resultCode==RESULT_OK) {
+      if (requestCode == REQUEST_PHOTO_PICKER) {
+        if(data!=null) {
+          Uri selectedImageUri = data.getData();
+          Log.d(TAG, "onActivityResult: imageUri "+selectedImageUri);
+          Intent intent = new Intent(this, MoviePredictionActivity.class);
+          intent.putExtra(Constants.GALLERY_ACTIVITY_INTENT, selectedImageUri);
+          startActivity(intent);
+        }
+      }else if (requestCode==REQUEST_IMAGE_CAPTURE){
+        if(data!=null && data.getExtras()!=null){
+          Bundle extras = data.getExtras();
+          Bitmap imageBitmap = (Bitmap) extras.get(Constants.CAMERA_INTENT_DATA);
+          Intent intent =new Intent(this,MoviePredictionActivity.class);
+          intent.putExtra(Constants.CAMERA_ACTIVITY_INTENT,imageBitmap);
+
+
+
+
+        }
+      }
     }
+  }
+
+  @Override
+  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+      @NonNull int[] grantResults) {
+    // Called when you request permission to read and write to external storage
+
   }
 
   @Override
@@ -218,7 +248,7 @@ private void initFab(){
       ImageView cameraView = dialog.findViewById(R.id.dialog_camera_image_view);
       ImageView galleryView = dialog.findViewById(R.id.dialog_gallery_image_view);
       cameraView.setOnClickListener(view1 -> {
-
+          launchCamera();
       });
       galleryView.setOnClickListener(view12 -> {
           launchGallery();
@@ -236,7 +266,31 @@ private void initFab(){
     Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
     intent.setType(Constants.GALLERY_INTENT_TYPE);
     intent.putExtra(Intent.EXTRA_LOCAL_ONLY,true);
-    startActivityForResult(Intent.createChooser(intent,"Complete Action Using"),PHOTO_PICKER_CONSTANT);
+      startActivityForResult(Intent.createChooser(intent, "Complete Action Using"),
+          REQUEST_PHOTO_PICKER);
+
+  }
+  private void launchCamera(){
+    Intent cameraIntent =new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+    if (cameraIntent.resolveActivity(getPackageManager()) != null) {
+      // Create the File where the photo should go
+      File photoFile = null;
+      try {
+        photoFile = BitmapUtils.createImageFile(this);
+      } catch (IOException ex) {
+        // Error occurred while creating the File
+        ex.printStackTrace();
+      }
+      // Continue only if the File was successfully created
+      if (photoFile != null) {
+        Uri photoURI = FileProvider.getUriForFile(this,
+            "com.example.android.fileprovider",
+            photoFile);
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+        startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE);
+      }
+
+    }
   }
   /**
    * Method for creating request manager for recycler view
