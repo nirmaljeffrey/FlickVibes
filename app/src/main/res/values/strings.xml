@@ -29,6 +29,11 @@
   <string name="rating_label" translatable="false">/10</string>
   <string name="snackbar_movie_added">Movie added to favorites</string>
   <string name="snackbar_movie_removed">Movie removed from favorites</string>
+  <!--activity_movie_prediction.xml -->
+  <string name="detect_emotions_button">Detect Emotions</string>
+  <!-- MoviePredictionsActivity -->
+  <string name="error">Error finding image</string>
+
   <!-- Content Description -->
   <string name="poster_image_view_info">Movie Poster</string>
   <string name="trailer_image_info">Movie Trailer</string>
@@ -39,4 +44,6 @@
   <string name="release_date_image_info">Release date</string>
   <string name="dialog_camera_info">Take a photo</string>
   <string name="dialog_gallery_info">Choose Image from gallery</string>
+  <string name="face_image_view_info">Image to detected using machine learning</string>
+
 </resources>
