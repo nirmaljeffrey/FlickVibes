@@ -86,9 +86,17 @@ dependencies {
     annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
     //Expandable TextView
     implementation "at.blogc:expandabletextview:$expandable_text_view_version"
+    //FireBase core
+    implementation 'com.google.firebase:firebase-core:16.0.8'
+    //FireBase cloud messaging for notifications
+    implementation "com.google.firebase:firebase-messaging:17.6.0"
+    //FireBase Face detection
+    implementation "com.google.firebase:firebase-ml-vision:19.0.3"
+    implementation "com.google.firebase:firebase-ml-vision-face-model:17.0.2"
 
     //Stetho
     implementation 'com.facebook.stetho:stetho:1.5.1'
     implementation 'com.facebook.stetho:stetho-okhttp3:1.5.1'
 
 }
+apply plugin: 'com.google.gms.google-services'
