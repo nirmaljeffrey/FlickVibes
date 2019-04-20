@@ -35,11 +35,7 @@ public final class NetworkUtils {
   private static final String MOVIE_TRAILER_THUMBNAIL_URL_PART_TWO = "/0.jpg";
 
 
-  /** NetworkUtils used in FACE APi web service **/
-  //Base url to post images to microsoft cognitive services
-  public static final String FACE_API_END_POINT=" https://westcentralus.api.cognitive.microsoft.com/face/v1.0";
-  //Face API Key
-  public static final String FACE_API_KEY =BuildConfig.FaceApiKey;
+
 
 
 
