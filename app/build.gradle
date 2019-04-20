@@ -47,6 +47,7 @@ ext {
     butter_knife_version = "10.1.0"
     glide_version = "4.9.0"
     expandable_text_view_version = "1.0.5"
+    face_api_version="1.4.4"
 
 }
 
@@ -83,6 +84,8 @@ dependencies {
     annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
     //Expandable TextView
     implementation "at.blogc:expandabletextview:$expandable_text_view_version"
+    //Microsoft face Api(Cognitive services)
+    implementation "com.microsoft.projectoxford:face:$face_api_version"
     //Stetho
     implementation 'com.facebook.stetho:stetho:1.5.1'
     implementation 'com.facebook.stetho:stetho-okhttp3:1.5.1'
