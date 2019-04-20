@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.nirmal.jeffrey.flickvibes.R;
 import com.nirmal.jeffrey.flickvibes.adapter.CastAdapter;
 import com.nirmal.jeffrey.flickvibes.adapter.GenreAdapter;
@@ -56,12 +57,14 @@ RecyclerView reviewList;
 FloatingActionButton favoriteButton;
 @BindView(R.id.poster_image_view)
 ImageView posterImage;
+
 private Movie movie;
 private ReviewAdapter reviewAdapter;
 private CastAdapter castAdapter;
 private TrailerAdapter trailerAdapter;
 private GenreAdapter genreAdapter;
 private MovieDetailViewModel movieDetailViewModel;
+private boolean isFavorite;
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -96,6 +99,25 @@ private MovieDetailViewModel movieDetailViewModel;
     genreList.setAdapter(genreAdapter);
 
   }
+
+  private void initFavoriteFab(int movieId){
+
+      favoriteButton.setOnClickListener(view -> {
+        if (!isFavorite) {
+          favoriteButton.setImageResource(R.drawable.ic_menu_favorite_24dp);
+          movieDetailViewModel.setMovieAsFavorite(movieId);
+          Snackbar.make(favoriteButton,getString(R.string.snackbar_movie_added),Snackbar.LENGTH_SHORT).show();
+          isFavorite =true;
+        } else {
+          favoriteButton.setImageResource(R.drawable.ic_favorite_border_24dp);
+          movieDetailViewModel.removeMovieFromFavorite(movieId);
+          Snackbar.make(favoriteButton,getString(R.string.snackbar_movie_removed),Snackbar.LENGTH_SHORT).show();
+
+          isFavorite =false;
+        }
+      });
+    }
+
   private void subscribeObservers(int movieId){
     movieDetailViewModel.getReviewsApi(movieId).observe(this,
         listResource -> {
@@ -215,7 +237,22 @@ private MovieDetailViewModel movieDetailViewModel;
         }
       }
     });
+    //Setup favorite floating action button
+    movieDetailViewModel.getFavoriteMovie(movieId).observe(this, movie -> {
+
+        if (movie!=null && movie.isFavorite() ) {
+        favoriteButton.setImageResource(R.drawable.ic_menu_favorite_24dp);
+        isFavorite = true;
+
+    } else {
+
+          isFavorite = false;
+          favoriteButton.setImageResource(R.drawable.ic_favorite_border_24dp);
+        }
+  });
   }
+
+
 
   private void getIncomingIntent(){
     if(getIntent().hasExtra(Constants.MOVIE_LIST_INTENT)){
@@ -223,6 +260,7 @@ private MovieDetailViewModel movieDetailViewModel;
       Log.d(TAG, "movieDetail: movieId"+movie.getId());
       Log.d(TAG, "movieDetail: movieId"+movie.getPosterPath());
       subscribeObservers(movie.getId());
+      initFavoriteFab(movie.getId());
     }
   }
   private void setMoviePropertiesToWidgets(){

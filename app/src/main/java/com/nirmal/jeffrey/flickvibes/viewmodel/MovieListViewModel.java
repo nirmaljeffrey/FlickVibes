@@ -95,5 +95,7 @@ private void executeSearch(){
     });
 
   }
-
+  public LiveData<List<Movie>> getFavoriteMovies(){
+    return movieRepository.getFavoriteMovies();
+  }
 }

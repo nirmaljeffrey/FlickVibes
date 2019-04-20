@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import com.nirmal.jeffrey.flickvibes.model.Cast;
 import com.nirmal.jeffrey.flickvibes.model.Genre;
+import com.nirmal.jeffrey.flickvibes.model.Movie;
 import com.nirmal.jeffrey.flickvibes.model.Review;
 import com.nirmal.jeffrey.flickvibes.model.Trailer;
 import com.nirmal.jeffrey.flickvibes.repository.MovieRepository;
@@ -31,5 +32,14 @@ public class MovieDetailViewModel extends AndroidViewModel {
   }
   public LiveData<Resource<List<Genre>>> getGenresApi(int movieId){
     return movieRepository.getGenreApi(movieId);
+  }
+  public void setMovieAsFavorite(int movieId){
+    movieRepository.setMovieAsFavorite(movieId);
+  }
+  public void removeMovieFromFavorite(int movieId){
+    movieRepository.removeMovieFromFavorite(movieId);
+  }
+  public LiveData<Movie> getFavoriteMovie(int movieId){
+  return movieRepository.getFavoriteMovie(movieId);
   }
 }

@@ -40,6 +40,7 @@ public class MovieRepository {
   private TrailerDao trailerDao;
   private CastDao castDao;
   private GenreDao genreDao;
+  private AppExecutor appExecutor;
 
   private MovieRepository(Context context) {
     movieDao = MovieDatabase.getInstance(context).getMovieDao();
@@ -47,6 +48,7 @@ public class MovieRepository {
     trailerDao = MovieDatabase.getInstance(context).getTrailerDao();
     castDao = MovieDatabase.getInstance(context).getCastDao();
     genreDao = MovieDatabase.getInstance(context).getGenreDao();
+    appExecutor = AppExecutor.getInstance();
   }
 
   public static MovieRepository getInstance(Context context) {
@@ -65,14 +67,13 @@ public class MovieRepository {
       protected void saveCallResult(@NonNull MovieListResponse item) {
 
         if (item.getMovieList() != null) {//if apiKey is expired the movieList will be null
-              List<Movie> movieList = item.getMovieList();
+          List<Movie> movieList = item.getMovieList();
 
-
-              for (Movie movie : movieList) {
-               DatabaseUtils.setMovieType(type,movie);
-             }
-              movieDao.insertMovies(movieList);
-           }
+          for (Movie movie : movieList) {
+            DatabaseUtils.setMovieType(type, movie);
+          }
+          movieDao.insertMovies(movieList);
+        }
       }
 
       @Override
@@ -85,7 +86,7 @@ public class MovieRepository {
       protected LiveData<List<Movie>> loadFromDb() {
 
         SimpleSQLiteQuery query = DatabaseUtils.getSQLiteQuery(type, pageNumber);
-        Log.d(TAG, "loadFromDb: Sql query"+ query.getSql());
+        Log.d(TAG, "loadFromDb: Sql query" + query.getSql());
         return movieDao.getMoviesByType(query);
 
 
@@ -266,31 +267,48 @@ public class MovieRepository {
         }
       }
 
-        @Override
-        protected boolean shouldFetch (@Nullable List < Genre > data) {
-          return true;
-        }
+      @Override
+      protected boolean shouldFetch(@Nullable List<Genre> data) {
+        return true;
+      }
 
-        @NonNull
-        @Override
-        protected LiveData<List<Genre>> loadFromDb () {
-          return genreDao.getAllGenreForMovie(movieId);
-        }
+      @NonNull
+      @Override
+      protected LiveData<List<Genre>> loadFromDb() {
+        return genreDao.getAllGenreForMovie(movieId);
+      }
 
-        @NonNull
-        @Override
-        protected LiveData<ApiResponse<GenreListResponse>> createCall () {
-          return WebServiceGenerator.getMovieApi().getGenreList(movieId);
-        }
+      @NonNull
+      @Override
+      protected LiveData<ApiResponse<GenreListResponse>> createCall() {
+        return WebServiceGenerator.getMovieApi().getGenreList(movieId);
+      }
 
     }.getAsLiveData();
 
   }
-  /**
-   *
-   */
 
+  public void setMovieAsFavorite(int movieId) {
+    appExecutor.diskIO().execute(() -> movieDao.setMovieAsFavorite(movieId));
 
   }
+
+  public void removeMovieFromFavorite(int movieId) {
+    appExecutor.diskIO().execute(() -> movieDao.removeMovieFromFavorite(movieId));
+  }
+
+  public LiveData<List<Movie>> getFavoriteMovies() {
+    return movieDao.getFavoriteMovieList();
+  }
+
+  public LiveData<Movie> getFavoriteMovie(int movieId) {
+    return movieDao.getFavoriteMovie(movieId);
+
+  }
+
+
+
+
+}
 
 

@@ -46,7 +46,18 @@ public  interface MovieDao {
   //For retrieving favourite movies
   //Boolean for true in sqlite is 1
   @Query("SELECT * FROM movie_table WHERE is_favorite = 1")
-public abstract LiveData<List<Movie>> getFavoriteMovieList();
+ LiveData<List<Movie>> getFavoriteMovieList();
+
+  //Marking a movie as favorite
+  @Query("UPDATE movie_table SET is_favorite = 1 WHERE id=:movieId")
+  void setMovieAsFavorite(int movieId);
+  //Removing movie from favorite
+  @Query("UPDATE movie_table SET is_favorite = 0 WHERE id=:movieId")
+  void removeMovieFromFavorite(int movieId);
+
+@Query("SELECT * FROM movie_table WHERE id=:movieId AND is_favorite = 1")
+LiveData<Movie> getFavoriteMovie(int movieId);
+
 
 
 

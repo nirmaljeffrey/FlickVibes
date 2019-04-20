@@ -78,6 +78,9 @@ public class MovieListActivity extends BaseActivity implements OnMovieItemClickL
           getMovieListByTypeApi(NetworkUtils.NOW_PLAYING_MOVIE_PATH);
           break;
         case R.id.nav_favorites:
+          movieListViewModel.getFavoriteMovies().observe(MovieListActivity.this, movies -> {
+            movieAdapter.setMovieData(new ArrayList<>(movies));
+          });
           break;
 
       }

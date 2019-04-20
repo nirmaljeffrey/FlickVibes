@@ -1,14 +1,13 @@
 package com.nirmal.jeffrey.flickvibes.util;
 
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
-import androidx.lifecycle.Observer;
+import android.util.Log;
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.WorkerThread;
-import android.util.Log;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 import com.nirmal.jeffrey.flickvibes.executor.AppExecutor;
 import com.nirmal.jeffrey.flickvibes.network.response.ApiResponse;
 
@@ -36,21 +35,13 @@ public abstract class NetworkBoundResource<CacheObject, RequestObject> {
     //observe liveData from the database
     final LiveData<CacheObject> dbSource = loadFromDb();
     // add the dbSource to mediator liveData
-    results.addSource(dbSource, new Observer<CacheObject>() {
-      @Override
-      public void onChanged(CacheObject cacheObject) {
-        results.removeSource(dbSource);
-        if (shouldFetch(cacheObject)) {
-          //get data from the network
-          fetchFromNetwork(dbSource);
-        } else {
-          results.addSource(dbSource, new Observer<CacheObject>() {
-            @Override
-            public void onChanged(CacheObject cacheObject) {
-              setValue(Resource.success(cacheObject));
-            }
-          });
-        }
+    results.addSource(dbSource, cacheObject -> {
+      results.removeSource(dbSource);
+      if (shouldFetch(cacheObject)) {
+        //get data from the network
+        fetchFromNetwork(dbSource);
+      } else {
+        results.addSource(dbSource, cacheObject1 -> setValue(Resource.success(cacheObject1)));
       }
     });
 
@@ -58,75 +49,41 @@ public abstract class NetworkBoundResource<CacheObject, RequestObject> {
 
   private void fetchFromNetwork(final LiveData<CacheObject> dbSource) {
     Log.d(TAG, "fetchFromNetwork: Called.");
-    results.addSource(dbSource, new Observer<CacheObject>() {
-      @Override
-      public void onChanged(CacheObject cacheObject) {
-        setValue((Resource.loading(cacheObject)));
-
-      }
-    });
+    results.addSource(dbSource, cacheObject -> setValue((Resource.loading(cacheObject))));
     final LiveData<ApiResponse<RequestObject>> apiResponse = createCall();
-    results.addSource(apiResponse, new Observer<ApiResponse<RequestObject>>() {
-      @Override
-      public void onChanged(final ApiResponse<RequestObject> requestObjectApiResponse) {
-        results.removeSource(dbSource);
-        results.removeSource(apiResponse);
+    results.addSource(apiResponse, requestObjectApiResponse -> {
+      results.removeSource(dbSource);
+      results.removeSource(apiResponse);
 
-        Log.d(TAG, "run: Attempting to refresh data from network");
-        /*
-         3 cases:
-         1) ApiSuccessResponse
-         2) ApiErrorResponse
-         3) ApiEmptyResponse
-         */
-        if (requestObjectApiResponse instanceof ApiResponse.ApiSuccessResponse) {
-          Log.d(TAG, "onChanged: onApiSucess");
-          appExecutor.diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-              //save the response to local database
-              saveCallResult((RequestObject)processResponse((ApiResponse.ApiSuccessResponse)requestObjectApiResponse));
-              appExecutor.mainThread().execute(new Runnable() {
-                @Override
-                public void run() {
-                  results.addSource(loadFromDb(), new Observer<CacheObject>() {
-                    @Override
-                    public void onChanged(CacheObject cacheObject) {
-                      setValue(Resource.success(cacheObject));
-                    }
-                  });
-                }
-              });
-            }
-          });
+      Log.d(TAG, "run: Attempting to refresh data from network");
+      /*
+       3 cases:
+       1) ApiSuccessResponse
+       2) ApiErrorResponse
+       3) ApiEmptyResponse
+       */
+      if (requestObjectApiResponse instanceof ApiResponse.ApiSuccessResponse) {
+        Log.d(TAG, "onChanged: onApiSucess");
+        appExecutor.diskIO().execute(() -> {
+          //save the response to local database
+          saveCallResult((RequestObject) processResponse(
+              (ApiResponse.ApiSuccessResponse) requestObjectApiResponse));
+          appExecutor.mainThread().execute(() -> results.addSource(loadFromDb(),
+              cacheObject -> setValue(Resource.success(cacheObject))));
+        });
 
 
-        } else if (requestObjectApiResponse instanceof ApiResponse.ApiEmptyResponse) {
-          Log.d(TAG, "onChanged: onApiEmpty");
-          appExecutor.mainThread().execute(new Runnable() {
-            @Override
-            public void run() {
-              results.addSource(loadFromDb(), new Observer<CacheObject>() {
-                @Override
-                public void onChanged(CacheObject cacheObject) {
-                  setValue(Resource.success(cacheObject));
-                }
-              });
-            }
-          });
+      } else if (requestObjectApiResponse instanceof ApiResponse.ApiEmptyResponse) {
+        Log.d(TAG, "onChanged: onApiEmpty");
+        appExecutor.mainThread().execute(() -> results.addSource(loadFromDb(),
+            cacheObject -> setValue(Resource.success(cacheObject))));
 
-        } else if (requestObjectApiResponse instanceof ApiResponse.ApiErrorResponse) {
-          Log.d(TAG, "onChanged: onApiError");
-          results.addSource(dbSource, new Observer<CacheObject>() {
-            @Override
-            public void onChanged(CacheObject cacheObject) {
-              setValue(
-                  Resource.error(
-                      ((ApiResponse.ApiErrorResponse) requestObjectApiResponse).getErrorMessage(),
-                      cacheObject));
-            }
-          });
-        }
+      } else if (requestObjectApiResponse instanceof ApiResponse.ApiErrorResponse) {
+        Log.d(TAG, "onChanged: onApiError");
+        results.addSource(dbSource, cacheObject -> setValue(
+            Resource.error(
+                ((ApiResponse.ApiErrorResponse) requestObjectApiResponse).getErrorMessage(),
+                cacheObject)));
       }
     });
 
