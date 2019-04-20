@@ -8,7 +8,7 @@ public final class NetworkUtils {
 
   }
 
-                    /** NetworkUtils used in web service **/
+                    /** NetworkUtils used in Movie web service **/
 
 
   //Base Url
@@ -29,10 +29,17 @@ public final class NetworkUtils {
   public static final String NOW_PLAYING_MOVIE_PATH="now_playing";
 
   // Base url used for sharing trailer video links online
-  public static final String MOVIE_YOUTUBE_TRAILER_URL = "https://www.youtube.com/watch?v=";
+  private static final String MOVIE_YOUTUBE_TRAILER_URL = "https://www.youtube.com/watch?v=";
   public static final String MOVIE_TRAILER_KEY_PARAM = "v";
-  public static final String MOVIE_TRAILER_THUMBNAIL_URL_PART_ONE = "https://img.youtube.com/vi/";
-  public static final String MOVIE_TRAILER_THUMBNAIL_URL_PART_TWO = "/0.jpg";
+  private static final String MOVIE_TRAILER_THUMBNAIL_URL_PART_ONE = "https://img.youtube.com/vi/";
+  private static final String MOVIE_TRAILER_THUMBNAIL_URL_PART_TWO = "/0.jpg";
+
+
+  /** NetworkUtils used in FACE APi web service **/
+  //Base url to post images to microsoft cognitive services
+  public static final String FACE_API_END_POINT=" https://westcentralus.api.cognitive.microsoft.com/face/v1.0";
+  //Face API Key
+  public static final String FACE_API_KEY =BuildConfig.FaceApiKey;
 
 
 

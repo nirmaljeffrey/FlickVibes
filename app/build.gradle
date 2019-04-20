@@ -28,6 +28,8 @@ android {
             //https://medium.com/code-better/hiding-api-keys-from-your-android-repository-b23f5598b906
             buildConfigField 'String', "ApiKey", flick_vibes_tmdb_api_key
             resValue 'string', "api_key", flick_vibes_tmdb_api_key
+            buildConfigField 'String', "FaceApiKey", microsoft_face_api_key
+            resValue 'string', "face_api_key", microsoft_face_api_key
         }
         release {
             minifyEnabled false
@@ -36,6 +38,8 @@ android {
             //https://medium.com/code-better/hiding-api-keys-from-your-android-repository-b23f5598b906
             buildConfigField 'String', "ApiKey", flick_vibes_tmdb_api_key
             resValue 'string', "api_key", flick_vibes_tmdb_api_key
+            buildConfigField 'String', "FaceApiKey", microsoft_face_api_key
+            resValue 'string', "face_api_key", microsoft_face_api_key
         }
 
     }
