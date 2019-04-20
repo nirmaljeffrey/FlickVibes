@@ -106,13 +106,12 @@ private boolean isFavorite;
         if (!isFavorite) {
           favoriteButton.setImageResource(R.drawable.ic_menu_favorite_24dp);
           movieDetailViewModel.setMovieAsFavorite(movieId);
-          Snackbar.make(favoriteButton,getString(R.string.snackbar_movie_added),Snackbar.LENGTH_SHORT).show();
+          snackBarMessage(favoriteButton,getString(R.string.snackbar_movie_added));
           isFavorite =true;
         } else {
           favoriteButton.setImageResource(R.drawable.ic_favorite_border_24dp);
           movieDetailViewModel.removeMovieFromFavorite(movieId);
-          Snackbar.make(favoriteButton,getString(R.string.snackbar_movie_removed),Snackbar.LENGTH_SHORT).show();
-
+          snackBarMessage(favoriteButton,getString(R.string.snackbar_movie_removed));
           isFavorite =false;
         }
       });
@@ -289,6 +288,10 @@ private boolean isFavorite;
          .into(imageView);
 
 
+  }
+
+  private void snackBarMessage(View view,String message){
+    Snackbar.make(view,message,Snackbar.LENGTH_SHORT).show();
   }
   /**
    * Method for creating request manager for recycler view
