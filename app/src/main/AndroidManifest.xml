@@ -16,9 +16,7 @@
     android:roundIcon="@mipmap/ic_launcher_round"
     android:supportsRtl="true"
     android:theme="@style/AppTheme">
-    <meta-data
-      android:name="com.google.firebase.ml.vision.DEPENDENCIES"
-      android:value="face" />
+
 
     <activity android:name=".ui.MovieListActivity">
       <intent-filter>
@@ -34,6 +32,19 @@
     <activity android:name=".ui.MoviePredictionActivity"
       android:theme="@style/AppTheme.NoActionBar">
     </activity>
+    <provider
+      android:name="androidx.core.content.FileProvider"
+      android:authorities="${applicationId}.fileprovider"
+      android:exported="false"
+      android:grantUriPermissions="true">
+      <meta-data
+        android:name="android.support.FILE_PROVIDER_PATHS"
+        android:resource="@xml/file_path"/>
+    </provider>
+    <meta-data
+      android:name="com.google.firebase.ml.vision.DEPENDENCIES"
+      android:value="face" />
+
   </application>
 
 </manifest>

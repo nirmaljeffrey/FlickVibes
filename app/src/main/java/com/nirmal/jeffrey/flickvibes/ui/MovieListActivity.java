@@ -1,9 +1,10 @@
 package com.nirmal.jeffrey.flickvibes.ui;
 
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -18,6 +19,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -50,6 +53,8 @@ public class MovieListActivity extends BaseActivity implements OnMovieItemClickL
   private static final String TAG = "MovieId";
   private static final int REQUEST_PHOTO_PICKER =1;
   private static final int REQUEST_IMAGE_CAPTURE=2;
+  private static final int REQUEST_STORAGE_PERMISSION=3;
+  private String cameraImagePath;
   @BindView(R.id.error_text_view)
   TextView errorTextView;
   @BindView(R.id.movies_recycler_view)
@@ -109,30 +114,46 @@ public class MovieListActivity extends BaseActivity implements OnMovieItemClickL
       if (requestCode == REQUEST_PHOTO_PICKER) {
         if(data!=null) {
           Uri selectedImageUri = data.getData();
+
           Log.d(TAG, "onActivityResult: imageUri "+selectedImageUri);
           Intent intent = new Intent(this, MoviePredictionActivity.class);
-          intent.putExtra(Constants.GALLERY_ACTIVITY_INTENT, selectedImageUri);
-          startActivity(intent);
+          if(selectedImageUri!=null) {
+            String galleryImageUri = selectedImageUri.getPath();
+            intent.putExtra(Constants.GALLERY_ACTIVITY_INTENT, selectedImageUri);
+            startActivity(intent);
+          }
         }
       }else if (requestCode==REQUEST_IMAGE_CAPTURE){
-        if(data!=null && data.getExtras()!=null){
-          Bundle extras = data.getExtras();
-          Bitmap imageBitmap = (Bitmap) extras.get(Constants.CAMERA_INTENT_DATA);
+
+
           Intent intent =new Intent(this,MoviePredictionActivity.class);
-          intent.putExtra(Constants.CAMERA_ACTIVITY_INTENT,imageBitmap);
+          if (cameraImagePath!=null && !cameraImagePath.isEmpty()){
+          intent.putExtra(Constants.CAMERA_ACTIVITY_INTENT,cameraImagePath);
 
-
-
-
-        }
+          startActivity(intent);
+      }
+      }
       }
     }
-  }
+
 
   @Override
   public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
       @NonNull int[] grantResults) {
     // Called when you request permission to read and write to external storage
+    switch (requestCode) {
+      case REQUEST_STORAGE_PERMISSION: {
+        if (grantResults.length > 0
+            && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+          // If you get permission, launch the camera
+          launchCamera();
+        } else {
+          // If you do not get permission, show a Toast
+          Toast.makeText(this, R.string.dialog_permission_denied, Toast.LENGTH_SHORT).show();
+        }
+        break;
+      }
+    }
 
   }
 
@@ -251,7 +272,20 @@ private void initFab(){
       ImageView cameraView = dialog.findViewById(R.id.dialog_camera_image_view);
       ImageView galleryView = dialog.findViewById(R.id.dialog_gallery_image_view);
       cameraView.setOnClickListener(view1 -> {
+        // Check for the external storage permission
+        if (ContextCompat.checkSelfPermission(this,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            != PackageManager.PERMISSION_GRANTED) {
+
+          // If you do not have permission, request it
+          ActivityCompat.requestPermissions(this,
+              new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+              REQUEST_STORAGE_PERMISSION);
+        } else {
+          // Launch the camera if the permission exists
           launchCamera();
+        }
+
       });
       galleryView.setOnClickListener(view12 -> {
           launchGallery();
@@ -278,16 +312,20 @@ private void initFab(){
     if (cameraIntent.resolveActivity(getPackageManager()) != null) {
       // Create the File where the photo should go
       File photoFile = null;
+      String imagePath="";
       try {
         photoFile = BitmapUtils.createImageFile(this);
+
+
       } catch (IOException ex) {
         // Error occurred while creating the File
         ex.printStackTrace();
       }
       // Continue only if the File was successfully created
       if (photoFile != null) {
+        cameraImagePath = photoFile.getAbsolutePath();
         Uri photoURI = FileProvider.getUriForFile(this,
-            "com.example.android.fileprovider",
+            "com.nirmal.jeffrey.flickvibes.fileprovider",
             photoFile);
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
         startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE);

@@ -2,6 +2,7 @@ package com.nirmal.jeffrey.flickvibes.emotiondetector;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.widget.Toast;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.ml.vision.FirebaseVision;
@@ -12,6 +13,8 @@ import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetectorOptions;
 import java.util.List;
 
 public class EmotionDetector {
+
+  private static final String TAG = "EmotionDetector";
 
 
   public static void detectFaces(Context context, Bitmap bitmap) {
@@ -33,26 +36,37 @@ public class EmotionDetector {
 
           if(firebaseVisionFaces.size()>1){
 
-            Toast.makeText(context.getApplicationContext(), "More than One face Detected", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context.getApplicationContext(), "More than one face detected", Toast.LENGTH_SHORT).show();
 
           }else if (firebaseVisionFaces.size()==1){
             FirebaseVisionFace face = firebaseVisionFaces.get(0);
-
-            // If classification was enabled:
-            if (face.getSmilingProbability() != FirebaseVisionFace.UNCOMPUTED_PROBABILITY) {
-              float smileProb = face.getSmilingProbability();
-            }
-            if (face.getRightEyeOpenProbability() != FirebaseVisionFace.UNCOMPUTED_PROBABILITY) {
-              float rightEyeOpenProb = face.getRightEyeOpenProbability();
-            }
+                  getClassification(face);
 
 
           }
         })
         .addOnFailureListener(e -> {
-          Toast.makeText(context.getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+          e.printStackTrace();
+          Toast.makeText(context.getApplicationContext(), "Face detection failed", Toast.LENGTH_SHORT).show();
+
         });
 
+
+  }
+
+  private static void getClassification(FirebaseVisionFace face){
+    float smilingProb;
+    if(face.getSmilingProbability()!=FirebaseVisionFace.UNCOMPUTED_PROBABILITY){
+      smilingProb =face.getSmilingProbability();
+      Log.d(TAG, "getClassification: smiling prob "+ smilingProb);
+
+    }
+  }
+
+  private enum Emotions{
+    HAPPY,
+    SAD,
+    NORMAL
   }
 
 
