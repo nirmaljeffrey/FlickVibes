@@ -1,4 +1,4 @@
-package com.nirmal.jeffrey.flickvibes.ui;
+package com.nirmal.jeffrey.flickvibes.ui.activity;
 
 import android.os.Bundle;
 import android.util.Log;

@@ -1,4 +1,4 @@
-package com.nirmal.jeffrey.flickvibes.ui;
+package com.nirmal.jeffrey.flickvibes.ui.activity;
 
 
 import android.Manifest;
@@ -118,7 +118,6 @@ public class MovieListActivity extends BaseActivity implements OnMovieItemClickL
           Log.d(TAG, "onActivityResult: imageUri "+selectedImageUri);
           Intent intent = new Intent(this, MoviePredictionActivity.class);
           if(selectedImageUri!=null) {
-            String galleryImageUri = selectedImageUri.getPath();
             intent.putExtra(Constants.GALLERY_ACTIVITY_INTENT, selectedImageUri);
             startActivity(intent);
           }
@@ -312,7 +311,6 @@ private void initFab(){
     if (cameraIntent.resolveActivity(getPackageManager()) != null) {
       // Create the File where the photo should go
       File photoFile = null;
-      String imagePath="";
       try {
         photoFile = BitmapUtils.createImageFile(this);
 
@@ -335,7 +333,7 @@ private void initFab(){
   }
   /**
    * Method for creating request manager for recycler view
-   * @return RequestManager (Glide)
+   * @return RequestManager (Glide) to be used in recycler view adapter
    */
   private RequestManager initGlide() {
     RequestOptions requestOptions = new RequestOptions()

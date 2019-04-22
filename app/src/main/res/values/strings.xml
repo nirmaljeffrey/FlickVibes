@@ -32,8 +32,13 @@
   <string name="snackbar_movie_removed">Movie removed from favorites</string>
   <!--activity_movie_prediction.xml -->
   <string name="detect_emotions_button">Detect Emotions</string>
+  <string name="happy_emotion">You are feeling happy</string>
+  <string name="sad_emotion">You are feeling sad</string>
+  <string name="normal_emotion">You are feeling normal</string>
   <!-- MoviePredictionsActivity -->
   <string name="error">Error finding image</string>
+  <!-- dialog_emotion_result -->
+  <string name="movie_recommendation_button">Get Movie Recommendations</string>
 
   <!-- Content Description -->
   <string name="poster_image_view_info">Movie Poster</string>
@@ -46,5 +51,7 @@
   <string name="dialog_camera_info">Take a photo</string>
   <string name="dialog_gallery_info">Choose Image from gallery</string>
   <string name="face_image_view_info">Image to detected using machine learning</string>
+  <string name="emotion_image_info">User\'s emotion results</string>
+  <string name="emotions_successfully_detected">Emotions Detected</string>
 
 </resources>
