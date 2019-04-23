@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "e820925a8d00f04196460a3a0ff8896e",
+    "identityHash": "27c4ebda0203f37ff69a44baf736a6cd",
     "entities": [
       {
         "tableName": "movie_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `vote_average` REAL, `title` TEXT, `poster_path` TEXT, `backdrop_path` TEXT, `overview` TEXT, `release_date` TEXT, `popularity` REAL, `is_favorite` INTEGER NOT NULL, `is_popular` INTEGER NOT NULL, `is_top_rated` INTEGER NOT NULL, `is_upcoming` INTEGER NOT NULL, `is_now_playing` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `vote_average` REAL, `title` TEXT, `poster_path` TEXT, `backdrop_path` TEXT, `overview` TEXT, `release_date` TEXT, `popularity` REAL, `is_favorite` INTEGER NOT NULL, `is_popular` INTEGER NOT NULL, `is_top_rated` INTEGER NOT NULL, `is_upcoming` INTEGER NOT NULL, `is_now_playing` INTEGER NOT NULL, `genre` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -83,6 +83,12 @@
           {
             "fieldPath": "isNowPlaying",
             "columnName": "is_now_playing",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "genre",
+            "columnName": "genre",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -299,7 +305,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"e820925a8d00f04196460a3a0ff8896e\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"27c4ebda0203f37ff69a44baf736a6cd\")"
     ]
   }
 }

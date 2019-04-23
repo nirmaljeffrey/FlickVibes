@@ -2,7 +2,6 @@ package com.nirmal.jeffrey.flickvibes.database.dao;
 
 
 import static androidx.room.OnConflictStrategy.IGNORE;
-import static androidx.room.OnConflictStrategy.REPLACE;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
@@ -27,9 +26,16 @@ public  interface MovieDao {
       "vote_average=:voteAverage,popularity=:popularity WHERE id=:id")
   void updateMovies(int id, String title, String posterPath, String backdropPath, String overView,
       String releaseDate, Double voteAverage, Double popularity);
-  // For inserting movies based on ratings, popularity, release date etc
-  @Insert(onConflict = REPLACE)
-  void insertMovies(List<Movie> movies);
+  //For updating movie Type
+ @Query("UPDATE movie_table SET is_popular = 1 WHERE id = :movieId")
+ void updatePopularMovie(int movieId);
+ @Query("UPDATE movie_table SET is_top_rated = 1 WHERE id = :movieId")
+ void updateTopRatedMovie(int movieId);
+ @Query("UPDATE movie_table SET is_upcoming = 1 WHERE id = :movieId")
+ void updateUpcomingMovie(int movieId);
+ @Query("UPDATE movie_table SET is_now_playing = 1 WHERE id = :movieId")
+ void updateNowPlayingMovie(int movieId);
+
 
   // For querying movies based on ratings, popularity, release date etc
   @RawQuery(observedEntities = Movie.class)
@@ -58,7 +64,16 @@ public  interface MovieDao {
 @Query("SELECT * FROM movie_table WHERE id=:movieId AND is_favorite = 1")
 LiveData<Movie> getFavoriteMovie(int movieId);
 
+//Update the genre variable in movie_table
+ @Query("UPDATE movie_table SET genre=:genre WHERE id=:id ")
+ void updateMovieGenre(int genre, int id);
+ //Get movies list by emotion
+ @Query("SELECT * FROM movie_table WHERE genre=:genre")
+ LiveData<List<Movie>> getMovieListByEmotion(int genre);
+
 
 
 
 }
+
+

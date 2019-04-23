@@ -65,12 +65,12 @@ public class Movie implements Parcelable {
   private boolean isUpcoming;
   @ColumnInfo(name = "is_now_playing")
   private boolean isNowPlaying;
+  @ColumnInfo(name = "genre")
+  private int genre;
 
-  public Movie(int id, Double voteAverage, String title, String posterPath,
-      String backdropPath, String overview, String releaseDate, Double popularity,
-      boolean isFavorite,
-      boolean isPopular, boolean isTopRated, boolean isUpcoming, boolean isNowPlaying) {
-    this.id = id;
+  public Movie(Double voteAverage, String title, String posterPath, String backdropPath,
+      String overview, String releaseDate, Double popularity, boolean isFavorite, boolean isPopular,
+      boolean isTopRated, boolean isUpcoming, boolean isNowPlaying, int genre) {
     this.voteAverage = voteAverage;
     this.title = title;
     this.posterPath = posterPath;
@@ -83,6 +83,7 @@ public class Movie implements Parcelable {
     this.isTopRated = isTopRated;
     this.isUpcoming = isUpcoming;
     this.isNowPlaying = isNowPlaying;
+    this.genre = genre;
   }
 
 
@@ -98,7 +99,6 @@ public class Movie implements Parcelable {
     this.releaseDate = releaseDate;
     this.popularity = popularity;
   }
-
 
   @Ignore
   public Movie() {
@@ -126,6 +126,15 @@ public class Movie implements Parcelable {
     isTopRated = in.readByte() != 0;
     isUpcoming = in.readByte() != 0;
     isNowPlaying = in.readByte() != 0;
+    genre = in.readInt();
+  }
+
+  public int getGenre() {
+    return genre;
+  }
+
+  public void setGenre(int genre) {
+    this.genre = genre;
   }
 
   public boolean isFavorite() {
@@ -234,6 +243,7 @@ public class Movie implements Parcelable {
     isNowPlaying = nowPlaying;
   }
 
+
   @Override
   public int describeContents() {
     return 0;
@@ -264,9 +274,8 @@ public class Movie implements Parcelable {
     parcel.writeByte((byte) (isTopRated ? 1 : 0));
     parcel.writeByte((byte) (isUpcoming ? 1 : 0));
     parcel.writeByte((byte) (isNowPlaying ? 1 : 0));
+    parcel.writeInt(genre);
   }
-
-
 }
 
 

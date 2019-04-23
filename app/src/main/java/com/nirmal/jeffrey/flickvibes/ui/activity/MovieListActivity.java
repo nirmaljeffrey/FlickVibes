@@ -51,10 +51,9 @@ import java.util.Objects;
 public class MovieListActivity extends BaseActivity implements OnMovieItemClickLister {
 
   private static final String TAG = "MovieId";
-  private static final int REQUEST_PHOTO_PICKER =1;
-  private static final int REQUEST_IMAGE_CAPTURE=2;
-  private static final int REQUEST_STORAGE_PERMISSION=3;
-  private String cameraImagePath;
+  private static final int REQUEST_PHOTO_PICKER = 1;
+  private static final int REQUEST_IMAGE_CAPTURE = 2;
+  private static final int REQUEST_STORAGE_PERMISSION = 3;
   @BindView(R.id.error_text_view)
   TextView errorTextView;
   @BindView(R.id.movies_recycler_view)
@@ -63,7 +62,7 @@ public class MovieListActivity extends BaseActivity implements OnMovieItemClickL
   BottomNavigationView bottomNavigationBar;
   @BindView(R.id.prediction_fab)
   FloatingActionButton predictionFab;
-
+  private String cameraImagePath;
   private MovieAdapter movieAdapter;
   private MovieListViewModel movieListViewModel;
   private BottomNavigationView.OnNavigationItemSelectedListener navListener = new OnNavigationItemSelectedListener() {
@@ -110,30 +109,29 @@ public class MovieListActivity extends BaseActivity implements OnMovieItemClickL
   @Override
   protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
-    if(resultCode==RESULT_OK) {
+    if (resultCode == RESULT_OK) {
       if (requestCode == REQUEST_PHOTO_PICKER) {
-        if(data!=null) {
+        if (data != null) {
           Uri selectedImageUri = data.getData();
 
-          Log.d(TAG, "onActivityResult: imageUri "+selectedImageUri);
+          Log.d(TAG, "onActivityResult: imageUri " + selectedImageUri);
           Intent intent = new Intent(this, MoviePredictionActivity.class);
-          if(selectedImageUri!=null) {
+          if (selectedImageUri != null) {
             intent.putExtra(Constants.GALLERY_ACTIVITY_INTENT, selectedImageUri);
             startActivity(intent);
           }
         }
-      }else if (requestCode==REQUEST_IMAGE_CAPTURE){
+      } else if (requestCode == REQUEST_IMAGE_CAPTURE) {
 
-
-          Intent intent =new Intent(this,MoviePredictionActivity.class);
-          if (cameraImagePath!=null && !cameraImagePath.isEmpty()){
-          intent.putExtra(Constants.CAMERA_ACTIVITY_INTENT,cameraImagePath);
+        Intent intent = new Intent(this, MoviePredictionActivity.class);
+        if (cameraImagePath != null && !cameraImagePath.isEmpty()) {
+          intent.putExtra(Constants.CAMERA_ACTIVITY_INTENT, cameraImagePath);
 
           startActivity(intent);
-      }
-      }
+        }
       }
     }
+  }
 
 
   @Override
@@ -158,9 +156,9 @@ public class MovieListActivity extends BaseActivity implements OnMovieItemClickL
 
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
-    getMenuInflater().inflate(R.menu.movie_list_activity_menu,menu);
+    getMenuInflater().inflate(R.menu.movie_list_activity_menu, menu);
     MenuItem searchItem = menu.findItem(R.id.action_search);
-    SearchView searchView= (SearchView)searchItem.getActionView();
+    SearchView searchView = (SearchView) searchItem.getActionView();
     searchView.setQueryHint(getString(R.string.menu_search_hint));
     searchView.setIconified(false);
     searchView.setOnQueryTextListener(new OnQueryTextListener() {
@@ -180,9 +178,9 @@ public class MovieListActivity extends BaseActivity implements OnMovieItemClickL
 
   private void subscribeObservers() {
     movieListViewModel.getMoviesFromSearch().observe(this, listResource -> {
-      if(listResource!=null){
-        if(listResource.data!=null){
-          switch (listResource.status){
+      if (listResource != null) {
+        if (listResource.data != null) {
+          switch (listResource.status) {
             case LOADING:
               displayLoading();
               break;
@@ -204,16 +202,15 @@ public class MovieListActivity extends BaseActivity implements OnMovieItemClickL
 
         if (listResource.data != null) {
 
-          switch (listResource.status){
+          switch (listResource.status) {
             case LOADING:
               Log.d(TAG, "subscribeObservers: ApiLoading");
-             displayLoading();
+              displayLoading();
               break;
             case ERROR:
               Log.d(TAG, "subscribeObservers: ApiError");
               displayError(listResource.message);
               movieAdapter.setMovieData(new ArrayList<>(listResource.data));
-
 
               break;
             case SUCCESS:
@@ -225,47 +222,50 @@ public class MovieListActivity extends BaseActivity implements OnMovieItemClickL
           }
 
 
-
         }
 
       }
     });
 
   }
-  private void displayLoading(){
+
+  private void displayLoading() {
     //Method from BaseActivity.java
     showProgressBar(true);
     recyclerView.setVisibility(View.GONE);
 
   }
-  private void displayError(String message){
+
+  private void displayError(String message) {
     //Method from BaseActivity.java
     showProgressBar(false);
     recyclerView.setVisibility(View.VISIBLE);
     toastMessage(message);
   }
-  private void displayMovies(){
+
+  private void displayMovies() {
     //Method from BaseActivity.java
     showProgressBar(false);
     recyclerView.setVisibility(View.VISIBLE);
   }
 
-  private void toastMessage(String message){
-    Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
+  private void toastMessage(String message) {
+    Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
   }
 
 
-
-  private void initRecyclerView(){
+  private void initRecyclerView() {
     int spanCount = getResources().getInteger(R.integer.grid_span_count);
-    recyclerView.setLayoutManager(new GridLayoutManager(this,spanCount));
-    movieAdapter = new MovieAdapter(initGlide(),this);
+    recyclerView.setLayoutManager(new GridLayoutManager(this, spanCount));
+    movieAdapter = new MovieAdapter(initGlide(), this);
     recyclerView.setAdapter(movieAdapter);
   }
-private void initFab(){
+
+  private void initFab() {
     predictionFab.setOnClickListener(view -> {
-      Dialog dialog =new Dialog(this);
-      Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawableResource(android.R.color.transparent);
+      Dialog dialog = new Dialog(this);
+      Objects.requireNonNull(dialog.getWindow())
+          .setBackgroundDrawableResource(android.R.color.transparent);
       dialog.setContentView(R.layout.dialog_chooser);
 
       ImageView cameraView = dialog.findViewById(R.id.dialog_camera_image_view);
@@ -287,27 +287,31 @@ private void initFab(){
 
       });
       galleryView.setOnClickListener(view12 -> {
-          launchGallery();
+        launchGallery();
       });
       dialog.show();
     });
-}
+  }
+
   private void getMovieListByTypeApi(String type) {
     movieListViewModel.getMovieListByTypeApi(type, 1);
   }
-  private void getMovieListFromSearch(String query){
-    movieListViewModel.getMovieListFromSearchApi(query,1);
+
+  private void getMovieListFromSearch(String query) {
+    movieListViewModel.getMovieListFromSearchApi(query, 1);
   }
-  private void launchGallery(){
+
+  private void launchGallery() {
     Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
     intent.setType(Constants.GALLERY_INTENT_TYPE);
-    intent.putExtra(Intent.EXTRA_LOCAL_ONLY,true);
-      startActivityForResult(Intent.createChooser(intent, "Complete Action Using"),
-          REQUEST_PHOTO_PICKER);
+    intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+    startActivityForResult(Intent.createChooser(intent, "Complete Action Using"),
+        REQUEST_PHOTO_PICKER);
 
   }
-  private void launchCamera(){
-    Intent cameraIntent =new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+  private void launchCamera() {
+    Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
     if (cameraIntent.resolveActivity(getPackageManager()) != null) {
       // Create the File where the photo should go
       File photoFile = null;
@@ -331,8 +335,10 @@ private void initFab(){
 
     }
   }
+
   /**
    * Method for creating request manager for recycler view
+   *
    * @return RequestManager (Glide) to be used in recycler view adapter
    */
   private RequestManager initGlide() {
@@ -347,10 +353,10 @@ private void initFab(){
 
   @Override
   public void onClickItem(Movie movie) {
-    Log.d(TAG, "MainActivity: movieId"+movie.getId());
-    Log.d(TAG, "MainActivity: movieId"+movie.getPosterPath());
-    Intent intent = new Intent(MovieListActivity.this,MovieDetailActivity.class);
-    intent.putExtra(Constants.MOVIE_LIST_INTENT,movie);
+    Log.d(TAG, "MainActivity: movieId" + movie.getId());
+    Log.d(TAG, "MainActivity: movieId" + movie.getPosterPath());
+    Intent intent = new Intent(MovieListActivity.this, MovieDetailActivity.class);
+    intent.putExtra(Constants.MOVIE_LIST_INTENT, movie);
     startActivity(intent);
   }
 

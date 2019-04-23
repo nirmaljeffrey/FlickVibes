@@ -2,7 +2,8 @@ package com.nirmal.jeffrey.flickvibes.util;
 
 public final class Constants {
 
-private Constants(){ }
+
+  private Constants(){ }
 
 public static final String MOVIE_LIST_INTENT ="movie_parcel";
 public static final String GALLERY_ACTIVITY_INTENT="gallery_image";
@@ -11,7 +12,7 @@ public static final String GALLERY_INTENT_TYPE="image/jpeg";
 public static final String EMOTION_ACTIVITY_INTENT="emotion_intent";
 public static final String EMOTION_BUNDLE_KEY="emotion_bundle";
 public static final String EMOTION_DIALOG_TAG="emotion_dialog";
-
+public static final String EMOTION_MOVIE_LIST_INTENT = "emotion_movie_list_intent";
 
 
 //Emotion Detector probabilities

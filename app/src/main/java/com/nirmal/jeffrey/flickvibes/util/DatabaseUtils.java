@@ -8,7 +8,7 @@ public final class DatabaseUtils {
   private DatabaseUtils() {
   }
 
-  public static SimpleSQLiteQuery getSQLiteQuery(String type, int pageNumber) {
+  public static SimpleSQLiteQuery getMovieListQuery(String type, int pageNumber) {
 
     switch (type) {
       case NetworkUtils.POPULAR_MOVIE_PATH:
@@ -39,7 +39,8 @@ public final class DatabaseUtils {
   }
 
 
-  public static void setMovieType(String type, Movie movie) {
+
+  public static void setMovieTypeInPOJO(String type, Movie movie) {
     switch (type) {
       case NetworkUtils.POPULAR_MOVIE_PATH:
         movie.setPopular(true);

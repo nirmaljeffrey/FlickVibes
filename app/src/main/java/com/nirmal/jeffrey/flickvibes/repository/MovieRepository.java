@@ -28,6 +28,7 @@ import com.nirmal.jeffrey.flickvibes.network.response.ReviewListResponse;
 import com.nirmal.jeffrey.flickvibes.network.response.TrailerListResponse;
 import com.nirmal.jeffrey.flickvibes.util.DatabaseUtils;
 import com.nirmal.jeffrey.flickvibes.util.NetworkBoundResource;
+import com.nirmal.jeffrey.flickvibes.util.NetworkUtils;
 import com.nirmal.jeffrey.flickvibes.util.Resource;
 import java.util.List;
 
@@ -67,12 +68,23 @@ public class MovieRepository {
       protected void saveCallResult(@NonNull MovieListResponse item) {
 
         if (item.getMovieList() != null) {//if apiKey is expired the movieList will be null
-          List<Movie> movieList = item.getMovieList();
 
-          for (Movie movie : movieList) {
-            DatabaseUtils.setMovieType(type, movie);
+          for (Movie movie : item.getMovieList()) {
+            DatabaseUtils.setMovieTypeInPOJO(type, movie);
           }
-          movieDao.insertMovies(movieList);
+          Movie[] movies = new Movie[item.getMovieList().size()];
+          int index = 0;
+          for (long rowId : movieDao
+              .insertMovies((Movie[]) (item.getMovieList().toArray(movies)))) {
+            if (rowId == -1) {
+              Movie movie = movies[index];
+              // if the movies already exists, update them
+
+              setMovieListTypeInDB(type,movie.getId());
+            }
+            index++;
+
+          }
         }
       }
 
@@ -85,7 +97,7 @@ public class MovieRepository {
       @Override
       protected LiveData<List<Movie>> loadFromDb() {
 
-        SimpleSQLiteQuery query = DatabaseUtils.getSQLiteQuery(type, pageNumber);
+        SimpleSQLiteQuery query = DatabaseUtils.getMovieListQuery(type, pageNumber);
         Log.d(TAG, "loadFromDb: Sql query" + query.getSql());
         return movieDao.getMoviesByType(query);
 
@@ -100,6 +112,52 @@ public class MovieRepository {
       }
     }.getAsLiveData();
 
+  }
+
+  public LiveData<Resource<List<Movie>>> getMoviesByEmotionApi(int genre, int pageNumber) {
+    return new NetworkBoundResource<List<Movie>, MovieListResponse>(AppExecutor.getInstance()) {
+
+      @Override
+      protected void saveCallResult(@NonNull MovieListResponse item) {
+
+        if (item.getMovieList() != null) {//if apiKey is expired the movieList will be null
+          List<Movie> movieList = item.getMovieList();
+          for (Movie movie : movieList) {
+            movie.setGenre(genre);
+          }
+          Movie[] movies = new Movie[item.getMovieList().size()];
+          int index = 0;
+          for (long rowId : movieDao
+              .insertMovies((Movie[]) (item.getMovieList().toArray(movies)))) {
+            if (rowId == -1) {
+              Movie movie = movies[index];
+              // if the movies already exists, update them
+              movieDao.updateMovieGenre(genre, movie.getId());
+
+            }
+            index++;
+          }
+
+        }
+      }
+
+      @Override
+      protected boolean shouldFetch(@Nullable List<Movie> data) {
+        return true;
+      }
+
+      @NonNull
+      @Override
+      protected LiveData<List<Movie>> loadFromDb() {
+        return movieDao.getMovieListByEmotion(genre);
+      }
+
+      @NonNull
+      @Override
+      protected LiveData<ApiResponse<MovieListResponse>> createCall() {
+        return WebServiceGenerator.getMovieApi().getMoviesListByEmotion(genre, pageNumber);
+      }
+    }.getAsLiveData();
   }
 
   public LiveData<Resource<List<Movie>>> searchMoviesApi(String query, int pageNumber) {
@@ -288,6 +346,7 @@ public class MovieRepository {
 
   }
 
+
   public void setMovieAsFavorite(int movieId) {
     appExecutor.diskIO().execute(() -> movieDao.setMovieAsFavorite(movieId));
 
@@ -307,6 +366,28 @@ public class MovieRepository {
   }
 
 
+  private void setMovieListTypeInDB(String type, int id) {
+    switch (type) {
+      case NetworkUtils.POPULAR_MOVIE_PATH:
+        movieDao.updateTopRatedMovie(id);
+        break;
+      case NetworkUtils.TOP_RATER_MOVIE_PATH:
+        movieDao.updateTopRatedMovie(id);
+        break;
+      case NetworkUtils.UPCOMING_MOVIE_PATH:
+        movieDao.updateUpcomingMovie(id);
+        break;
+      case NetworkUtils.NOW_PLAYING_MOVIE_PATH:
+        movieDao.updateNowPlayingMovie(id);
+        break;
+
+      default:
+        throw new IllegalArgumentException(
+            "The movieList should of four types - popular, topRated, upcoming, nowPlaying");
+
+    }
+
+  }
 
 
 }

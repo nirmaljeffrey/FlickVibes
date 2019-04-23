@@ -61,7 +61,8 @@ private void executeSearch(){
         if (listResource.data!=null){
           if (listResource.data.size()==0){
 
-            moviesFromSearch.setValue(new Resource<List<Movie>>(Status.ERROR,listResource.data,QUERY_EXHAUSTED ));
+            moviesFromSearch.setValue(
+                new Resource<>(Status.ERROR, listResource.data, QUERY_EXHAUSTED));
           }
         }
           moviesFromSearch.removeSource(moviesResults);

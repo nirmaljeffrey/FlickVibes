@@ -254,10 +254,16 @@ private boolean isFavorite;
 
 
   private void getIncomingIntent(){
-    if(getIntent().hasExtra(Constants.MOVIE_LIST_INTENT)){
-       movie= getIntent().getParcelableExtra(Constants.MOVIE_LIST_INTENT);
-      Log.d(TAG, "movieDetail: movieId"+movie.getId());
-      Log.d(TAG, "movieDetail: movieId"+movie.getPosterPath());
+    if(getIntent()!=null) {
+      if (getIntent().hasExtra(Constants.MOVIE_LIST_INTENT)) {
+        movie = getIntent().getParcelableExtra(Constants.MOVIE_LIST_INTENT);
+
+      }else if (getIntent().hasExtra(Constants.EMOTION_MOVIE_LIST_INTENT)){
+        movie = getIntent().getParcelableExtra(Constants.EMOTION_MOVIE_LIST_INTENT);
+
+      }
+      Log.d(TAG, "movieDetail: movieId" + movie.getId());
+      Log.d(TAG, "movieDetail: movieId" + movie.getPosterPath());
       subscribeObservers(movie.getId());
       initFavoriteFab(movie.getId());
     }
