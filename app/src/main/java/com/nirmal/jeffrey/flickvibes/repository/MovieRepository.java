@@ -28,7 +28,6 @@ import com.nirmal.jeffrey.flickvibes.network.response.ReviewListResponse;
 import com.nirmal.jeffrey.flickvibes.network.response.TrailerListResponse;
 import com.nirmal.jeffrey.flickvibes.util.DatabaseUtils;
 import com.nirmal.jeffrey.flickvibes.util.NetworkBoundResource;
-import com.nirmal.jeffrey.flickvibes.util.NetworkUtils;
 import com.nirmal.jeffrey.flickvibes.util.Resource;
 import java.util.List;
 
@@ -80,7 +79,7 @@ public class MovieRepository {
               Movie movie = movies[index];
               // if the movies already exists, update them
 
-              setMovieListTypeInDB(type,movie.getId());
+              DatabaseUtils.setMovieListTypeInDB(type, movie.getId(), movieDao);
             }
             index++;
 
@@ -364,32 +363,7 @@ public class MovieRepository {
     return movieDao.getFavoriteMovie(movieId);
 
   }
-
-
-  private void setMovieListTypeInDB(String type, int id) {
-    switch (type) {
-      case NetworkUtils.POPULAR_MOVIE_PATH:
-        movieDao.updateTopRatedMovie(id);
-        break;
-      case NetworkUtils.TOP_RATER_MOVIE_PATH:
-        movieDao.updateTopRatedMovie(id);
-        break;
-      case NetworkUtils.UPCOMING_MOVIE_PATH:
-        movieDao.updateUpcomingMovie(id);
-        break;
-      case NetworkUtils.NOW_PLAYING_MOVIE_PATH:
-        movieDao.updateNowPlayingMovie(id);
-        break;
-
-      default:
-        throw new IllegalArgumentException(
-            "The movieList should of four types - popular, topRated, upcoming, nowPlaying");
-
-    }
-
-  }
-
-
 }
+
 
 

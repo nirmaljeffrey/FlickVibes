@@ -41,6 +41,9 @@
   <string name="movie_recommendation_button">Get Movie Recommendations</string>
   <!-- EmotionMoviesActivity -->
   <string name="emotion_movie_activity_title">Movies for %s feelings</string>
+  <!-- widget -->
+  <string name="empty_favorite_movies_widget">No favorites movies found</string>
+  <string name="favorite_movies_title_widget">Favorite Movies</string>
 
   <!-- Content Description -->
   <string name="poster_image_view_info">Movie Poster</string>
@@ -55,5 +58,5 @@
   <string name="face_image_view_info">Image to detected using machine learning</string>
   <string name="emotion_image_info">User\'s emotion results</string>
   <string name="emotions_successfully_detected">Emotions Detected</string>
-
+  <string name="appwidget_favorite_icon">Favorite movie</string>
 </resources>

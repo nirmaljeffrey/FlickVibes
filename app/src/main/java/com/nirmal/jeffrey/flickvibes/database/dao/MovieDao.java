@@ -54,6 +54,10 @@ public  interface MovieDao {
   @Query("SELECT * FROM movie_table WHERE is_favorite = 1")
  LiveData<List<Movie>> getFavoriteMovieList();
 
+ //Get favorite movie list for app widget
+ @Query("SELECT * FROM movie_table WHERE is_favorite = 1")
+ List<Movie> getFavoriteMoviesForWidget();
+
   //Marking a movie as favorite
   @Query("UPDATE movie_table SET is_favorite = 1 WHERE id=:movieId")
   void setMovieAsFavorite(int movieId);
@@ -70,6 +74,8 @@ LiveData<Movie> getFavoriteMovie(int movieId);
  //Get movies list by emotion
  @Query("SELECT * FROM movie_table WHERE genre=:genre")
  LiveData<List<Movie>> getMovieListByEmotion(int genre);
+
+
 
 
 

@@ -1,6 +1,7 @@
 package com.nirmal.jeffrey.flickvibes.util;
 
 import androidx.sqlite.db.SimpleSQLiteQuery;
+import com.nirmal.jeffrey.flickvibes.database.dao.MovieDao;
 import com.nirmal.jeffrey.flickvibes.model.Movie;
 
 public final class DatabaseUtils {
@@ -57,6 +58,30 @@ public final class DatabaseUtils {
       default:
         throw new IllegalArgumentException(
             "The movieList should of four types - popular, topRated, upcoming, nowPlaying");
+    }
+
+  }
+
+
+  public static void setMovieListTypeInDB(String type, int id, MovieDao movieDao) {
+    switch (type) {
+      case NetworkUtils.POPULAR_MOVIE_PATH:
+        movieDao.updateTopRatedMovie(id);
+        break;
+      case NetworkUtils.TOP_RATER_MOVIE_PATH:
+        movieDao.updateTopRatedMovie(id);
+        break;
+      case NetworkUtils.UPCOMING_MOVIE_PATH:
+        movieDao.updateUpcomingMovie(id);
+        break;
+      case NetworkUtils.NOW_PLAYING_MOVIE_PATH:
+        movieDao.updateNowPlayingMovie(id);
+        break;
+
+      default:
+        throw new IllegalArgumentException(
+            "The movieList should of four types - popular, topRated, upcoming, nowPlaying");
+
     }
 
   }
