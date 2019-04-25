@@ -3,12 +3,14 @@ package com.nirmal.jeffrey.flickvibes.widget;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 import com.nirmal.jeffrey.flickvibes.R;
 import com.nirmal.jeffrey.flickvibes.database.MovieDatabase;
 import com.nirmal.jeffrey.flickvibes.database.dao.MovieDao;
 import com.nirmal.jeffrey.flickvibes.model.Movie;
+import com.nirmal.jeffrey.flickvibes.util.Constants;
 import com.nirmal.jeffrey.flickvibes.util.NetworkUtils;
 import com.nirmal.jeffrey.flickvibes.util.WidgetUtils;
 import java.util.ArrayList;
@@ -22,6 +24,8 @@ public class MovieWidgetService extends RemoteViewsService {
   }
 
   class MovieWidgetItemFactory implements RemoteViewsFactory{
+
+    private static final String TAG = "MovieWidgetItemFactory";
 private Context context;
 private int appWidgetId;
 private ArrayList<Movie> movies= new ArrayList<>();
@@ -39,6 +43,8 @@ MovieWidgetItemFactory( Context context,Intent intent){
     public void onDataSetChanged() {
      MovieDao movieDao =MovieDatabase.getInstance(context).getMovieDao();
       movies = new ArrayList<>(movieDao.getFavoriteMoviesForWidget());
+      Log.d(TAG, "onDataSetChanged: data is passed to the widget ");
+
     }
 
     @Override
@@ -54,19 +60,27 @@ MovieWidgetItemFactory( Context context,Intent intent){
 
     @Override
     public RemoteViews getViewAt(int i) {
+      Movie movie = movies.get(i);
+      RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
+          R.layout.movie_widget_item);
 
-  Movie movie =movies.get(i);
-      String imageUrl = NetworkUtils.buildMovieImageURLString(NetworkUtils.POSTER_BASE_URL,movie.getPosterPath());
 
-      RemoteViews remoteViews = new RemoteViews(context.getPackageName(),R.layout.movie_widget_item);
-      try {
-        WidgetUtils.loadImageIntoStackView(context,imageUrl,remoteViews);
-      } catch (ExecutionException e) {
-        e.printStackTrace();
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      }
-      remoteViews.setTextViewText(R.id.rating_widget_text_view,movie.getVoteAverage().toString());
+
+        String imageUrl = NetworkUtils
+            .buildMovieImageURLString(NetworkUtils.POSTER_BASE_URL, movie.getPosterPath());
+        try {
+          WidgetUtils.loadImageIntoStackView(context, imageUrl, remoteViews);
+
+        } catch (ExecutionException e) {
+          e.printStackTrace();
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+        remoteViews
+            .setTextViewText(R.id.rating_widget_text_view, movie.getVoteAverage().toString());
+        Intent fillIntent = new Intent();
+        fillIntent.putExtra(Constants.MOVIE_LIST_INTENT, movie);
+        remoteViews.setOnClickFillInIntent(R.id.movie_linear_layout_widget, fillIntent);
 
 
       return remoteViews;

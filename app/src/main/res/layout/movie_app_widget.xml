@@ -19,7 +19,8 @@
       android:id="@+id/movie_stack_view_widget"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:loopViews="true"/>
+      android:loopViews="true"
+      android:gravity="center"/>
 
     <TextView
       android:id="@+id/empty_widget_Text_view"
