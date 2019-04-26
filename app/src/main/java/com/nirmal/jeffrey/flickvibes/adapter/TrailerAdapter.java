@@ -20,19 +20,25 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerListViewHolder> 
 
 private ArrayList<Trailer> trailerArrayList;
 private RequestManager requestManager;
-public TrailerAdapter(RequestManager requestManager){
+private TrailerClickListener trailerClickListener;
+public TrailerAdapter(RequestManager requestManager,TrailerClickListener trailerClickListener){
+  this.trailerClickListener=trailerClickListener;
   this.requestManager=requestManager;
 }
 public void setTrailerData(ArrayList<Trailer> trailerArrayList){
   this.trailerArrayList=trailerArrayList;
   notifyDataSetChanged();
 }
+public interface TrailerClickListener{
+  void onTrailerVideoClick(Trailer trailer);
+  void onTrailerShareClick(Trailer trailer);
+}
   @NonNull
   @Override
   public TrailerListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
   View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.trailer_list_item,parent,false);
 
-    return new TrailerListViewHolder(view);
+    return new TrailerListViewHolder(view,trailerClickListener,trailerArrayList);
   }
 
   @Override
@@ -61,9 +67,21 @@ public void setTrailerData(ArrayList<Trailer> trailerArrayList){
     TextView trailerTitleTextView;
 @BindView(R.id.trailer_site_label)
     TextView trailerSite;
-  TrailerListViewHolder(@NonNull View itemView) {
+@BindView(R.id.trailer_share_button)
+    ImageView trailerShareButton;
+  TrailerListViewHolder(@NonNull View itemView,TrailerClickListener trailerClickListener,ArrayList<Trailer> trailerArrayList) {
     super(itemView);
     ButterKnife.bind(this,itemView);
+    itemView.setOnClickListener(view -> {
+      int position = getAdapterPosition();
+      Trailer trailer =trailerArrayList.get(position);
+      trailerClickListener.onTrailerVideoClick(trailer);
+    });
+    trailerShareButton.setOnClickListener(view -> {
+      int position = getAdapterPosition();
+      Trailer trailer = trailerArrayList.get(position);
+      trailerClickListener.onTrailerShareClick(trailer);
+    });
   }
 
 }

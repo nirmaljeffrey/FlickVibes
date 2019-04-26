@@ -30,10 +30,11 @@ public final class NetworkUtils {
   public static final String NOW_PLAYING_MOVIE_PATH="now_playing";
 
   // Base url used for sharing trailer video links online
-  private static final String MOVIE_YOUTUBE_TRAILER_URL = "https://www.youtube.com/watch?v=";
-  public static final String MOVIE_TRAILER_KEY_PARAM = "v";
+  private static final String MOVIE_YOUTUBE_WEB_TRAILER_URL = "https://www.youtube.com/watch?v=";
+  private static final String MOVIE_YOUTUBE_APP_TRAILER_URL="vnd.youtube:";
   private static final String MOVIE_TRAILER_THUMBNAIL_URL_PART_ONE = "https://img.youtube.com/vi/";
   private static final String MOVIE_TRAILER_THUMBNAIL_URL_PART_TWO = "/0.jpg";
+  public static final String TRAILER_MIME_TYPE = "text/plain";
 
 
 
@@ -58,9 +59,17 @@ public final class NetworkUtils {
   /**
    * @return the url link to access the trailer video for the movies from youtube.com.
    */
-  public static String buildTrailerVideoUrl(String key){
-    return MOVIE_YOUTUBE_TRAILER_URL+key;
+  public static Uri buildYoutubeAppVideoUrl(String key){
+    return Uri.parse(MOVIE_YOUTUBE_APP_TRAILER_URL+key);
   }
+
+  /**
+   * @return the url link to access the trailer video for the movies from youtube app.
+   */
+  public static Uri buildYoutubeWebVideoUrl(String key){
+    return Uri.parse(MOVIE_YOUTUBE_WEB_TRAILER_URL+key);
+  }
+
 
 
 }

@@ -14,6 +14,9 @@
   <string name="menu_action_search">Search</string>
   <string name="menu_search_hint">Movie..</string>
 
+  <!-- MovieDetailActivity -->
+  <string name="trailer_share_intent_title">Share trailer using</string>
+
   <!-- MovieListActivity Dialog -->
   <string name="dialog_action_camera">Camera</string>
   <string name="dialog_action_gallery">Gallery</string>

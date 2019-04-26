@@ -1,5 +1,7 @@
 package com.nirmal.jeffrey.flickvibes.ui.activity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +24,7 @@ import com.nirmal.jeffrey.flickvibes.adapter.CastAdapter;
 import com.nirmal.jeffrey.flickvibes.adapter.GenreAdapter;
 import com.nirmal.jeffrey.flickvibes.adapter.ReviewAdapter;
 import com.nirmal.jeffrey.flickvibes.adapter.TrailerAdapter;
+import com.nirmal.jeffrey.flickvibes.adapter.TrailerAdapter.TrailerClickListener;
 import com.nirmal.jeffrey.flickvibes.model.Genre;
 import com.nirmal.jeffrey.flickvibes.model.Movie;
 import com.nirmal.jeffrey.flickvibes.model.Trailer;
@@ -30,7 +33,7 @@ import com.nirmal.jeffrey.flickvibes.util.NetworkUtils;
 import com.nirmal.jeffrey.flickvibes.viewmodel.MovieDetailViewModel;
 import java.util.ArrayList;
 
-public class MovieDetailActivity extends BaseActivity {
+public class MovieDetailActivity extends BaseActivity implements TrailerClickListener {
 
   private static final String TAG = "MovieId";
   @BindView(R.id.movie_detail_coordinator_layout)
@@ -89,7 +92,7 @@ private boolean isFavorite;
     castList.setLayoutManager(new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false));
     castList.setAdapter(castAdapter);
     //Trailer
-    trailerAdapter=new TrailerAdapter(initGlide());
+    trailerAdapter=new TrailerAdapter(initGlide(),MovieDetailActivity.this);
 
     trailerList.setLayoutManager(new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false));
     trailerList.setAdapter(trailerAdapter);
@@ -312,5 +315,27 @@ private boolean isFavorite;
   }
   private void toastMessage(String message){
     Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
+  }
+
+  @Override
+  public void onTrailerVideoClick(Trailer trailer) {
+    Uri youtubeAppUri = NetworkUtils.buildYoutubeAppVideoUrl(trailer.getKey());
+    Intent youtubeAppIntent = new Intent(Intent.ACTION_VIEW,youtubeAppUri);
+    Uri youtubeWebUri = NetworkUtils.buildYoutubeWebVideoUrl(trailer.getKey());
+    Intent youtubeWebIntent = new Intent(Intent.ACTION_VIEW, youtubeWebUri);
+    if (youtubeAppIntent.resolveActivity(getPackageManager()) != null) {
+      startActivity(youtubeAppIntent);
+    }else {
+      startActivity(youtubeWebIntent);
+    }
+  }
+
+  @Override
+  public void onTrailerShareClick(Trailer trailer) {
+    String youtubeShareUri = NetworkUtils.buildYoutubeWebVideoUrl(trailer.getKey()).toString();
+    Intent shareIntent = new Intent(Intent.ACTION_SEND);
+    shareIntent.setType(NetworkUtils.TRAILER_MIME_TYPE);
+    shareIntent.putExtra(Intent.EXTRA_TEXT, youtubeShareUri);
+    startActivity(Intent.createChooser(shareIntent, getString(R.string.trailer_share_intent_title)));
   }
 }
