@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
@@ -46,7 +47,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class MovieListActivity extends BaseActivity implements OnMovieItemClickLister {
 
@@ -134,25 +134,7 @@ public class MovieListActivity extends BaseActivity implements OnMovieItemClickL
   }
 
 
-  @Override
-  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-      @NonNull int[] grantResults) {
-    // Called when you request permission to read and write to external storage
-    switch (requestCode) {
-      case REQUEST_STORAGE_PERMISSION: {
-        if (grantResults.length > 0
-            && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-          // If you get permission, launch the camera
-          launchCamera();
-        } else {
-          // If you do not get permission, show a Toast
-          Toast.makeText(this, R.string.dialog_permission_denied, Toast.LENGTH_SHORT).show();
-        }
-        break;
-      }
-    }
 
-  }
 
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
@@ -264,8 +246,11 @@ public class MovieListActivity extends BaseActivity implements OnMovieItemClickL
   private void initFab() {
     predictionFab.setOnClickListener(view -> {
       Dialog dialog = new Dialog(this);
-      Objects.requireNonNull(dialog.getWindow())
-          .setBackgroundDrawableResource(android.R.color.transparent);
+      Window window =dialog.getWindow();
+      if(window!=null) {
+        //Set transparent background
+        window.setBackgroundDrawableResource(android.R.color.transparent);
+      }
       dialog.setContentView(R.layout.dialog_chooser);
 
       ImageView cameraView = dialog.findViewById(R.id.dialog_camera_image_view);
@@ -292,6 +277,7 @@ public class MovieListActivity extends BaseActivity implements OnMovieItemClickL
       dialog.show();
     });
   }
+
 
   private void getMovieListByTypeApi(String type) {
     movieListViewModel.getMovieListByTypeApi(type, 1);

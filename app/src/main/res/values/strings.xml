@@ -21,6 +21,7 @@
   <string name="dialog_action_camera">Camera</string>
   <string name="dialog_action_gallery">Gallery</string>
   <string name="dialog_permission_denied">Permission denied</string>
+  <string name="launch_gallery">Complete action using</string>
 
 
   <!--activity_detail_movie.xml -->
