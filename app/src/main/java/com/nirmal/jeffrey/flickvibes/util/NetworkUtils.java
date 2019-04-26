@@ -36,7 +36,9 @@ public final class NetworkUtils {
   private static final String MOVIE_TRAILER_THUMBNAIL_URL_PART_TWO = "/0.jpg";
   public static final String TRAILER_MIME_TYPE = "text/plain";
 
-
+// Base Url for Cast
+ private static final String MOVIE_CAST_WEB_URL= "https://www.google.com/search?q=";
+ private static final String MOVIE_CAST_WEB_PARAMETER=" movies";
 
 
 
@@ -68,6 +70,13 @@ public final class NetworkUtils {
    */
   public static Uri buildYoutubeWebVideoUrl(String key){
     return Uri.parse(MOVIE_YOUTUBE_WEB_TRAILER_URL+key);
+  }
+
+  /**
+   * @return the url link to access the Cast for the movies from google.com.
+   */
+  public static Uri buildCastWebUrl(String castName){
+    return Uri.parse(MOVIE_CAST_WEB_URL+castName+MOVIE_CAST_WEB_PARAMETER);
   }
 
 

@@ -74,13 +74,19 @@ public interface TrailerClickListener{
     ButterKnife.bind(this,itemView);
     itemView.setOnClickListener(view -> {
       int position = getAdapterPosition();
-      Trailer trailer =trailerArrayList.get(position);
-      trailerClickListener.onTrailerVideoClick(trailer);
+      if(position!=RecyclerView.NO_POSITION) {
+        if (trailerArrayList != null && trailerArrayList.size() > 0) {
+          trailerClickListener.onTrailerVideoClick(trailerArrayList.get(position));
+        }
+      }
     });
     trailerShareButton.setOnClickListener(view -> {
       int position = getAdapterPosition();
-      Trailer trailer = trailerArrayList.get(position);
-      trailerClickListener.onTrailerShareClick(trailer);
+      if(position!=RecyclerView.NO_POSITION) {
+        if (trailerArrayList != null && trailerArrayList.size() > 0) {
+          trailerClickListener.onTrailerShareClick(trailerArrayList.get(position));
+        }
+      }
     });
   }
 

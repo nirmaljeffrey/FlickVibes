@@ -19,8 +19,10 @@ import java.util.ArrayList;
 public class CastAdapter extends RecyclerView.Adapter<CastListViewHolder> {
 private ArrayList<Cast> castArrayList;
 private RequestManager requestManager;
-public CastAdapter(RequestManager requestManager){
+private CastClickListener castClickListener;
+public CastAdapter(RequestManager requestManager, CastClickListener castClickListener){
   this.requestManager=requestManager;
+  this.castClickListener = castClickListener;
 }
 public void setCastData(ArrayList<Cast> castArrayList){
   this.castArrayList=castArrayList;
@@ -30,7 +32,7 @@ public void setCastData(ArrayList<Cast> castArrayList){
   @Override
   public CastListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
   View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cast_list_item,parent,false);
-  return new CastListViewHolder(view);
+  return new CastListViewHolder(view, castClickListener,castArrayList);
   }
 
   @Override
@@ -55,9 +57,22 @@ public void setCastData(ArrayList<Cast> castArrayList){
     ImageView castImage;
 @BindView(R.id.cast_text_view)
     TextView castName;
-  CastListViewHolder(@NonNull View itemView) {
+  CastListViewHolder(@NonNull View itemView, CastClickListener castClickListener,ArrayList<Cast> casts) {
     super(itemView);
     ButterKnife.bind(this,itemView);
+    itemView.setOnClickListener(view -> {
+      int position= getAdapterPosition();
+      if(position!=RecyclerView.NO_POSITION) {
+        if (casts != null && casts.size() > 0) {
+          castClickListener.onCastItemClick(casts.get(position));
+
+        }
+      }
+    });
   }
+}
+
+public interface CastClickListener {
+  void onCastItemClick(Cast cast);
 }
 }

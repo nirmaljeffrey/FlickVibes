@@ -21,10 +21,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.nirmal.jeffrey.flickvibes.R;
 import com.nirmal.jeffrey.flickvibes.adapter.CastAdapter;
+import com.nirmal.jeffrey.flickvibes.adapter.CastAdapter.CastClickListener;
 import com.nirmal.jeffrey.flickvibes.adapter.GenreAdapter;
 import com.nirmal.jeffrey.flickvibes.adapter.ReviewAdapter;
 import com.nirmal.jeffrey.flickvibes.adapter.TrailerAdapter;
 import com.nirmal.jeffrey.flickvibes.adapter.TrailerAdapter.TrailerClickListener;
+import com.nirmal.jeffrey.flickvibes.model.Cast;
 import com.nirmal.jeffrey.flickvibes.model.Genre;
 import com.nirmal.jeffrey.flickvibes.model.Movie;
 import com.nirmal.jeffrey.flickvibes.model.Trailer;
@@ -33,7 +35,8 @@ import com.nirmal.jeffrey.flickvibes.util.NetworkUtils;
 import com.nirmal.jeffrey.flickvibes.viewmodel.MovieDetailViewModel;
 import java.util.ArrayList;
 
-public class MovieDetailActivity extends BaseActivity implements TrailerClickListener {
+public class MovieDetailActivity extends BaseActivity implements TrailerClickListener,
+    CastClickListener {
 
   private static final String TAG = "MovieId";
   @BindView(R.id.movie_detail_coordinator_layout)
@@ -88,7 +91,7 @@ private boolean isFavorite;
     reviewList.setAdapter(reviewAdapter);
     reviewList.setLayoutManager(new LinearLayoutManager(this,RecyclerView.VERTICAL,false));
     //Cast
-    castAdapter=new CastAdapter(initGlide());
+    castAdapter=new CastAdapter(initGlide(),MovieDetailActivity.this);
     castList.setLayoutManager(new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false));
     castList.setAdapter(castAdapter);
     //Trailer
@@ -337,5 +340,16 @@ private boolean isFavorite;
     shareIntent.setType(NetworkUtils.TRAILER_MIME_TYPE);
     shareIntent.putExtra(Intent.EXTRA_TEXT, youtubeShareUri);
     startActivity(Intent.createChooser(shareIntent, getString(R.string.trailer_share_intent_title)));
+  }
+
+  @Override
+  public void onCastItemClick(Cast cast) {
+Uri castUri = NetworkUtils.buildCastWebUrl(cast.getCastName());
+Intent castIntent = new Intent(Intent.ACTION_VIEW,castUri);
+try{
+  startActivity(castIntent);
+}catch (Exception e){
+  e.printStackTrace();
+}
   }
 }
