@@ -39,6 +39,11 @@
   <string name="happy_emotion">You are feeling happy</string>
   <string name="sad_emotion">You are feeling sad</string>
   <string name="normal_emotion">You are feeling normal</string>
+  <string name="emotion_error">Error</string>
+  <string name="no_faces_detected">No faces detected</string>
+  <string name="many_faces_detected">More than one face detected</string>
+  <string name="emotions_successfully_detected">Emotions detected</string>
+  <string name="go_back_button">Go Back</string>
   <!-- MoviePredictionsActivity -->
   <string name="error">Error finding image</string>
   <!-- dialog_emotion_result -->
@@ -61,6 +66,6 @@
   <string name="dialog_gallery_info">Choose Image from gallery</string>
   <string name="face_image_view_info">Image to detected using machine learning</string>
   <string name="emotion_image_info">User\'s emotion results</string>
-  <string name="emotions_successfully_detected">Emotions Detected</string>
   <string name="appwidget_favorite_icon">Favorite movie</string>
+  <string name="emotion_error_image_info">Emotion detection failed</string>
 </resources>

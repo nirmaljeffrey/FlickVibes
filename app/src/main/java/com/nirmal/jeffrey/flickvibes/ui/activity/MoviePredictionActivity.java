@@ -21,6 +21,7 @@ import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetector;
 import com.nirmal.jeffrey.flickvibes.R;
 import com.nirmal.jeffrey.flickvibes.emotiondetector.EmotionDetector;
 import com.nirmal.jeffrey.flickvibes.emotiondetector.Emotions;
+import com.nirmal.jeffrey.flickvibes.ui.fragment.EmotionErrorFragment;
 import com.nirmal.jeffrey.flickvibes.ui.fragment.EmotionResultFragment;
 import com.nirmal.jeffrey.flickvibes.util.BitmapUtils;
 import com.nirmal.jeffrey.flickvibes.util.Constants;
@@ -30,6 +31,8 @@ import java.util.List;
 public class MoviePredictionActivity extends BaseActivity {
 
   private static final String TAG = "MoviePredictionActivity";
+  private static final int NO_FACES_DETECTED=1;
+  private static final int MORE_THAN_ONE_FACE_DETECTED=2;
   @BindView(R.id.face_image_view)
   ImageView faceImageView;
   @BindView(R.id.clear_button)
@@ -98,16 +101,16 @@ public class MoviePredictionActivity extends BaseActivity {
           firebaseVisionFaces -> {
 
             if (firebaseVisionFaces.size() == 0) {
-             displayActivityLayout();
-              Toast.makeText(context, "No faces detected", Toast.LENGTH_SHORT)
-                  .show();
+
+              showProgressBar(false);
+              showEmotionErrorDialog(NO_FACES_DETECTED);
 
             }
 
             if (firebaseVisionFaces.size() > 1) {
-              displayActivityLayout();
-              Toast.makeText(context, "More than one face detected",
-                  Toast.LENGTH_SHORT).show();
+
+              showProgressBar(false);
+              showEmotionErrorDialog(MORE_THAN_ONE_FACE_DETECTED);
 
             } else if (firebaseVisionFaces.size() == 1) {
               FirebaseVisionFace face = firebaseVisionFaces.get(0);
@@ -137,6 +140,12 @@ public class MoviePredictionActivity extends BaseActivity {
     EmotionResultFragment emotionResultFragment = EmotionResultFragment.getInstance(emotions);
     emotionResultFragment.show(fragmentManager, Constants.EMOTION_DIALOG_TAG);
     Log.d(TAG, "showEmotionSuccessDialog: fragment initiated from activity");
+  }
+
+  private void showEmotionErrorDialog(int errorValue){
+    FragmentManager fragmentManager= getSupportFragmentManager();
+    EmotionErrorFragment fragment =EmotionErrorFragment.getInstance(errorValue);
+    fragment.show(fragmentManager,Constants.EMOTION_ERROR_DIALOG_TAG);
   }
 private void displayLoading(){
     showActivityLayout(false);

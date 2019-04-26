@@ -47,6 +47,7 @@ private Unbinder unbinder;
     return fragment;
   }
 
+
   @Override
   public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -59,7 +60,7 @@ private Unbinder unbinder;
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.dialog_emotion_result,container);
-    ButterKnife.bind(this,view);
+   unbinder= ButterKnife.bind(this,view);
     Log.d(TAG, "onCreateView: showEmotionSuccessDialog");
     if(getArguments()!=null){
      Emotions emotion = (Emotions)getArguments().get(Constants.EMOTION_BUNDLE_KEY);

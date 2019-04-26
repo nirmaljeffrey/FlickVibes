@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
+
+  <com.google.android.material.appbar.AppBarLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:backgroundTint="@android:color/white"
+    app:elevation="0dp">
+
+    <androidx.appcompat.widget.Toolbar
+      android:id="@+id/emotion_error_toolbar"
+      android:layout_width="match_parent"
+      android:layout_height="?attr/actionBarSize"
+      android:paddingEnd="16dp"
+      android:paddingStart="6dp"
+      app:navigationIcon="@drawable/ic_arrow_back_24dp" />
+
+  </com.google.android.material.appbar.AppBarLayout>
+
+
+
+  <LinearLayout
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <TextView
+      android:id="@+id/emotion_error_label"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center_horizontal"
+      android:layout_margin="16dp"
+      android:textSize="24sp"
+      android:textStyle="bold"
+      android:text="@string/emotion_error"/>
+    <ImageView
+      android:id="@+id/emotion_error_image_view"
+      android:layout_width="367dp"
+      android:layout_height="270dp"
+      android:layout_marginTop="32dp"
+      android:layout_marginBottom="32dp"
+      android:layout_marginStart="16dp"
+      android:layout_marginEnd="16dp"
+      android:layout_gravity="center_horizontal"
+      android:contentDescription="@string/emotion_error_image_info"
+      tools:src="@drawable/ic_no_faces_detected"/>
+
+    <TextView
+      android:id="@+id/emotion_error_text_view"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_margin="16dp"
+      android:textSize="16sp"
+      android:textStyle="bold"
+      android:layout_gravity="center_horizontal"
+      tools:text="You are feeling sad"/>
+
+    <androidx.cardview.widget.CardView
+      android:id="@+id/go_back_button"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="32dp"
+      android:layout_marginEnd="32dp"
+      android:layout_marginBottom="16dp"
+      android:layout_gravity="center_horizontal"
+      android:layout_marginTop="48dp"
+      app:backgroundTint="@android:color/white"
+      app:cardCornerRadius="24dp"
+      app:cardElevation="4dp"
+      android:foreground="?android:attr/selectableItemBackground">
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_gravity="center"
+        android:text="@string/go_back_button"
+        android:textAllCaps="true"
+        android:textColor="@android:color/black"/>
+    </androidx.cardview.widget.CardView>
+  </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
