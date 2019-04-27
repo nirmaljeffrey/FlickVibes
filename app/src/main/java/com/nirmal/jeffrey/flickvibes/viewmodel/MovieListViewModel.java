@@ -18,6 +18,7 @@ public class MovieListViewModel extends AndroidViewModel {
   private static final String TAG = "MovieListViewModel";
   private static final String QUERY_EXHAUSTED="No More Results";
   private MovieRepository movieRepository;
+  private boolean isViewingSearchResults;
   private MediatorLiveData<Resource<List<Movie>>> moviesByType =new MediatorLiveData<>();
   private MediatorLiveData<Resource<List<Movie>>> moviesFromSearch=new MediatorLiveData<>();
   //Query Extras
@@ -27,6 +28,7 @@ public class MovieListViewModel extends AndroidViewModel {
   private String query;
   public MovieListViewModel(@NonNull Application application) {
     super(application);
+    isViewingSearchResults =false;
     movieRepository=MovieRepository.getInstance(application);
 
   }
@@ -55,6 +57,7 @@ executeSearch();
 }
 
 private void executeSearch(){
+    isViewingSearchResults=true;
     isPerformingQuery=true;
   final LiveData<Resource<List<Movie>>> moviesResults = movieRepository.searchMoviesApi(query,pageNumber);
   moviesFromSearch.addSource(moviesResults, listResource -> {
@@ -103,4 +106,13 @@ private void executeSearch(){
   public LiveData<List<Movie>> getFavoriteMovies(){
     return movieRepository.getFavoriteMovies();
   }
+public boolean onBackPressed(){
+    if(isViewingSearchResults){
+      isViewingSearchResults=false;
+      return false;
+    }
+    return true;
 }
+}
+
+

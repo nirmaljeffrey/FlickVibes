@@ -346,9 +346,13 @@ public class MovieListActivity extends BaseActivity implements OnMovieItemClickL
     startActivity(intent);
   }
 
+  @Override
+  public void onBackPressed() {
+    if(movieListViewModel.onBackPressed()){
+      super.onBackPressed();
+    }
 
-
-
+  }
 
 }
 

@@ -87,7 +87,8 @@ public class MoviePredictionActivity extends BaseActivity {
   private void initDetectFaceButton(Bitmap bitmap) {
     detectFaceButton.setOnClickListener(
         view -> {
-         displayLoading();
+         showActivityLayout(false);
+         showProgressBar(true);
           detectEmotions(MoviePredictionActivity.this, bitmap);
         });
   }
@@ -102,14 +103,14 @@ public class MoviePredictionActivity extends BaseActivity {
 
             if (firebaseVisionFaces.size() == 0) {
 
-              showProgressBar(false);
+            showProgressBar(false);
               showEmotionErrorDialog(NO_FACES_DETECTED);
 
             }
 
             if (firebaseVisionFaces.size() > 1) {
 
-              showProgressBar(false);
+             showProgressBar(false);
               showEmotionErrorDialog(MORE_THAN_ONE_FACE_DETECTED);
 
             } else if (firebaseVisionFaces.size() == 1) {
@@ -117,8 +118,10 @@ public class MoviePredictionActivity extends BaseActivity {
               Emotions emotion = EmotionDetector.getEmotions(face);
               if (emotion != null) {
                 Log.d(TAG, "detectEmotions: Success face detection 1");
-               showProgressBar(false);
+                showProgressBar(false);
                 showEmotionSuccessDialog(emotion);
+
+
               }
 
 
@@ -126,7 +129,9 @@ public class MoviePredictionActivity extends BaseActivity {
           })
           .addOnFailureListener(e -> {
             e.printStackTrace();
-            displayActivityLayout();
+            showProgressBar(false);
+            showActivityLayout(true);
+
             Toast.makeText(context, "Face detection failed",
                 Toast.LENGTH_SHORT).show();
 
@@ -147,16 +152,10 @@ public class MoviePredictionActivity extends BaseActivity {
     EmotionErrorFragment fragment =EmotionErrorFragment.getInstance(errorValue);
     fragment.show(fragmentManager,Constants.EMOTION_ERROR_DIALOG_TAG);
   }
-private void displayLoading(){
-    showActivityLayout(false);
-    showProgressBar(true);
-}
-private void displayActivityLayout(){
-    showProgressBar(false);
-    showActivityLayout(true);
-}
-  private void showActivityLayout(boolean visibility) {
-    moviePredictionLayout.setVisibility(visibility? View.VISIBLE : View.GONE);
+
+
+  public void showActivityLayout(boolean visibility) {
+    moviePredictionLayout.setVisibility(visibility? View.VISIBLE : View.INVISIBLE);
 
   }
 }

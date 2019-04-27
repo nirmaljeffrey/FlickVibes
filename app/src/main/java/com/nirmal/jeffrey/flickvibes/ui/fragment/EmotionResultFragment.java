@@ -20,6 +20,7 @@ import butterknife.Unbinder;
 import com.nirmal.jeffrey.flickvibes.R;
 import com.nirmal.jeffrey.flickvibes.emotiondetector.Emotions;
 import com.nirmal.jeffrey.flickvibes.ui.activity.EmotionMoviesActivity;
+import com.nirmal.jeffrey.flickvibes.ui.activity.MoviePredictionActivity;
 import com.nirmal.jeffrey.flickvibes.util.Constants;
 import java.util.Objects;
 
@@ -94,7 +95,13 @@ private Unbinder unbinder;
     super.onViewCreated(view, savedInstanceState);
     emotionFragmentToolBar.setNavigationOnClickListener(view1 -> {
      dismiss();
+     if(getActivity()!=null) {
+       if (getActivity() instanceof MoviePredictionActivity) {
+         MoviePredictionActivity predictionActivity = (MoviePredictionActivity) getActivity();
+         predictionActivity.showActivityLayout(true);
+       }
 
+     }
     });
 
   }
