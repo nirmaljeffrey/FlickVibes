@@ -76,10 +76,9 @@ public static  EmotionErrorFragment getInstance(int errorValue){
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     emotionErrorToolBar.setNavigationOnClickListener(view1 -> {
-      if(getDialog()!=null){
-        getDialog().dismiss();
+      if(getActivity()!=null) {
+        getActivity().finish();
       }
-
     });
 
   }

@@ -347,5 +347,8 @@ public class MovieListActivity extends BaseActivity implements OnMovieItemClickL
   }
 
 
+
+
+
 }
 

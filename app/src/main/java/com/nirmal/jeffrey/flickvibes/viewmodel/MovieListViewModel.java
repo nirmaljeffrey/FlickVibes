@@ -30,6 +30,10 @@ public class MovieListViewModel extends AndroidViewModel {
     movieRepository=MovieRepository.getInstance(application);
 
   }
+
+
+
+
   public LiveData<Resource<List<Movie>>>getMoviesFromSearch(){
     return moviesFromSearch;
   }

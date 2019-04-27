@@ -24,6 +24,7 @@ import com.nirmal.jeffrey.flickvibes.util.Constants;
 import java.util.Objects;
 
 public class EmotionResultFragment extends DialogFragment {
+
 @BindView(R.id.emotion_result_image_view)
   ImageView emotionResultImage;
 @BindView(R.id.emotion_results_text_view)
@@ -92,9 +93,7 @@ private Unbinder unbinder;
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     emotionFragmentToolBar.setNavigationOnClickListener(view1 -> {
-      if(getDialog()!=null){
-        getDialog().dismiss();
-      }
+     dismiss();
 
     });
 
