@@ -31,6 +31,8 @@ public class EmotionMoviesActivity extends BaseActivity implements OnMovieItemCl
   @BindView(R.id.emotion_error_text_view)
   TextView emotionErrorTextView;
   private MovieAdapter emotionAdapter;
+  private Integer moviePosition;
+  private Movie selectedMovie;
 
   private static final String TAG = "EmotionMoviesActivity";
   @Override
@@ -123,9 +125,24 @@ public void getMoviesByEmotionApi(int genre){
   }
 
   @Override
-  public void onClickItem(Movie movie) {
-    Intent intent = new Intent(EmotionMoviesActivity.this,MovieDetailActivity.class);
-    intent.putExtra(Constants.EMOTION_MOVIE_LIST_INTENT,movie);
-    startActivity(intent);
+  public void onClickItem(int position) {
+    if(emotionAdapter.getMovieArrayList()!=null) {
+      Movie movie = emotionAdapter.getMovieArrayList().get(position);
+      moviePosition = position;
+      selectedMovie = movie;
+      Intent intent = new Intent(EmotionMoviesActivity.this, MovieDetailActivity.class);
+      intent.putExtra(Constants.EMOTION_MOVIE_LIST_INTENT, movie);
+      startActivity(intent);
+    }
+  }
+  @Override
+  protected void onResume() {
+    super.onResume();
+    if(emotionAdapter.getMovieArrayList()!=null) {
+      if (moviePosition != null && selectedMovie != null) {
+        emotionAdapter.getMovieArrayList().set(moviePosition, selectedMovie);
+        emotionAdapter.notifyItemChanged(moviePosition);
+      }
+    }
   }
 }

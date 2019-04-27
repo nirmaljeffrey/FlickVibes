@@ -65,6 +65,8 @@ public class MovieListActivity extends BaseActivity implements OnMovieItemClickL
   private String cameraImagePath;
   private MovieAdapter movieAdapter;
   private MovieListViewModel movieListViewModel;
+  private Integer moviePosition;
+  private Movie selectedMovie;
   private BottomNavigationView.OnNavigationItemSelectedListener navListener = new OnNavigationItemSelectedListener() {
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -91,6 +93,8 @@ public class MovieListActivity extends BaseActivity implements OnMovieItemClickL
       return true;
     }
   };
+
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -338,12 +342,15 @@ public class MovieListActivity extends BaseActivity implements OnMovieItemClickL
 
 
   @Override
-  public void onClickItem(Movie movie) {
-    Log.d(TAG, "MainActivity: movieId" + movie.getId());
-    Log.d(TAG, "MainActivity: movieId" + movie.getPosterPath());
-    Intent intent = new Intent(MovieListActivity.this, MovieDetailActivity.class);
-    intent.putExtra(Constants.MOVIE_LIST_INTENT, movie);
-    startActivity(intent);
+  public void onClickItem(int position) {
+    if(movieAdapter.getMovieArrayList()!=null) {
+      Movie movie = movieAdapter.getMovieArrayList().get(position);
+      moviePosition = position;
+      selectedMovie = movie;
+      Intent intent = new Intent(MovieListActivity.this, MovieDetailActivity.class);
+      intent.putExtra(Constants.MOVIE_LIST_INTENT, movie);
+      startActivity(intent);
+    }
   }
 
   @Override
@@ -354,5 +361,15 @@ public class MovieListActivity extends BaseActivity implements OnMovieItemClickL
 
   }
 
+  @Override
+  protected void onResume() {
+    super.onResume();
+    if(movieAdapter.getMovieArrayList()!=null) {
+      if (moviePosition != null && selectedMovie != null) {
+        movieAdapter.getMovieArrayList().set(moviePosition, selectedMovie);
+        movieAdapter.notifyItemChanged(moviePosition);
+      }
+    }
+  }
 }
 
