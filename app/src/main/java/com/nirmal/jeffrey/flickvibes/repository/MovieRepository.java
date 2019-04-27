@@ -363,6 +363,10 @@ public class MovieRepository {
     return movieDao.getFavoriteMovie(movieId);
 
   }
+
+  public  LiveData<Movie> getMovie(int movieId){
+    return movieDao.getMovie(movieId);
+  }
 }
 
 

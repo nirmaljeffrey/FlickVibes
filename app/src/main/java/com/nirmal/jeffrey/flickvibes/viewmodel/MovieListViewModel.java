@@ -113,6 +113,9 @@ public boolean onBackPressed(){
     }
     return true;
 }
+public LiveData<Movie> getMovie(int movieId){
+    return movieRepository.getMovie(movieId);
+}
 }
 
 

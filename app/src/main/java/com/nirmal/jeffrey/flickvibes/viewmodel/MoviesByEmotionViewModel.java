@@ -39,4 +39,7 @@ private MediatorLiveData<Resource<List<Movie>>> moviesByEmotion =new MediatorLiv
   public LiveData<Resource<List<Movie>>> getMoviesByEmotion(){
     return moviesByEmotion;
   }
+  public LiveData<Movie> getMovie(int movieId){
+    return movieRepository.getMovie(movieId);
+  }
 }

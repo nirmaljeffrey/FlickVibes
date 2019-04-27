@@ -32,7 +32,7 @@ public class EmotionMoviesActivity extends BaseActivity implements OnMovieItemCl
   TextView emotionErrorTextView;
   private MovieAdapter emotionAdapter;
   private Integer moviePosition;
-  private Movie selectedMovie;
+  private Integer selectedMovieId;
 
   private static final String TAG = "EmotionMoviesActivity";
   @Override
@@ -129,7 +129,7 @@ public void getMoviesByEmotionApi(int genre){
     if(emotionAdapter.getMovieArrayList()!=null) {
       Movie movie = emotionAdapter.getMovieArrayList().get(position);
       moviePosition = position;
-      selectedMovie = movie;
+      selectedMovieId = movie.getId();
       Intent intent = new Intent(EmotionMoviesActivity.this, MovieDetailActivity.class);
       intent.putExtra(Constants.EMOTION_MOVIE_LIST_INTENT, movie);
       startActivity(intent);
@@ -139,9 +139,13 @@ public void getMoviesByEmotionApi(int genre){
   protected void onResume() {
     super.onResume();
     if(emotionAdapter.getMovieArrayList()!=null) {
-      if (moviePosition != null && selectedMovie != null) {
-        emotionAdapter.getMovieArrayList().set(moviePosition, selectedMovie);
-        emotionAdapter.notifyItemChanged(moviePosition);
+      if (moviePosition != null && selectedMovieId != null) {
+        moviesByEmotionViewModel.getMovie(selectedMovieId).observe(this, movie -> {
+          emotionAdapter.getMovieArrayList().set(moviePosition,movie );
+          emotionAdapter.notifyItemChanged(moviePosition);
+        });
+
+
       }
     }
   }
