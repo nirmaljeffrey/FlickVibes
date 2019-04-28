@@ -205,6 +205,7 @@
     app:cardElevation="8dp"
     app:cardUseCompatPadding="true"
     app:layout_anchor="@id/app_bar"
+    app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
     app:layout_anchorGravity="bottom|left">
 
     <ImageView
