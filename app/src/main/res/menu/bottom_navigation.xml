@@ -3,22 +3,27 @@
   <item
     android:id="@+id/nav_popular"
     android:icon="@drawable/ic_menu_popular_24dp"
+    android:layout_centerVertical="true"
     android:title="@string/nav_bar_popular"/>
   <item
     android:id="@+id/nav_top_rated"
     android:icon="@drawable/ic_menu_top_rated_24dp"
+    android:layout_centerVertical="true"
     android:title="@string/nav_bar_top_rated"/>
   <item
     android:id="@+id/nav_Upcoming"
     android:icon="@drawable/ic_menu_upcoming_24dp"
+    android:layout_centerVertical="true"
     android:title="@string/nav_bar_upcoming"/>
   <item
     android:id="@+id/nav_now_playing"
     android:icon="@drawable/ic_menu_now_playing_24dp"
+    android:layout_centerVertical="true"
     android:title="@string/nav_bar_now_playing"/>
   <item
     android:id="@+id/nav_favorites"
     android:icon="@drawable/ic_menu_favorite_24dp"
+    android:layout_centerVertical="true"
     android:title="@string/nav_bar_favourites"/>
 
 </menu>

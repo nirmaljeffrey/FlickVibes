@@ -48,7 +48,7 @@ public static  EmotionErrorFragment getInstance(int errorValue){
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.dialog_emotion_error,container);
+    View view = inflater.inflate(R.layout.dialog_emotion_error,container,false);
    unbinder= ButterKnife.bind(this,view);
     if(getArguments()!=null){
       int errorValue =(int) getArguments().get(Constants.EMOTION_ERROR_BUNDLE_KEY);

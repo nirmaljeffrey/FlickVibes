@@ -11,33 +11,31 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MenuItem.OnActionExpandListener;
 import android.view.View;
 import android.view.Window;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
-import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentManager.OnBackStackChangedListener;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.RequestManager;
-import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.nirmal.jeffrey.flickvibes.R;
-import com.nirmal.jeffrey.flickvibes.adapter.MovieAdapter;
-import com.nirmal.jeffrey.flickvibes.adapter.MovieAdapter.OnMovieItemClickLister;
 import com.nirmal.jeffrey.flickvibes.model.Movie;
+import com.nirmal.jeffrey.flickvibes.ui.fragment.MovieListFragment;
 import com.nirmal.jeffrey.flickvibes.util.BitmapUtils;
 import com.nirmal.jeffrey.flickvibes.util.Constants;
 import com.nirmal.jeffrey.flickvibes.util.NetworkUtils;
@@ -48,23 +46,24 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MovieListActivity extends BaseActivity implements OnMovieItemClickLister {
+public class MovieListActivity extends BaseActivity implements OnBackStackChangedListener {
 
   private static final String TAG = "MovieId";
+  private static final String FILE_PROVIDER_AUTHORITY = "com.nirmal.jeffrey.flickvibes.fileprovider";
   private static final int REQUEST_PHOTO_PICKER = 1;
   private static final int REQUEST_IMAGE_CAPTURE = 2;
   private static final int REQUEST_STORAGE_PERMISSION = 3;
-  @BindView(R.id.error_text_view)
-  TextView errorTextView;
-  @BindView(R.id.movies_recycler_view)
-  RecyclerView recyclerView;
+  private static final String SEARCH_FRAGMENT_TAG = "search_fragment_tag";
+
   @BindView(R.id.bottom_navigation)
   BottomNavigationView bottomNavigationBar;
   @BindView(R.id.prediction_fab)
   FloatingActionButton predictionFab;
-  private SearchView searchView;
+  @BindView(R.id.movie_list_fragment)
+  FrameLayout movieListContainer;
   private String cameraImagePath;
-  private MovieAdapter movieAdapter;
+  private FragmentManager fragmentManager;
+
   private MovieListViewModel movieListViewModel;
 
   private BottomNavigationView.OnNavigationItemSelectedListener navListener = new OnNavigationItemSelectedListener() {
@@ -73,20 +72,28 @@ public class MovieListActivity extends BaseActivity implements OnMovieItemClickL
       switch (menuItem.getItemId()) {
         case R.id.nav_popular:
           getMovieListByTypeApi(NetworkUtils.POPULAR_MOVIE_PATH);
+
           break;
         case R.id.nav_top_rated:
           getMovieListByTypeApi(NetworkUtils.TOP_RATER_MOVIE_PATH);
+
           break;
         case R.id.nav_Upcoming:
           getMovieListByTypeApi(NetworkUtils.UPCOMING_MOVIE_PATH);
+
           break;
         case R.id.nav_now_playing:
           getMovieListByTypeApi(NetworkUtils.NOW_PLAYING_MOVIE_PATH);
+
           break;
         case R.id.nav_favorites:
           movieListViewModel.getFavoriteMovies().observe(MovieListActivity.this, movies -> {
-            movieAdapter.setMovieData(new ArrayList<>(movies));
+            MovieListFragment movieListFragment = MovieListFragment
+                .getInstance(new ArrayList<>(movies));
+            loadFragment(movieListFragment, null);
+
           });
+
           break;
 
       }
@@ -96,14 +103,16 @@ public class MovieListActivity extends BaseActivity implements OnMovieItemClickL
 
 
 
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_list_movie);
     ButterKnife.bind(this);
-    initRecyclerView();
+
     bottomNavigationBar.setOnNavigationItemSelectedListener(navListener);
     initFab();
+    initFragmentManager();
     movieListViewModel = ViewModelProviders.of(this).get(MovieListViewModel.class);
     subscribeObservers();
 
@@ -138,13 +147,11 @@ public class MovieListActivity extends BaseActivity implements OnMovieItemClickL
   }
 
 
-
-
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     getMenuInflater().inflate(R.menu.movie_list_activity_menu, menu);
     MenuItem searchItem = menu.findItem(R.id.action_search);
-    searchView = (SearchView) searchItem.getActionView();
+    SearchView searchView = (SearchView) searchItem.getActionView();
     searchView.setQueryHint(getString(R.string.menu_search_hint));
     searchView.setIconified(false);
     searchView.setOnQueryTextListener(new OnQueryTextListener() {
@@ -159,26 +166,60 @@ public class MovieListActivity extends BaseActivity implements OnMovieItemClickL
         return false;
       }
     });
+   searchItem.setOnActionExpandListener(new OnActionExpandListener() {
+     @Override
+     public boolean onMenuItemActionExpand(MenuItem menuItem) {
+       return true;
+     }
+
+     @Override
+     public boolean onMenuItemActionCollapse(MenuItem menuItem) {
+       if(fragmentManager.getBackStackEntryCount()>0){
+         fragmentManager.popBackStack(SEARCH_FRAGMENT_TAG,FragmentManager.POP_BACK_STACK_INCLUSIVE);
+       }
+       return true;
+     }
+   });
     return true;
   }
+  private void initFragmentManager() {
+    fragmentManager = getSupportFragmentManager();
+    fragmentManager.addOnBackStackChangedListener(MovieListActivity.this);
+  }
 
+  private void loadFragment(MovieListFragment fragment, String tagForBackStack) {
+    if (fragment != null) {
+      if(tagForBackStack==null){
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.movie_list_fragment, fragment).commit();
+      }else {
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.movie_list_fragment, fragment).addToBackStack(tagForBackStack).commit();
+      }
+
+    }
+  }
   private void subscribeObservers() {
     movieListViewModel.getMoviesFromSearch().observe(this, listResource -> {
       if (listResource != null) {
         if (listResource.data != null) {
+          MovieListFragment movieListFragment = null;
           switch (listResource.status) {
             case LOADING:
               displayLoading();
               break;
             case ERROR:
               displayError(listResource.message);
-              movieAdapter.setMovieData(new ArrayList<>(listResource.data));
+              movieListFragment = MovieListFragment.getInstance(new ArrayList<>(listResource.data));
               break;
             case SUCCESS:
               displayMovies();
-              movieAdapter.setMovieData(new ArrayList<>(listResource.data));
+              movieListFragment = MovieListFragment.getInstance(new ArrayList<>(listResource.data));
               break;
           }
+
+          loadFragment(movieListFragment, SEARCH_FRAGMENT_TAG);
+
 
         }
       }
@@ -187,7 +228,7 @@ public class MovieListActivity extends BaseActivity implements OnMovieItemClickL
       if (listResource != null) {
 
         if (listResource.data != null) {
-
+          MovieListFragment movieListFragment = null;
           switch (listResource.status) {
             case LOADING:
               Log.d(TAG, "subscribeObservers: ApiLoading");
@@ -196,16 +237,18 @@ public class MovieListActivity extends BaseActivity implements OnMovieItemClickL
             case ERROR:
               Log.d(TAG, "subscribeObservers: ApiError");
               displayError(listResource.message);
-              movieAdapter.setMovieData(new ArrayList<>(listResource.data));
+              movieListFragment = MovieListFragment.getInstance(new ArrayList<>(listResource.data));
 
               break;
             case SUCCESS:
               Log.d(TAG, "subscribeObservers: APiSuccess");
               displayMovies();
-              movieAdapter.setMovieData(new ArrayList<>(listResource.data));
+              movieListFragment = MovieListFragment.getInstance(new ArrayList<>(listResource.data));
 
               break;
           }
+
+          loadFragment(movieListFragment, null);
 
 
         }
@@ -218,21 +261,21 @@ public class MovieListActivity extends BaseActivity implements OnMovieItemClickL
   private void displayLoading() {
     //Method from BaseActivity.java
     showProgressBar(true);
-    recyclerView.setVisibility(View.GONE);
+    movieListContainer.setVisibility(View.GONE);
 
   }
 
   private void displayError(String message) {
     //Method from BaseActivity.java
     showProgressBar(false);
-    recyclerView.setVisibility(View.VISIBLE);
+    movieListContainer.setVisibility(View.VISIBLE);
     toastMessage(message);
   }
 
   private void displayMovies() {
     //Method from BaseActivity.java
     showProgressBar(false);
-    recyclerView.setVisibility(View.VISIBLE);
+    movieListContainer.setVisibility(View.VISIBLE);
   }
 
   private void toastMessage(String message) {
@@ -240,18 +283,11 @@ public class MovieListActivity extends BaseActivity implements OnMovieItemClickL
   }
 
 
-  private void initRecyclerView() {
-    int spanCount = getResources().getInteger(R.integer.grid_span_count);
-    recyclerView.setLayoutManager(new GridLayoutManager(this, spanCount));
-    movieAdapter = new MovieAdapter(initGlide(), this);
-    recyclerView.setAdapter(movieAdapter);
-  }
-
   private void initFab() {
     predictionFab.setOnClickListener(view -> {
       Dialog dialog = new Dialog(this);
-      Window window =dialog.getWindow();
-      if(window!=null) {
+      Window window = dialog.getWindow();
+      if (window != null) {
         //Set transparent background
         window.setBackgroundDrawableResource(android.R.color.transparent);
       }
@@ -275,9 +311,7 @@ public class MovieListActivity extends BaseActivity implements OnMovieItemClickL
         }
 
       });
-      galleryView.setOnClickListener(view12 -> {
-        launchGallery();
-      });
+      galleryView.setOnClickListener(view12 -> launchGallery());
       dialog.show();
     });
   }
@@ -295,7 +329,8 @@ public class MovieListActivity extends BaseActivity implements OnMovieItemClickL
     Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
     intent.setType(Constants.GALLERY_INTENT_TYPE);
     intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-    startActivityForResult(Intent.createChooser(intent, "Complete Action Using"),
+    startActivityForResult(
+        Intent.createChooser(intent, getString(R.string.launch_gallery_intent_title)),
         REQUEST_PHOTO_PICKER);
 
   }
@@ -317,7 +352,7 @@ public class MovieListActivity extends BaseActivity implements OnMovieItemClickL
       if (photoFile != null) {
         cameraImagePath = photoFile.getAbsolutePath();
         Uri photoURI = FileProvider.getUriForFile(this,
-            "com.nirmal.jeffrey.flickvibes.fileprovider",
+            FILE_PROVIDER_AUTHORITY,
             photoFile);
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
         startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE);
@@ -326,31 +361,9 @@ public class MovieListActivity extends BaseActivity implements OnMovieItemClickL
     }
   }
 
-  /**
-   * Method for creating request manager for recycler view
-   *
-   * @return RequestManager (Glide) to be used in recycler view adapter
-   */
-  private RequestManager initGlide() {
-    RequestOptions requestOptions = new RequestOptions()
-        .error(R.drawable.poster_place_holder)
-        .fallback(R.drawable.poster_place_holder);
-    return Glide.with(this)
-        .setDefaultRequestOptions(requestOptions);
-
-  }
-
 
   @Override
-  public void onClickItem(Movie movie) {
-    Intent intent = new Intent(MovieListActivity.this, MovieDetailActivity.class);
-      intent.putExtra(Constants.MOVIE_LIST_INTENT, movie);
-      startActivity(intent);
-    }
-
-  @Override
-  public void onBackPressed() {
-    super.onBackPressed();
+  public void onBackStackChanged() {
 
   }
 }
