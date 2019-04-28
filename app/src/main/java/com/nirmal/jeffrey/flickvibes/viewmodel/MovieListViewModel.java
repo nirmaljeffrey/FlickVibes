@@ -21,6 +21,7 @@ public class MovieListViewModel extends AndroidViewModel {
 
   private MediatorLiveData<Resource<List<Movie>>> moviesByType =new MediatorLiveData<>();
   private MediatorLiveData<Resource<List<Movie>>> moviesFromSearch=new MediatorLiveData<>();
+
   //Query Extras
   private boolean isQueryExhausted;
   private  boolean isPerformingQuery;
@@ -38,10 +39,12 @@ public class MovieListViewModel extends AndroidViewModel {
   public LiveData<Resource<List<Movie>>>getMoviesFromSearch(){
     return moviesFromSearch;
   }
-public LiveData<Resource<List<Movie>>> getMoviesByType(){
+  public LiveData<Resource<List<Movie>>> getMoviesByType(){
     return moviesByType;
-
-}
+  }
+  public LiveData<List<Movie>> getFavoriteMovies(){
+    return movieRepository.getFavoriteMovies();
+  }
 
 public void getMovieListFromSearchApi(String query, int pageNumber){
 if(!isPerformingQuery){
@@ -102,13 +105,14 @@ private void executeSearch(){
     });
 
   }
-  public LiveData<List<Movie>> getFavoriteMovies(){
-    return movieRepository.getFavoriteMovies();
+
+
   }
 
 
 
 
-}
+
+
 
 

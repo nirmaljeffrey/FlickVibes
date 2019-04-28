@@ -18,6 +18,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,6 +28,8 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentManager.OnBackStackChangedListener;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,7 +57,8 @@ public class MovieListActivity extends BaseActivity implements OnBackStackChange
   private static final int REQUEST_IMAGE_CAPTURE = 2;
   private static final int REQUEST_STORAGE_PERMISSION = 3;
   private static final String SEARCH_FRAGMENT_TAG = "search_fragment_tag";
-
+@BindView(R.id.error_text_view)
+  TextView errorTextView;
   @BindView(R.id.bottom_navigation)
   BottomNavigationView bottomNavigationBar;
   @BindView(R.id.prediction_fab)
@@ -87,11 +91,15 @@ public class MovieListActivity extends BaseActivity implements OnBackStackChange
 
           break;
         case R.id.nav_favorites:
-          movieListViewModel.getFavoriteMovies().observe(MovieListActivity.this, movies -> {
-            MovieListFragment movieListFragment = MovieListFragment
-                .getInstance(new ArrayList<>(movies));
-            loadFragment(movieListFragment, null);
-
+          LiveData<List<Movie>> movieList = movieListViewModel.getFavoriteMovies();
+          movieList.observe(MovieListActivity.this, new Observer<List<Movie>>() {
+            @Override
+            public void onChanged(List<Movie> movies) {
+              MovieListFragment movieListFragment = MovieListFragment
+                  .getInstance(new ArrayList<>(movies));
+              loadFragment(movieListFragment, null);
+              movieList.removeObserver(this);
+            }
           });
 
           break;
@@ -101,8 +109,22 @@ public class MovieListActivity extends BaseActivity implements OnBackStackChange
     }
   };
 
-
-
+  @Override
+  protected void onResume() {
+    super.onResume();
+    if(bottomNavigationBar.getSelectedItemId()== R.id.nav_favorites){
+      LiveData<List<Movie>> moviesList = movieListViewModel.getFavoriteMovies();
+      moviesList.observe(MovieListActivity.this, new Observer<List<Movie>>() {
+        @Override
+        public void onChanged(List<Movie> movies) {
+          MovieListFragment movieListFragment = MovieListFragment
+              .getInstance(new ArrayList<>(movies));
+          loadFragment(movieListFragment, null);
+          moviesList.removeObserver(this);
+        }
+      });
+    }
+  }
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -166,22 +188,24 @@ public class MovieListActivity extends BaseActivity implements OnBackStackChange
         return false;
       }
     });
-   searchItem.setOnActionExpandListener(new OnActionExpandListener() {
-     @Override
-     public boolean onMenuItemActionExpand(MenuItem menuItem) {
-       return true;
-     }
+    searchItem.setOnActionExpandListener(new OnActionExpandListener() {
+      @Override
+      public boolean onMenuItemActionExpand(MenuItem menuItem) {
+        return true;
+      }
 
-     @Override
-     public boolean onMenuItemActionCollapse(MenuItem menuItem) {
-       if(fragmentManager.getBackStackEntryCount()>0){
-         fragmentManager.popBackStack(SEARCH_FRAGMENT_TAG,FragmentManager.POP_BACK_STACK_INCLUSIVE);
-       }
-       return true;
-     }
-   });
+      @Override
+      public boolean onMenuItemActionCollapse(MenuItem menuItem) {
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+          fragmentManager
+              .popBackStack(SEARCH_FRAGMENT_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        }
+        return true;
+      }
+    });
     return true;
   }
+
   private void initFragmentManager() {
     fragmentManager = getSupportFragmentManager();
     fragmentManager.addOnBackStackChangedListener(MovieListActivity.this);
@@ -189,16 +213,20 @@ public class MovieListActivity extends BaseActivity implements OnBackStackChange
 
   private void loadFragment(MovieListFragment fragment, String tagForBackStack) {
     if (fragment != null) {
-      if(tagForBackStack==null){
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.movie_list_fragment, fragment).commit();
-      }else {
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.movie_list_fragment, fragment).addToBackStack(tagForBackStack).commit();
+      FragmentTransaction transaction = fragmentManager.beginTransaction();
+      if (tagForBackStack == null) {
+
+        transaction.replace(R.id.movie_list_fragment, fragment)
+            .commit();
+      } else {
+        transaction.replace(R.id.movie_list_fragment, fragment)
+            .addToBackStack(tagForBackStack)
+            .commit();
       }
 
     }
   }
+
   private void subscribeObservers() {
     movieListViewModel.getMoviesFromSearch().observe(this, listResource -> {
       if (listResource != null) {
@@ -256,7 +284,9 @@ public class MovieListActivity extends BaseActivity implements OnBackStackChange
       }
     });
 
+
   }
+
 
   private void displayLoading() {
     //Method from BaseActivity.java
@@ -324,6 +354,7 @@ public class MovieListActivity extends BaseActivity implements OnBackStackChange
   private void getMovieListFromSearch(String query) {
     movieListViewModel.getMovieListFromSearchApi(query, 1);
   }
+
 
   private void launchGallery() {
     Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
