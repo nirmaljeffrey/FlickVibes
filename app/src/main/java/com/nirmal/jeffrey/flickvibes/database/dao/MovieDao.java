@@ -43,9 +43,7 @@ public  interface MovieDao {
 
   @Query("DELETE  FROM review_table")
   void deleteAllMovies();
- //Get favorite movie list for app widget
- @Query("SELECT * FROM movie_table WHERE id=:movieId")
- LiveData<Movie> getMovie(int movieId);
+
   //For searching movies
   @Query("SELECT * FROM movie_table WHERE title LIKE '%' || :query || '%' " +
       "ORDER BY vote_average DESC LIMIT (:pageNumber * 20)")

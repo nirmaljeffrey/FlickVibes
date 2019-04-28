@@ -1,5 +1,6 @@
 package com.nirmal.jeffrey.flickvibes.ui.fragment;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -83,6 +84,13 @@ public static  EmotionErrorFragment getInstance(int errorValue){
 
   }
 
+  @Override
+  public void onCancel(DialogInterface dialog) {
+  if(getActivity()!=null) {
+    getActivity().finish();
+  }
+  }
+
   private void initViews(int errorValue){
   if(errorValue==1){
     emotionErrorImageView.setImageResource(R.drawable.ic_no_faces_detected);
@@ -93,4 +101,6 @@ public static  EmotionErrorFragment getInstance(int errorValue){
   }
   goBackButton.setOnClickListener(view -> Objects.requireNonNull(getActivity()).finish());
   }
+
+
 }

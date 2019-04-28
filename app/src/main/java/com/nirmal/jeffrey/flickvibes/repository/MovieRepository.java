@@ -364,9 +364,7 @@ public class MovieRepository {
 
   }
 
-  public  LiveData<Movie> getMovie(int movieId){
-    return movieDao.getMovie(movieId);
-  }
+
 }
 
 

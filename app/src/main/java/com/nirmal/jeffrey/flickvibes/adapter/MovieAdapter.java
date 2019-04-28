@@ -47,18 +47,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieListViewHolder> {
     View view = LayoutInflater.from(parent.getContext())
         .inflate(R.layout.movie_list_item, parent, false);
 
-    return new MovieListViewHolder(view, onMovieItemClickLister);
+    return new MovieListViewHolder(view, onMovieItemClickLister,movieArrayList);
   }
 
   @Override
   public void onBindViewHolder(@NonNull MovieListViewHolder holder, int position) {
     Movie movie = movieArrayList.get(position);
-    if (movie.isFavorite()) {
-      holder.favoriteTag.setVisibility(View.VISIBLE);
 
-    } else {
-      holder.favoriteTag.setVisibility(View.GONE);
-    }
     if (movie.getPosterPath() != null) {
       // Method to create complete url string of the poster
       String posterUrl = NetworkUtils
@@ -82,24 +77,26 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieListViewHolder> {
 
   public interface OnMovieItemClickLister {
 
-    void onClickItem(int  position);
+    void onClickItem(Movie  movie);
   }
 
   static class MovieListViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.poster_image_view)
     ImageView posterImageView;
-    @BindView(R.id.movie_favorite_tag)
-    ImageView favoriteTag;
 
-    MovieListViewHolder(@NonNull View itemView, OnMovieItemClickLister itemClickLister) {
+
+    MovieListViewHolder(@NonNull View itemView, OnMovieItemClickLister itemClickLister,ArrayList<Movie> movies) {
       super(itemView);
       ButterKnife.bind(this, itemView);
       posterImageView.setOnClickListener(view -> {
         if (itemClickLister != null) {
           int adapterPosition = getAdapterPosition();
           if (adapterPosition != RecyclerView.NO_POSITION) {
-              itemClickLister.onClickItem(adapterPosition);
+            if(movies!=null && movies.size()>0) {
+
+              itemClickLister.onClickItem(movies.get(adapterPosition));
+            }
 
 
           }

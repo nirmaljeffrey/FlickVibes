@@ -1,6 +1,7 @@
 package com.nirmal.jeffrey.flickvibes.ui.fragment;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -103,6 +104,19 @@ private Unbinder unbinder;
 
      }
     });
+
+  }
+
+  @Override
+  public void onCancel(DialogInterface dialog) {
+    super.onCancel(dialog);
+    if(getActivity()!=null) {
+      if (getActivity() instanceof MoviePredictionActivity) {
+        MoviePredictionActivity predictionActivity = (MoviePredictionActivity) getActivity();
+        predictionActivity.showActivityLayout(true);
+      }
+
+    }
 
   }
 

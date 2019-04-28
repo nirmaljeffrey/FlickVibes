@@ -62,11 +62,11 @@ public class MovieListActivity extends BaseActivity implements OnMovieItemClickL
   BottomNavigationView bottomNavigationBar;
   @BindView(R.id.prediction_fab)
   FloatingActionButton predictionFab;
+  private SearchView searchView;
   private String cameraImagePath;
   private MovieAdapter movieAdapter;
   private MovieListViewModel movieListViewModel;
-  private Integer moviePosition;
-  private Integer selectedMovieId;
+
   private BottomNavigationView.OnNavigationItemSelectedListener navListener = new OnNavigationItemSelectedListener() {
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -144,7 +144,7 @@ public class MovieListActivity extends BaseActivity implements OnMovieItemClickL
   public boolean onCreateOptionsMenu(Menu menu) {
     getMenuInflater().inflate(R.menu.movie_list_activity_menu, menu);
     MenuItem searchItem = menu.findItem(R.id.action_search);
-    SearchView searchView = (SearchView) searchItem.getActionView();
+    searchView = (SearchView) searchItem.getActionView();
     searchView.setQueryHint(getString(R.string.menu_search_hint));
     searchView.setIconified(false);
     searchView.setOnQueryTextListener(new OnQueryTextListener() {
@@ -342,39 +342,23 @@ public class MovieListActivity extends BaseActivity implements OnMovieItemClickL
 
 
   @Override
-  public void onClickItem(int position) {
-    if (movieAdapter.getMovieArrayList() != null) {
-      Movie movie = movieAdapter.getMovieArrayList().get(position);
-      moviePosition = position;
-      selectedMovieId=movie.getId();
-      Intent intent = new Intent(MovieListActivity.this, MovieDetailActivity.class);
+  public void onClickItem(Movie movie) {
+    Intent intent = new Intent(MovieListActivity.this, MovieDetailActivity.class);
       intent.putExtra(Constants.MOVIE_LIST_INTENT, movie);
       startActivity(intent);
     }
-  }
 
   @Override
   public void onBackPressed() {
-    if(movieListViewModel.onBackPressed()){
-      super.onBackPressed();
-    }
+    super.onBackPressed();
 
-  }
-
-  @Override
-  protected void onResume() {
-    super.onResume();
-    if(movieAdapter.getMovieArrayList()!=null) {
-      if (moviePosition != null && selectedMovieId != null) {
-        movieListViewModel.getMovie(selectedMovieId).observe(this,
-            movie -> {
-              movieAdapter.getMovieArrayList().set(moviePosition, movie);
-              movieAdapter.notifyItemChanged(moviePosition);
-            });
-
-
-      }
-    }
   }
 }
+
+
+
+
+
+
+
 
