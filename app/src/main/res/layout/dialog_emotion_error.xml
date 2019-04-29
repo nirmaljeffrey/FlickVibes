@@ -41,12 +41,14 @@
       android:text="@string/emotion_error"/>
     <ImageView
       android:id="@+id/emotion_error_image_view"
-      android:layout_width="367dp"
-      android:layout_height="270dp"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
       android:layout_marginTop="32dp"
       android:layout_marginBottom="32dp"
+      android:adjustViewBounds="true"
       android:layout_marginStart="16dp"
       android:layout_marginEnd="16dp"
+      android:scaleType="centerCrop"
       android:layout_gravity="center_horizontal"
       android:contentDescription="@string/emotion_error_image_info"
       tools:src="@drawable/ic_no_faces_detected"/>

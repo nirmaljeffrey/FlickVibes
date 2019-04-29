@@ -15,7 +15,10 @@ public static final String EMOTION_ERROR_BUNDLE_KEY="emotion_error_bundle";
 public static final String EMOTION_ERROR_DIALOG_TAG="emotion_error_dialog";
 public static final String EMOTION_DIALOG_TAG="emotion_dialog";
 public static final String EMOTION_MOVIE_LIST_INTENT = "emotion_movie_list_intent";
-public static final String MOVIE_LIST_FRAGMENT_BUNDLE="movie_list_fragment_bundle";
+public static final String MOVIES_FROM_FAVORITES="movies_from_favorites";
+public static final String MOVIES_FROM_SEARCH="movies_from_search";
+public static final String MOVIES_BY_TYPE="movies_by_type";
+
 
 
 //Emotion Detector probabilities

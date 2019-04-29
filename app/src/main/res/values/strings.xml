@@ -23,7 +23,9 @@
   <string name="dialog_action_gallery">Gallery</string>
   <string name="dialog_permission_denied">Permission denied</string>
   <string name="launch_gallery">Complete action using</string>
-
+<!-- MovieListFragment -->
+  <string name="fragment_empty_favorites">Add Movies to favorites</string>
+  <string name="fragment_empty_search">No movies found</string>
 
   <!--activity_detail_movie.xml -->
   <string name="genre_label">GENRES</string>
@@ -69,4 +71,5 @@
   <string name="emotion_image_info">User\'s emotion results</string>
   <string name="appwidget_favorite_icon">Favorite movie</string>
   <string name="emotion_error_image_info">Emotion detection failed</string>
+  <string name="empty_layout_image_info">No movies found</string>
 </resources>

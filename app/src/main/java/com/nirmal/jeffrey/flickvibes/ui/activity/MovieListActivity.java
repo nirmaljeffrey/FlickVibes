@@ -18,7 +18,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
-import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -57,8 +56,7 @@ public class MovieListActivity extends BaseActivity implements OnBackStackChange
   private static final int REQUEST_IMAGE_CAPTURE = 2;
   private static final int REQUEST_STORAGE_PERMISSION = 3;
   private static final String SEARCH_FRAGMENT_TAG = "search_fragment_tag";
-@BindView(R.id.error_text_view)
-  TextView errorTextView;
+
   @BindView(R.id.bottom_navigation)
   BottomNavigationView bottomNavigationBar;
   @BindView(R.id.prediction_fab)
@@ -96,7 +94,7 @@ public class MovieListActivity extends BaseActivity implements OnBackStackChange
             @Override
             public void onChanged(List<Movie> movies) {
               MovieListFragment movieListFragment = MovieListFragment
-                  .getInstance(new ArrayList<>(movies));
+                  .getInstance(new ArrayList<>(movies),Constants.MOVIES_FROM_FAVORITES);
               loadFragment(movieListFragment, null);
               movieList.removeObserver(this);
             }
@@ -118,7 +116,7 @@ public class MovieListActivity extends BaseActivity implements OnBackStackChange
         @Override
         public void onChanged(List<Movie> movies) {
           MovieListFragment movieListFragment = MovieListFragment
-              .getInstance(new ArrayList<>(movies));
+              .getInstance(new ArrayList<>(movies),Constants.MOVIES_FROM_FAVORITES);
           loadFragment(movieListFragment, null);
           moviesList.removeObserver(this);
         }
@@ -238,11 +236,11 @@ public class MovieListActivity extends BaseActivity implements OnBackStackChange
               break;
             case ERROR:
               displayError(listResource.message);
-              movieListFragment = MovieListFragment.getInstance(new ArrayList<>(listResource.data));
+              movieListFragment = MovieListFragment.getInstance(new ArrayList<>(listResource.data),Constants.MOVIES_FROM_SEARCH);
               break;
             case SUCCESS:
               displayMovies();
-              movieListFragment = MovieListFragment.getInstance(new ArrayList<>(listResource.data));
+              movieListFragment = MovieListFragment.getInstance(new ArrayList<>(listResource.data),Constants.MOVIES_FROM_SEARCH);
               break;
           }
 
@@ -265,13 +263,13 @@ public class MovieListActivity extends BaseActivity implements OnBackStackChange
             case ERROR:
               Log.d(TAG, "subscribeObservers: ApiError");
               displayError(listResource.message);
-              movieListFragment = MovieListFragment.getInstance(new ArrayList<>(listResource.data));
+              movieListFragment = MovieListFragment.getInstance(new ArrayList<>(listResource.data),Constants.MOVIES_BY_TYPE);
 
               break;
             case SUCCESS:
               Log.d(TAG, "subscribeObservers: APiSuccess");
               displayMovies();
-              movieListFragment = MovieListFragment.getInstance(new ArrayList<>(listResource.data));
+              movieListFragment = MovieListFragment.getInstance(new ArrayList<>(listResource.data),Constants.MOVIES_BY_TYPE);
 
               break;
           }

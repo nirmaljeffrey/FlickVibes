@@ -5,8 +5,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,15 +28,23 @@ import com.nirmal.jeffrey.flickvibes.util.Constants;
 import java.util.ArrayList;
 
 public class MovieListFragment extends Fragment implements OnMovieItemClickLister {
-
+  private static final String MOVIE_LIST_FRAGMENT_BUNDLE="movie_list_fragment_bundle";
+  private static final String EMPTY_MOVIE_FRAGMENT_BUNDLE="empty_movie_bundle";
   @BindView(R.id.movies_recycler_view)
   RecyclerView recyclerView;
+  @BindView(R.id.empty_layout_image_view)
+  ImageView emptyLayoutImageView;
+  @BindView(R.id.empty_layout_text_view)
+  TextView emptyLayoutTextView;
+  @BindView(R.id.movie_list_empty_layout)
+  ConstraintLayout emptyLayout;
   private Unbinder unbinder;
   private MovieAdapter movieAdapter;
-public static MovieListFragment getInstance(ArrayList<Movie> arrayList){
+public static MovieListFragment getInstance(ArrayList<Movie> arrayList,String listTypeIdentifier){
   MovieListFragment fragment = new MovieListFragment();
   Bundle bundle = new Bundle();
-  bundle.putParcelableArrayList(Constants.MOVIE_LIST_FRAGMENT_BUNDLE,arrayList);
+  bundle.putParcelableArrayList(MOVIE_LIST_FRAGMENT_BUNDLE,arrayList);
+  bundle.putString(EMPTY_MOVIE_FRAGMENT_BUNDLE,listTypeIdentifier);
   fragment.setArguments(bundle);
   return fragment;
 }
@@ -46,9 +57,40 @@ public static MovieListFragment getInstance(ArrayList<Movie> arrayList){
    unbinder= ButterKnife.bind(this,view);
     initRecyclerView();
     if(getArguments()!=null){
-      ArrayList<Movie> movieArrayList =getArguments().getParcelableArrayList(Constants.MOVIE_LIST_FRAGMENT_BUNDLE);
-      movieAdapter.setMovieData(movieArrayList);
-    }
+      String emptyListTag =getArguments().getString(EMPTY_MOVIE_FRAGMENT_BUNDLE);
+      ArrayList<Movie> movieArrayList =getArguments().getParcelableArrayList(MOVIE_LIST_FRAGMENT_BUNDLE);
+      if(emptyListTag!=null){
+        switch (emptyListTag){
+          case Constants.MOVIES_BY_TYPE:
+            displayMovieData();
+            movieAdapter.setMovieData(movieArrayList);
+            break;
+          case Constants.MOVIES_FROM_FAVORITES:
+            if(movieArrayList==null ||movieArrayList.isEmpty()){
+              displayEmptyScreen();
+              emptyLayoutImageView.setImageResource(R.drawable.ic_no_favorite_movie);
+              emptyLayoutTextView.setText(R.string.fragment_empty_favorites);
+            }else {
+              displayMovieData();
+              movieAdapter.setMovieData(movieArrayList);
+            }
+            break;
+          case Constants.MOVIES_FROM_SEARCH:
+            if(movieArrayList==null ||movieArrayList.isEmpty()){
+              displayEmptyScreen();
+              emptyLayoutImageView.setImageResource(R.drawable.ic_no_results_found);
+              emptyLayoutTextView.setText(R.string.fragment_empty_search);
+            }else {
+              displayMovieData();
+              movieAdapter.setMovieData(movieArrayList);
+            }
+            break;
+
+        }
+      }
+
+
+      }
     return view;
   }
 
@@ -82,6 +124,15 @@ public static MovieListFragment getInstance(ArrayList<Movie> arrayList){
     Intent intent = new Intent(getActivity(), MovieDetailActivity.class);
     intent.putExtra(Constants.MOVIE_LIST_INTENT, movie);
     startActivity(intent);
+  }
+
+  private void displayEmptyScreen(){
+    recyclerView.setVisibility(View.GONE);
+    emptyLayout.setVisibility(View.VISIBLE);
+  }
+  private void displayMovieData(){
+    recyclerView.setVisibility(View.VISIBLE);
+    emptyLayout.setVisibility(View.GONE);
   }
 
 }
