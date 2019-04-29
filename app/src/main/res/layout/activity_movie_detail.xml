@@ -13,7 +13,7 @@
     android:layout_width="match_parent"
     android:layout_height="210dp">
     <com.google.android.material.appbar.CollapsingToolbarLayout
-      android:id="@+id/collapsing_tool_bar"
+      android:id="@+id/movie_detail_collapsing_tool_bar"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:fitsSystemWindows="true"
@@ -31,7 +31,7 @@
         app:layout_collapseMode="parallax"
         tools:src="@drawable/backdrop"/>
       <androidx.appcompat.widget.Toolbar
-        android:id="@+id/tool_bar"
+        android:id="@+id/movie_detail_tool_bar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         app:layout_collapseMode="pin"/>
@@ -44,7 +44,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -55,90 +54,81 @@
       <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <View
+          android:id="@+id/view"
+          android:layout_width="120dp"
+          android:layout_height="90dp"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent"/>
 
 
         <TextView
           android:id="@+id/movie_title"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_marginTop="8dp"
-          android:layout_marginStart="8dp"
+          android:layout_marginTop="16dp"
+          android:layout_marginStart="16dp"
           android:layout_marginEnd="16dp"
           android:textSize="24sp"
+          android:textAlignment="center"
           app:layout_constrainedWidth="true"
           app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="@+id/guideline"
+          app:layout_constraintStart_toEndOf="@+id/view"
           app:layout_constraintTop_toTopOf="parent"
           tools:text="Geem Bhoomba"/>
-        <androidx.constraintlayout.widget.Guideline
-          android:id="@+id/guideline"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:orientation="vertical"
-          app:layout_constraintGuide_begin="123dp"/>
-        <ImageView
-          android:id="@+id/release_date_icon"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginStart="8dp"
-          app:layout_constraintEnd_toStartOf="@+id/release_date_text_view"
-          app:layout_constraintHorizontal_chainStyle="packed"
-          app:layout_constraintStart_toStartOf="@+id/guideline6"
-          app:layout_constraintTop_toTopOf="@+id/rating_text_view"
-          app:srcCompat="@drawable/ic_calendar_24dp"
-          android:contentDescription="@string/release_date_image_info"/>
-        <TextView
-          android:id="@+id/release_date_text_view"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginStart="8dp"
-          android:layout_marginEnd="8dp"
-          tools:text="09-06-2016"
-          app:layout_constraintBottom_toBottomOf="@+id/release_date_icon"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toEndOf="@+id/release_date_icon"
-          app:layout_constraintTop_toTopOf="@+id/release_date_icon"/>
-        <TextView
-          android:id="@+id/rating_label"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginStart="4dp"
-          android:layout_marginEnd="8dp"
-          android:text="@string/rating_label"
-          app:layout_constraintBaseline_toBaselineOf="@+id/rating_text_view"
-          app:layout_constraintEnd_toStartOf="@+id/guideline6"
-          app:layout_constraintStart_toEndOf="@+id/rating_text_view"/>
-        <TextView
-          android:id="@+id/rating_text_view"
+        <LinearLayout
+          android:id="@+id/linearLayout"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginTop="8dp"
-          android:layout_marginBottom="8dp"
-          android:layout_marginStart="8dp"
-          tools:text="6.6"
-          android:textSize="16sp"
-          app:layout_constraintEnd_toStartOf="@+id/rating_label"
-          app:layout_constraintHorizontal_chainStyle="packed"
-          app:layout_constraintStart_toStartOf="@+id/guideline"
-          app:layout_constraintTop_toBottomOf="@+id/movie_title"/>
-        <androidx.constraintlayout.widget.Guideline
-          android:id="@+id/guideline6"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:orientation="vertical"
-          app:layout_constraintGuide_end="144dp"/>
+          android:paddingStart="8dp"
+          android:paddingEnd="8dp"
+          android:orientation="horizontal"
+          android:layout_gravity="center"
+          android:gravity="center"
+          app:layout_constraintEnd_toEndOf="@+id/movie_title"
+          app:layout_constraintStart_toStartOf="@+id/movie_title"
+          app:layout_constraintTop_toBottomOf="@+id/movie_title">
+
+          <TextView
+              android:id="@+id/rating_text_view"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:drawablePadding="4dp"
+              android:drawableStart="@drawable/ic_star_16dp"
+              android:padding="8dp"
+              android:textSize="16sp"
+              tools:text="6.6/10"/>
+          <View
+              android:layout_width="32dp"
+              android:layout_height="match_parent"/>
+            <TextView
+                android:id="@+id/release_date_text_view"
+                android:drawableStart="@drawable/ic_calendar_16dp"
+                android:drawablePadding="4dp"
+                android:textSize="16sp"
+                android:padding="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="09-06-2016"/>
+
+        </LinearLayout>
+
         <TextView
           android:id="@+id/storyline_text_view"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_margin="8dp"
+          android:layout_marginTop="16dp"
+          android:layout_marginBottom="16dp"
+          android:layout_marginStart="8dp"
+          android:layout_marginEnd="8dp"
           android:gravity="center_horizontal"
           android:textAlignment="center"
+          app:layout_constrainedWidth="true"
           app:layout_constraintBottom_toBottomOf="parent"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toBottomOf="@+id/storyline_label"
-          app:layout_constrainedWidth="true"
           tools:text="jgjjgjjgjhdjkgjdkjjgdkgdgjdkgjdkjgkdjgkjdkgjdkgjdkgkdjgkdjgkdkgdkjgkdjgkjdgjdkgjkdjgkdjgkjdkgjdkgjdkjgkdjgkdjgdjgkjdkgjdkgkdjkdjgkdkjgkdjgkdjgkdjgkdjkgjdgdkjgkdjgkjdkgjkdjgkdjgkjdgkjdkjgkdjgkdjkjdkjgkdjgkdjgkjdkgjkdjgkdjgkjdkjgkdjgkdgkjdkgjkdjgkjdkgjkdjgkjdkgdkjgkdjgkjdkgjdkjgkdjgkdjgkjdkjgkd"/>
         <TextView
           android:id="@+id/storyline_label"
@@ -148,7 +138,7 @@
           android:layout_marginStart="8dp"
           android:text="@string/storyline_label"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/rating_text_view"/>
+          app:layout_constraintTop_toBottomOf="@+id/linearLayout"/>
 
 
       </androidx.constraintlayout.widget.ConstraintLayout>
@@ -205,7 +195,6 @@
     app:cardElevation="8dp"
     app:cardUseCompatPadding="true"
     app:layout_anchor="@id/app_bar"
-    app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
     app:layout_anchorGravity="bottom|left">
 
     <ImageView
@@ -216,5 +205,6 @@
       android:scaleType="centerCrop"
       tools:srcCompat="@drawable/poster"/>
   </androidx.cardview.widget.CardView>
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,6 +19,8 @@ import butterknife.ButterKnife;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.nirmal.jeffrey.flickvibes.R;
@@ -41,6 +45,12 @@ public class MovieDetailActivity extends BaseActivity implements TrailerClickLis
   private static final String TAG = "MovieId";
   @BindView(R.id.movie_detail_coordinator_layout)
   CoordinatorLayout coordinatorLayout;
+  @BindView(R.id.movie_detail_collapsing_tool_bar)
+  CollapsingToolbarLayout collapsingToolbarLayout;
+  @BindView(R.id.app_bar)
+  AppBarLayout appBarLayout;
+  @BindView(R.id.movie_detail_tool_bar)
+  Toolbar toolbar;
 @BindView(R.id.back_drop_image_view)
   ImageView backdropImage;
 @BindView(R.id.movie_title)
@@ -63,6 +73,8 @@ RecyclerView reviewList;
 FloatingActionButton favoriteButton;
 @BindView(R.id.poster_image_view)
 ImageView posterImage;
+@BindView(R.id.view)
+View titleSpaceView;
 
 private Movie movie;
 private ReviewAdapter reviewAdapter;
@@ -83,7 +95,19 @@ private boolean isFavorite;
 
 
 
+
   }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()){
+      case android.R.id.home:
+        finish();
+        return true;
+    }
+    return super.onOptionsItemSelected(item);
+  }
+
   private void initRecyclerViews(){
 
     //Reviews
@@ -274,18 +298,46 @@ private boolean isFavorite;
     }
   }
   private void setMoviePropertiesToWidgets(){
+    collapsingToolbarLayout.setTitle(movie.getTitle());
     titleTextView.setText(movie.getTitle());
     releaseDateTextView.setText(movie.getReleaseDate());
-    ratingTextView.setText(String.valueOf(movie.getVoteAverage()));
+    ratingTextView.setText(getString(R.string.vote_average_format,movie.getVoteAverage()));
     storyLineTextView.setText(movie.getOverview());
     String backdropUrl = NetworkUtils.buildMovieImageURLString(NetworkUtils.BACKDROP_BASE_URL,movie.getBackdropPath());
     String posterUrl =NetworkUtils.buildMovieImageURLString(NetworkUtils.POSTER_BASE_URL,movie.getPosterPath());
     setImageUsingGlide(backdropUrl,backdropImage);
     setImageUsingGlide(posterUrl,posterImage);
+    initToolbar();
     initRecyclerViews();
-    coordinatorLayout.setVisibility(View.VISIBLE);
+    initAppBarScrollAnimations();
+
+
+        coordinatorLayout.setVisibility(View.VISIBLE);
     showProgressBar(false);
 
+  }
+
+  private void initToolbar(){
+    setSupportActionBar(toolbar);
+    if(getSupportActionBar()!=null) {
+      getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+      getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
+      collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.transparent));
+      collapsingToolbarLayout.setCollapsedTitleTextColor(getResources().getColor(android.R.color.white));
+    }
+
+  }
+
+  private void initAppBarScrollAnimations(){
+    appBarLayout.addOnOffsetChangedListener((AppBarLayout appBarLayout, int verticalOffset) -> {
+      if (Math.abs(verticalOffset) - appBarLayout.getTotalScrollRange() == 0){
+        posterImage.setVisibility(View.GONE);
+        titleSpaceView.setVisibility(View.GONE);
+      }else {
+        posterImage.setVisibility(View.VISIBLE);
+        titleSpaceView.setVisibility(View.VISIBLE);
+      }
+    });
   }
 
   private void setImageUsingGlide(String url,ImageView imageView){

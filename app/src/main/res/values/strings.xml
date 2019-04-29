@@ -32,9 +32,9 @@
   <string name="similar_movies_label">SIMILAR MOVIES</string>
   <string name="review_label">REVIEWS</string>
   <string name="storyline_label">StoryLine</string>
-  <string name="rating_label" translatable="false">/10</string>
   <string name="snackbar_movie_added">Movie added to favorites</string>
   <string name="snackbar_movie_removed">Movie removed from favorites</string>
+  <string name="vote_average_format"> %.1f/10</string>
   <!--activity_movie_prediction.xml -->
   <string name="detect_emotions_button">Detect Emotions</string>
   <string name="happy_emotion">You are feeling happy</string>
