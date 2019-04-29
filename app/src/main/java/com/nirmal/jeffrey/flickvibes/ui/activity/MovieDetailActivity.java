@@ -3,7 +3,6 @@ package com.nirmal.jeffrey.flickvibes.ui.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -31,7 +30,6 @@ import com.nirmal.jeffrey.flickvibes.adapter.ReviewAdapter;
 import com.nirmal.jeffrey.flickvibes.adapter.TrailerAdapter;
 import com.nirmal.jeffrey.flickvibes.adapter.TrailerAdapter.TrailerClickListener;
 import com.nirmal.jeffrey.flickvibes.model.Cast;
-import com.nirmal.jeffrey.flickvibes.model.Genre;
 import com.nirmal.jeffrey.flickvibes.model.Movie;
 import com.nirmal.jeffrey.flickvibes.model.Trailer;
 import com.nirmal.jeffrey.flickvibes.util.Constants;
@@ -61,6 +59,12 @@ TextView releaseDateTextView;
 TextView ratingTextView;
 @BindView(R.id.storyline_text_view)
 TextView storyLineTextView;
+  @BindView(R.id.favorite_fab_button)
+  FloatingActionButton favoriteButton;
+  @BindView(R.id.poster_image_view)
+  ImageView posterImage;
+  @BindView(R.id.view)
+  View titleSpaceView;
 @BindView(R.id.genre_recycler_view)
   RecyclerView genreList;
 @BindView(R.id.trailer_recycler_view)
@@ -69,12 +73,14 @@ RecyclerView trailerList;
 RecyclerView castList;
 @BindView(R.id.review_recycler_view)
 RecyclerView reviewList;
-@BindView(R.id.favorite_fab_button)
-FloatingActionButton favoriteButton;
-@BindView(R.id.poster_image_view)
-ImageView posterImage;
-@BindView(R.id.view)
-View titleSpaceView;
+@BindView(R.id.genre_label)
+TextView genreLabel;
+@BindView(R.id.trailer_label)
+TextView trailerLabel;
+@BindView(R.id.cast_label)
+TextView castLabel;
+@BindView(R.id.review_label)
+TextView reviewLabel;
 
 private Movie movie;
 private ReviewAdapter reviewAdapter;
@@ -91,19 +97,13 @@ private boolean isFavorite;
     movieDetailViewModel= ViewModelProviders.of(this).get(MovieDetailViewModel.class);
     getIncomingIntent();
     setMoviePropertiesToWidgets();
-
-
-
-
-
   }
 
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
-    switch (item.getItemId()){
-      case android.R.id.home:
-        finish();
-        return true;
+    if (item.getItemId() == android.R.id.home) {
+      finish();
+      return true;
     }
     return super.onOptionsItemSelected(item);
   }
@@ -160,18 +160,25 @@ private boolean isFavorite;
                   coordinatorLayout.setVisibility(View.VISIBLE);
                   showProgressBar(false);
                   toastMessage(listResource.message);
-                  reviewAdapter.setReviewData(new ArrayList<>(listResource.data));
-
-
+                  if(listResource.data.isEmpty()) {
+                    setReviewVisibility(false);
+                  }else {
+                    setReviewVisibility(true);
+                    reviewAdapter.setReviewData(new ArrayList<>(listResource.data));
+                  }
                   break;
                 case SUCCESS:
                   coordinatorLayout.setVisibility(View.VISIBLE);
                   showProgressBar(false);
-                  reviewAdapter.setReviewData(new ArrayList<>(listResource.data));
-
-
+                  if(listResource.data.isEmpty()) {
+                    setReviewVisibility(false);
+                  }else {
+                    setReviewVisibility(true);
+                    reviewAdapter.setReviewData(new ArrayList<>(listResource.data));
+                  }
                   break;
               }
+
             }
           }
         });
@@ -188,32 +195,32 @@ private boolean isFavorite;
                   coordinatorLayout.setVisibility(View.VISIBLE);
                   showProgressBar(false);
                   toastMessage(listResource.message);
-                  ArrayList<Trailer> trailerList =new ArrayList<>(listResource.data);
-                  for (Trailer trailer:trailerList){
-                    Log.d(TAG, "subscribeObservers: error :trailer Name "+ trailer.getName());
+                  if(listResource.data.isEmpty()) {
+                    setTrailerVisibility(false);
+                  }else {
+                    setTrailerVisibility(true);
+                    trailerAdapter.setTrailerData(new ArrayList<>(listResource.data));
                   }
-                  trailerAdapter.setTrailerData(new ArrayList<>(listResource.data));
-
                   break;
                 case SUCCESS:
                   coordinatorLayout.setVisibility(View.VISIBLE);
                   showProgressBar(false);
-                  ArrayList<Trailer> trailers =new ArrayList<>(listResource.data);
-                  for (Trailer trailer:trailers){
-                    Log.d(TAG, "subscribeObservers: success :trailer Name "+ trailer.getName());
-
+                  if(listResource.data.isEmpty()) {
+                    setTrailerVisibility(false);
+                  }else {
+                    setTrailerVisibility(true);
+                    trailerAdapter.setTrailerData(new ArrayList<>(listResource.data));
                   }
-                  trailerAdapter.setTrailerData(new ArrayList<>(listResource.data));
-
                   break;
               }
+
             }
           }
         });
     movieDetailViewModel.getCastApi(movieId).observe(this, listResource -> {
       if(listResource!=null){
-        if(listResource.data!=null){
-          switch (listResource.status){
+        if(listResource.data!=null) {
+          switch (listResource.status) {
             case LOADING:
               showProgressBar(true);
               coordinatorLayout.setVisibility(View.INVISIBLE);
@@ -222,21 +229,32 @@ private boolean isFavorite;
               coordinatorLayout.setVisibility(View.VISIBLE);
               showProgressBar(false);
               toastMessage(listResource.message);
-              castAdapter.setCastData(new ArrayList<>(listResource.data));
-
+              if(listResource.data.isEmpty()) {
+                setCastVisibility(false);
+              }else {
+                setCastVisibility(true);
+                castAdapter.setCastData(new ArrayList<>(listResource.data));
+              }
               break;
             case SUCCESS:
               coordinatorLayout.setVisibility(View.VISIBLE);
               showProgressBar(false);
-              castAdapter.setCastData(new ArrayList<>(listResource.data));
+              if(listResource.data.isEmpty()) {
+                setCastVisibility(false);
+              }else {
+                setCastVisibility(true);
+                castAdapter.setCastData(new ArrayList<>(listResource.data));
+              }
               break;
           }
+
         }
       }
     });
     movieDetailViewModel.getGenresApi(movieId).observe(this, listResource -> {
       if(listResource!=null){
         if(listResource.data!=null){
+
           switch (listResource.status){
             case LOADING:
               showProgressBar(true);
@@ -246,23 +264,25 @@ private boolean isFavorite;
               coordinatorLayout.setVisibility(View.VISIBLE);
               showProgressBar(false);
               toastMessage(listResource.message);
-              ArrayList<Genre> genreList =new ArrayList<>(listResource.data);
-              for (Genre genre:genreList){
-                Log.d(TAG, "subscribeObservers: error :trailer Name "+ genre.getGenreName());
+              if(listResource.data.isEmpty()) {
+                setGenreVisibility(false);
+              }else {
+                setGenreVisibility(true);
+                genreAdapter.setGenreData(new ArrayList<>(listResource.data));
               }
-              genreAdapter.setGenreData(new ArrayList<>(listResource.data));
-
-              break;
+                break;
             case SUCCESS:
               coordinatorLayout.setVisibility(View.VISIBLE);
               showProgressBar(false);
-              ArrayList<Genre> genres =new ArrayList<>(listResource.data);
-              for (Genre genre:genres){
-                Log.d(TAG, "subscribeObservers: success :trailer Name "+ genre.getGenreName());
+              if(listResource.data.isEmpty()) {
+                setGenreVisibility(false);
+              }else {
+                setGenreVisibility(true);
+                genreAdapter.setGenreData(new ArrayList<>(listResource.data));
               }
-              genreAdapter.setGenreData(new ArrayList<>(listResource.data));
               break;
           }
+
         }
       }
     });
@@ -372,6 +392,24 @@ private boolean isFavorite;
     Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
   }
 
+  private void setCastVisibility(boolean visibility){
+    castList.setVisibility(visibility? View.VISIBLE:View.GONE);
+    castLabel.setVisibility(visibility? View.VISIBLE:View.GONE);
+  }
+
+  private void setGenreVisibility(boolean visibility){
+    genreList.setVisibility(visibility? View.VISIBLE:View.GONE);
+    genreLabel.setVisibility(visibility? View.VISIBLE:View.GONE);
+  }
+  private void setTrailerVisibility(boolean visibility){
+    trailerList.setVisibility(visibility? View.VISIBLE:View.GONE);
+    trailerLabel.setVisibility(visibility? View.VISIBLE:View.GONE);
+  }
+  private void setReviewVisibility(boolean visibility){
+    reviewList.setVisibility(visibility? View.VISIBLE:View.GONE);
+    reviewLabel.setVisibility(visibility? View.VISIBLE:View.GONE);
+  }
+
   @Override
   public void onTrailerVideoClick(Trailer trailer) {
     Uri youtubeAppUri = NetworkUtils.buildYoutubeAppVideoUrl(trailer.getKey());
@@ -404,4 +442,6 @@ try{
   e.printStackTrace();
 }
   }
+
+
 }

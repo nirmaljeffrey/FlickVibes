@@ -25,8 +25,14 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewListViewHolder> {
 
   }
 
-  public void setReviewData(ArrayList<Review> reviewArrayList) {
-    this.reviewArrayList = reviewArrayList;
+  public void setReviewData(ArrayList<Review> reviewData) {
+    //Clear the previous data before swapping
+    if (this.reviewArrayList != null) {
+      this.reviewArrayList.clear();
+      this.reviewArrayList.addAll(reviewData);
+    } else {
+      this.reviewArrayList = reviewData;
+    }
     notifyDataSetChanged();
   }
 

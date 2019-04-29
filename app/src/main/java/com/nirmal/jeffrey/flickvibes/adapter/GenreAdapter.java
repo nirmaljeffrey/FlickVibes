@@ -18,8 +18,14 @@ public class GenreAdapter extends RecyclerView.Adapter<GenreListViewHolder> {
   public GenreAdapter(){
 
   }
-  public void setGenreData(ArrayList<Genre> genreArrayList){
-    this.genreArrayList=genreArrayList;
+  public void setGenreData(ArrayList<Genre> genreData){
+    //Clear the previous data before swapping
+    if (this.genreArrayList != null) {
+      this.genreArrayList.clear();
+      this.genreArrayList.addAll(genreData);
+    } else {
+      this.genreArrayList = genreData;
+    }
     notifyDataSetChanged();
   }
   @NonNull

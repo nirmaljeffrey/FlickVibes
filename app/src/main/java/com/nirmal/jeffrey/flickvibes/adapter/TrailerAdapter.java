@@ -25,8 +25,14 @@ public TrailerAdapter(RequestManager requestManager,TrailerClickListener trailer
   this.trailerClickListener=trailerClickListener;
   this.requestManager=requestManager;
 }
-public void setTrailerData(ArrayList<Trailer> trailerArrayList){
-  this.trailerArrayList=trailerArrayList;
+public void setTrailerData(ArrayList<Trailer> trailerData){
+  //Clear the previous data before swapping
+  if (this.trailerArrayList != null) {
+    this.trailerArrayList.clear();
+    this.trailerArrayList.addAll(trailerData);
+  } else {
+    this.trailerArrayList = trailerData;
+  }
   notifyDataSetChanged();
 }
 public interface TrailerClickListener{

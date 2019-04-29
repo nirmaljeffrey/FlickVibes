@@ -111,7 +111,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="09-06-2016"/>
-
         </LinearLayout>
 
         <TextView
@@ -143,6 +142,7 @@
 
       </androidx.constraintlayout.widget.ConstraintLayout>
       <TextView
+        android:id="@+id/genre_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/genre_label"/>
@@ -151,6 +151,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
       <TextView
+        android:id="@+id/trailer_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/trailer_label"/>
@@ -159,6 +160,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
       <TextView
+        android:id="@+id/cast_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/cast_label"/>
@@ -167,6 +169,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
       <TextView
+        android:id="@+id/review_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/review_label"/>

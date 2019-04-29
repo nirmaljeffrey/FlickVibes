@@ -24,8 +24,14 @@ public CastAdapter(RequestManager requestManager, CastClickListener castClickLis
   this.requestManager=requestManager;
   this.castClickListener = castClickListener;
 }
-public void setCastData(ArrayList<Cast> castArrayList){
-  this.castArrayList=castArrayList;
+public void setCastData(ArrayList<Cast> castData){
+  //Clear the previous data before swapping
+  if (this.castArrayList != null) {
+    this.castArrayList.clear();
+    this.castArrayList.addAll(castData);
+  } else {
+    this.castArrayList = castData;
+  }
   notifyDataSetChanged();
 }
   @NonNull

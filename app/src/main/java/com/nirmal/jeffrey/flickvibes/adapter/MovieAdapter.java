@@ -32,7 +32,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieListViewHolder> {
 
   public void setMovieData(ArrayList<Movie> movieData) {
     //Clear the previous data before swapping
-    if (movieArrayList != null) {
+    if (this.movieArrayList != null) {
       this.movieArrayList.clear();
       this.movieArrayList.addAll(movieData);
     } else {
