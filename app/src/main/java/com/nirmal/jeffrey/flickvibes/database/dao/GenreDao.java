@@ -10,7 +10,8 @@ import com.nirmal.jeffrey.flickvibes.model.Genre;
 import java.util.List;
 
 @Dao
-public  interface GenreDao {
+public interface GenreDao {
+
   @Insert(onConflict = REPLACE)
   void insertGenres(List<Genre> genres);
 
@@ -18,8 +19,7 @@ public  interface GenreDao {
   LiveData<List<Genre>> getAllGenreForMovie(int movieId);
 
   @Query("DELETE  FROM genre_table")
- void deleteAllGenre();
-
+  void deleteAllGenre();
 
 
 }

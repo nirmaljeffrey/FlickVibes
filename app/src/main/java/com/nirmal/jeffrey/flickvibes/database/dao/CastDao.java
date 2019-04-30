@@ -10,14 +10,15 @@ import com.nirmal.jeffrey.flickvibes.model.Cast;
 import java.util.List;
 
 @Dao
-public  interface CastDao {
+public interface CastDao {
+
   @Insert(onConflict = REPLACE)
- void insertCasts(List<Cast> casts);
+  void insertCasts(List<Cast> casts);
 
   @Query("SELECT * FROM cast_table WHERE movie_id=:movieId")
-   LiveData<List<Cast>> getAllCastForMovie(int movieId);
+  LiveData<List<Cast>> getAllCastForMovie(int movieId);
 
   @Query("DELETE  FROM cast_table")
-   void deleteAllCast();
+  void deleteAllCast();
 
 }

@@ -16,7 +16,8 @@ import com.nirmal.jeffrey.flickvibes.model.Movie;
 import com.nirmal.jeffrey.flickvibes.model.Review;
 import com.nirmal.jeffrey.flickvibes.model.Trailer;
 
-@Database(entities = {Movie.class, Review.class, Trailer.class, Cast.class, Genre.class}, version = 1)
+@Database(entities = {Movie.class, Review.class, Trailer.class, Cast.class,
+    Genre.class}, version = 1)
 public abstract class MovieDatabase extends RoomDatabase {
 
   private static final String DATABASE_NAME = "movies_db";
@@ -33,9 +34,13 @@ public abstract class MovieDatabase extends RoomDatabase {
   }
 
   public abstract MovieDao getMovieDao();
+
   public abstract ReviewDao getReviewDao();
+
   public abstract TrailerDao getTrailerDao();
+
   public abstract GenreDao getGenreDao();
+
   public abstract CastDao getCastDao();
 
 }

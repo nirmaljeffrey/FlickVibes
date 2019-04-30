@@ -15,26 +15,20 @@ import com.nirmal.jeffrey.flickvibes.ui.activity.MovieDetailActivity;
  */
 public class MovieAppWidget extends AppWidgetProvider {
 
-
-
-
   static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
       int appWidgetId) {
-
-
     // Construct the RemoteViews object
-    Intent serviceIntent = new Intent(context,MovieWidgetService.class);
-    serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,appWidgetId);
+    Intent serviceIntent = new Intent(context, MovieWidgetService.class);
+    serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
     serviceIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));
 
     Intent clickIntent = new Intent(context, MovieDetailActivity.class);
-    PendingIntent clickPendingIntent =PendingIntent.getActivity(context,0,clickIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+    PendingIntent clickPendingIntent = PendingIntent
+        .getActivity(context, 0, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.movie_app_widget);
-    views.setRemoteAdapter(R.id.movie_stack_view_widget,serviceIntent);
-    views.setEmptyView(R.id.movie_stack_view_widget,R.id.empty_widget_Text_view);
-    views.setPendingIntentTemplate(R.id.movie_stack_view_widget,clickPendingIntent);
-
-
+    views.setRemoteAdapter(R.id.movie_stack_view_widget, serviceIntent);
+    views.setEmptyView(R.id.movie_stack_view_widget, R.id.empty_widget_Text_view);
+    views.setPendingIntentTemplate(R.id.movie_stack_view_widget, clickPendingIntent);
     // Instruct the widget manager to update the widget
     appWidgetManager.updateAppWidget(appWidgetId, views);
   }

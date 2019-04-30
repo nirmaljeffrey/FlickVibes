@@ -6,6 +6,7 @@ import com.nirmal.jeffrey.flickvibes.model.Movie;
 import java.util.List;
 
 public class MovieListResponse {
+
   @SerializedName("page")
   @Expose
   private int page;

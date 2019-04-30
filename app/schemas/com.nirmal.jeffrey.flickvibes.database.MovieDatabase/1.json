@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "27c4ebda0203f37ff69a44baf736a6cd",
+    "identityHash": "d02b5ae576e1a3b17c3d85c6da524d2b",
     "entities": [
       {
         "tableName": "movie_table",
@@ -137,7 +137,16 @@
           ],
           "autoGenerate": false
         },
-        "indices": [],
+        "indices": [
+          {
+            "name": "index_review_table_movie_id",
+            "unique": false,
+            "columnNames": [
+              "movie_id"
+            ],
+            "createSql": "CREATE  INDEX `index_review_table_movie_id` ON `${TABLE_NAME}` (`movie_id`)"
+          }
+        ],
         "foreignKeys": [
           {
             "table": "movie_table",
@@ -193,7 +202,16 @@
           ],
           "autoGenerate": false
         },
-        "indices": [],
+        "indices": [
+          {
+            "name": "index_trailer_table_movie_id",
+            "unique": false,
+            "columnNames": [
+              "movie_id"
+            ],
+            "createSql": "CREATE  INDEX `index_trailer_table_movie_id` ON `${TABLE_NAME}` (`movie_id`)"
+          }
+        ],
         "foreignKeys": [
           {
             "table": "movie_table",
@@ -243,7 +261,16 @@
           ],
           "autoGenerate": false
         },
-        "indices": [],
+        "indices": [
+          {
+            "name": "index_cast_table_movie_id",
+            "unique": false,
+            "columnNames": [
+              "movie_id"
+            ],
+            "createSql": "CREATE  INDEX `index_cast_table_movie_id` ON `${TABLE_NAME}` (`movie_id`)"
+          }
+        ],
         "foreignKeys": [
           {
             "table": "movie_table",
@@ -287,7 +314,16 @@
           ],
           "autoGenerate": false
         },
-        "indices": [],
+        "indices": [
+          {
+            "name": "index_genre_table_movie_id",
+            "unique": false,
+            "columnNames": [
+              "movie_id"
+            ],
+            "createSql": "CREATE  INDEX `index_genre_table_movie_id` ON `${TABLE_NAME}` (`movie_id`)"
+          }
+        ],
         "foreignKeys": [
           {
             "table": "movie_table",
@@ -305,7 +341,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"27c4ebda0203f37ff69a44baf736a6cd\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"d02b5ae576e1a3b17c3d85c6da524d2b\")"
     ]
   }
 }

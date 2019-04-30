@@ -105,10 +105,5 @@ public class BitmapUtils {
   }
 
 
-
-
-
-
-
 }
 

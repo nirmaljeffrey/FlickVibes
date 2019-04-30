@@ -28,8 +28,9 @@ import com.nirmal.jeffrey.flickvibes.util.Constants;
 import java.util.ArrayList;
 
 public class MovieListFragment extends Fragment implements OnMovieItemClickLister {
-  private static final String MOVIE_LIST_FRAGMENT_BUNDLE="movie_list_fragment_bundle";
-  private static final String EMPTY_MOVIE_FRAGMENT_BUNDLE="empty_movie_bundle";
+
+  private static final String MOVIE_LIST_FRAGMENT_BUNDLE = "movie_list_fragment_bundle";
+  private static final String EMPTY_MOVIE_FRAGMENT_BUNDLE = "empty_movie_bundle";
   @BindView(R.id.movies_recycler_view)
   RecyclerView recyclerView;
   @BindView(R.id.empty_layout_image_view)
@@ -40,57 +41,58 @@ public class MovieListFragment extends Fragment implements OnMovieItemClickListe
   ConstraintLayout emptyLayout;
   private Unbinder unbinder;
   private MovieAdapter movieAdapter;
-public static MovieListFragment getInstance(ArrayList<Movie> arrayList,String listTypeIdentifier){
-  MovieListFragment fragment = new MovieListFragment();
-  Bundle bundle = new Bundle();
-  bundle.putParcelableArrayList(MOVIE_LIST_FRAGMENT_BUNDLE,arrayList);
-  bundle.putString(EMPTY_MOVIE_FRAGMENT_BUNDLE,listTypeIdentifier);
-  fragment.setArguments(bundle);
-  return fragment;
-}
+
+  public static MovieListFragment getInstance(ArrayList<Movie> arrayList,
+      String listTypeIdentifier) {
+    MovieListFragment fragment = new MovieListFragment();
+    Bundle bundle = new Bundle();
+    bundle.putParcelableArrayList(MOVIE_LIST_FRAGMENT_BUNDLE, arrayList);
+    bundle.putString(EMPTY_MOVIE_FRAGMENT_BUNDLE, listTypeIdentifier);
+    fragment.setArguments(bundle);
+    return fragment;
+  }
+
   @Nullable
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
 
-    View view = inflater.inflate(R.layout.fragment_list_movie,container,false);
-   unbinder= ButterKnife.bind(this,view);
+    View view = inflater.inflate(R.layout.fragment_list_movie, container, false);
+    unbinder = ButterKnife.bind(this, view);
     initRecyclerView();
-    if(getArguments()!=null){
-      String emptyListTag =getArguments().getString(EMPTY_MOVIE_FRAGMENT_BUNDLE);
-      ArrayList<Movie> movieArrayList =getArguments().getParcelableArrayList(MOVIE_LIST_FRAGMENT_BUNDLE);
-      if(emptyListTag!=null){
-        switch (emptyListTag){
+    if (getArguments() != null) {
+      String emptyListTag = getArguments().getString(EMPTY_MOVIE_FRAGMENT_BUNDLE);
+      ArrayList<Movie> movieArrayList = getArguments()
+          .getParcelableArrayList(MOVIE_LIST_FRAGMENT_BUNDLE);
+      if (emptyListTag != null) {
+        switch (emptyListTag) {
           case Constants.MOVIES_BY_TYPE:
             displayMovieData();
             movieAdapter.setMovieData(movieArrayList);
             break;
           case Constants.MOVIES_FROM_FAVORITES:
-            if(movieArrayList==null ||movieArrayList.isEmpty()){
+            if (movieArrayList == null || movieArrayList.isEmpty()) {
               displayEmptyScreen();
               emptyLayoutImageView.setImageResource(R.drawable.ic_no_favorite_movie);
               emptyLayoutTextView.setText(R.string.fragment_empty_favorites);
-            }else {
+            } else {
               displayMovieData();
               movieAdapter.setMovieData(movieArrayList);
             }
             break;
           case Constants.MOVIES_FROM_SEARCH:
-            if(movieArrayList==null ||movieArrayList.isEmpty()){
+            if (movieArrayList == null || movieArrayList.isEmpty()) {
               displayEmptyScreen();
               emptyLayoutImageView.setImageResource(R.drawable.ic_no_results_found);
               emptyLayoutTextView.setText(R.string.fragment_empty_search);
-            }else {
+            } else {
               displayMovieData();
               movieAdapter.setMovieData(movieArrayList);
             }
             break;
-
         }
       }
-
-
-      }
+    }
     return view;
   }
 
@@ -100,6 +102,7 @@ public static MovieListFragment getInstance(ArrayList<Movie> arrayList,String li
     movieAdapter = new MovieAdapter(initGlide(), this);
     recyclerView.setAdapter(movieAdapter);
   }
+
   /**
    * Method for creating request manager for recycler view
    *
@@ -113,6 +116,7 @@ public static MovieListFragment getInstance(ArrayList<Movie> arrayList,String li
         .setDefaultRequestOptions(requestOptions);
 
   }
+
   @Override
   public void onDestroyView() {
     super.onDestroyView();
@@ -126,11 +130,12 @@ public static MovieListFragment getInstance(ArrayList<Movie> arrayList,String li
     startActivity(intent);
   }
 
-  private void displayEmptyScreen(){
+  private void displayEmptyScreen() {
     recyclerView.setVisibility(View.GONE);
     emptyLayout.setVisibility(View.VISIBLE);
   }
-  private void displayMovieData(){
+
+  private void displayMovieData() {
     recyclerView.setVisibility(View.VISIBLE);
     emptyLayout.setVisibility(View.GONE);
   }

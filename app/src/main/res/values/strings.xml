@@ -17,6 +17,7 @@
   <!-- MovieDetailActivity -->
   <string name="trailer_share_intent_title">Share trailer using</string>
   <string name="launch_gallery_intent_title">Complete action using</string>
+  <string name="face_detection_failed">Face detection failed</string>
 
   <!-- MovieListActivity Dialog -->
   <string name="dialog_action_camera">Camera</string>

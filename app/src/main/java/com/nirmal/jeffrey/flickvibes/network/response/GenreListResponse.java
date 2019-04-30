@@ -6,6 +6,7 @@ import com.nirmal.jeffrey.flickvibes.model.Genre;
 import java.util.ArrayList;
 
 public class GenreListResponse {
+
   @SerializedName("genres")
   @Expose
   private ArrayList<Genre> genreList;

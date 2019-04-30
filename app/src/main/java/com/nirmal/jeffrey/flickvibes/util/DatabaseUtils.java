@@ -32,13 +32,8 @@ public final class DatabaseUtils {
       default:
         throw new IllegalArgumentException(
             "The movieList should of four types - popular, topRated, upcoming, nowPlaying");
-
-
     }
-
-
   }
-
 
 
   public static void setMovieTypeInPOJO(String type, Movie movie) {
@@ -59,7 +54,6 @@ public final class DatabaseUtils {
         throw new IllegalArgumentException(
             "The movieList should of four types - popular, topRated, upcoming, nowPlaying");
     }
-
   }
 
 
@@ -81,8 +75,6 @@ public final class DatabaseUtils {
       default:
         throw new IllegalArgumentException(
             "The movieList should of four types - popular, topRated, upcoming, nowPlaying");
-
     }
-
   }
 }

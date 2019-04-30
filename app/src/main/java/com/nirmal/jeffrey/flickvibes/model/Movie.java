@@ -13,7 +13,6 @@ import com.google.gson.annotations.SerializedName;
 public class Movie implements Parcelable {
 
 
-
   public static final Creator<Movie> CREATOR = new Creator<Movie>() {
     @Override
     public Movie createFromParcel(Parcel in) {

@@ -14,6 +14,7 @@ import com.nirmal.jeffrey.flickvibes.util.Resource;
 import java.util.List;
 
 public class MovieDetailViewModel extends AndroidViewModel {
+
   private MovieRepository movieRepository;
 
   public MovieDetailViewModel(@NonNull Application application) {
@@ -21,25 +22,31 @@ public class MovieDetailViewModel extends AndroidViewModel {
     movieRepository = MovieRepository.getInstance(application);
   }
 
-  public LiveData<Resource<List<Review>>> getReviewsApi(int movieId){
+  public LiveData<Resource<List<Review>>> getReviewsApi(int movieId) {
     return movieRepository.getReviewsApi(movieId);
   }
-  public LiveData<Resource<List<Trailer>>> getTrailersApi(int movieId){
+
+  public LiveData<Resource<List<Trailer>>> getTrailersApi(int movieId) {
     return movieRepository.getTrailersApi(movieId);
   }
-  public LiveData<Resource<List<Cast>>> getCastApi(int movieId){
+
+  public LiveData<Resource<List<Cast>>> getCastApi(int movieId) {
     return movieRepository.getCastApi(movieId);
   }
-  public LiveData<Resource<List<Genre>>> getGenresApi(int movieId){
+
+  public LiveData<Resource<List<Genre>>> getGenresApi(int movieId) {
     return movieRepository.getGenreApi(movieId);
   }
-  public void setMovieAsFavorite(int movieId){
+
+  public void setMovieAsFavorite(int movieId) {
     movieRepository.setMovieAsFavorite(movieId);
   }
-  public void removeMovieFromFavorite(int movieId){
+
+  public void removeMovieFromFavorite(int movieId) {
     movieRepository.removeMovieFromFavorite(movieId);
   }
-  public LiveData<Movie> getFavoriteMovie(int movieId){
-  return movieRepository.getFavoriteMovie(movieId);
+
+  public LiveData<Movie> getFavoriteMovie(int movieId) {
+    return movieRepository.getFavoriteMovie(movieId);
   }
 }

@@ -10,9 +10,6 @@ import com.nirmal.jeffrey.flickvibes.util.Constants;
 
 public class EmotionDetector {
 
-  private static final String TAG = "EmotionDetector";
-
-
   public static FirebaseVisionImage detectFacesFromImage(Bitmap bitmap) {
     return FirebaseVisionImage.fromBitmap(bitmap);
   }

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -30,9 +29,8 @@ import java.util.List;
 
 public class MoviePredictionActivity extends BaseActivity {
 
-  private static final String TAG = "MoviePredictionActivity";
-  private static final int NO_FACES_DETECTED=1;
-  private static final int MORE_THAN_ONE_FACE_DETECTED=2;
+  private static final int NO_FACES_DETECTED = 1;
+  private static final int MORE_THAN_ONE_FACE_DETECTED = 2;
   @BindView(R.id.face_image_view)
   ImageView faceImageView;
   @BindView(R.id.clear_button)
@@ -70,11 +68,7 @@ public class MoviePredictionActivity extends BaseActivity {
         } catch (FileNotFoundException e) {
           e.printStackTrace();
         }
-
-
       }
-
-
     }
     return bitmap;
   }
@@ -87,8 +81,8 @@ public class MoviePredictionActivity extends BaseActivity {
   private void initDetectFaceButton(Bitmap bitmap) {
     detectFaceButton.setOnClickListener(
         view -> {
-         showActivityLayout(false);
-         showProgressBar(true);
+          showActivityLayout(false);
+          showProgressBar(true);
           detectEmotions(MoviePredictionActivity.this, bitmap);
         });
   }
@@ -97,65 +91,50 @@ public class MoviePredictionActivity extends BaseActivity {
     if (bitmap != null) {
       FirebaseVisionFaceDetector detector = EmotionDetector.getDetector();
       FirebaseVisionImage image = EmotionDetector.detectFacesFromImage(bitmap);
-
       Task<List<FirebaseVisionFace>> result = detector.detectInImage(image).addOnSuccessListener(
           firebaseVisionFaces -> {
-
             if (firebaseVisionFaces.size() == 0) {
-
-            showProgressBar(false);
+              showProgressBar(false);
               showEmotionErrorDialog(NO_FACES_DETECTED);
-
             }
-
             if (firebaseVisionFaces.size() > 1) {
-
-             showProgressBar(false);
+              showProgressBar(false);
               showEmotionErrorDialog(MORE_THAN_ONE_FACE_DETECTED);
-
             } else if (firebaseVisionFaces.size() == 1) {
               FirebaseVisionFace face = firebaseVisionFaces.get(0);
               Emotions emotion = EmotionDetector.getEmotions(face);
               if (emotion != null) {
-                Log.d(TAG, "detectEmotions: Success face detection 1");
                 showProgressBar(false);
                 showEmotionSuccessDialog(emotion);
-
-
               }
-
-
             }
           })
           .addOnFailureListener(e -> {
             e.printStackTrace();
             showProgressBar(false);
             showActivityLayout(true);
-
-            Toast.makeText(context, "Face detection failed",
-                Toast.LENGTH_SHORT).show();
-
+            Toast.makeText(context, R.string.face_detection_failed, Toast.LENGTH_SHORT).show();
           });
     }
   }
 
   private void showEmotionSuccessDialog(Emotions emotions) {
-    FragmentManager fragmentManager =getSupportFragmentManager();
-    Log.d(TAG, "showEmotionSuccessDialog: fragment created from activity");
+    FragmentManager fragmentManager = getSupportFragmentManager();
+
     EmotionResultFragment emotionResultFragment = EmotionResultFragment.getInstance(emotions);
     emotionResultFragment.show(fragmentManager, Constants.EMOTION_DIALOG_TAG);
-    Log.d(TAG, "showEmotionSuccessDialog: fragment initiated from activity");
+
   }
 
-  private void showEmotionErrorDialog(int errorValue){
-    FragmentManager fragmentManager= getSupportFragmentManager();
-    EmotionErrorFragment fragment =EmotionErrorFragment.getInstance(errorValue);
-    fragment.show(fragmentManager,Constants.EMOTION_ERROR_DIALOG_TAG);
+  private void showEmotionErrorDialog(int errorValue) {
+    FragmentManager fragmentManager = getSupportFragmentManager();
+    EmotionErrorFragment fragment = EmotionErrorFragment.getInstance(errorValue);
+    fragment.show(fragmentManager, Constants.EMOTION_ERROR_DIALOG_TAG);
   }
 
 
   public void showActivityLayout(boolean visibility) {
-    moviePredictionLayout.setVisibility(visibility? View.VISIBLE : View.INVISIBLE);
+    moviePredictionLayout.setVisibility(visibility ? View.VISIBLE : View.INVISIBLE);
 
   }
 }

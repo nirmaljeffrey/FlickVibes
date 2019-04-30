@@ -9,15 +9,28 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 @Entity(tableName = "review_table", foreignKeys = @ForeignKey(parentColumns = "id",
-    childColumns = "movie_id", entity = Movie.class, onDelete = CASCADE))
+    childColumns = "movie_id", entity = Movie.class, onDelete = CASCADE), indices = {
+    @Index("movie_id")})
 
 public class Review implements Parcelable {
 
+  public static final Creator<Review> CREATOR = new Creator<Review>() {
+    @Override
+    public Review createFromParcel(Parcel in) {
+      return new Review(in);
+    }
+
+    @Override
+    public Review[] newArray(int size) {
+      return new Review[size];
+    }
+  };
   @SerializedName("id")
   @Expose
   @ColumnInfo(name = "review_id")
@@ -35,6 +48,7 @@ public class Review implements Parcelable {
   @ColumnInfo(name = "movie_id")
   private int movieId;
 
+
   public Review(String reviewAuthor, String reviewContent, int movieId) {
     this.reviewAuthor = reviewAuthor;
     this.reviewContent = reviewContent;
@@ -49,32 +63,18 @@ public class Review implements Parcelable {
     this.reviewContent = reviewContent;
   }
 
-
   protected Review(Parcel in) {
     reviewId = in.readString();
     reviewAuthor = in.readString();
     reviewContent = in.readString();
     movieId = in.readInt();
   }
-
-  public static final Creator<Review> CREATOR = new Creator<Review>() {
-    @Override
-    public Review createFromParcel(Parcel in) {
-      return new Review(in);
-    }
-
-    @Override
-    public Review[] newArray(int size) {
-      return new Review[size];
-    }
-  };
-
-
+@NonNull
   public String getReviewId() {
     return reviewId;
   }
 
-  public void setReviewId(String reviewId) {
+  public void setReviewId(@NonNull String reviewId) {
     this.reviewId = reviewId;
   }
 

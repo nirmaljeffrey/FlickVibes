@@ -6,6 +6,7 @@ import com.nirmal.jeffrey.flickvibes.model.Cast;
 import java.util.ArrayList;
 
 public class CastListResponse {
+
   @SerializedName("cast")
   @Expose
   private ArrayList<Cast> castList;

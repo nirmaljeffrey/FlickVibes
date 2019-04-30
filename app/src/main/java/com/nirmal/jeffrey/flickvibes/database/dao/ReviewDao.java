@@ -18,9 +18,9 @@ public interface ReviewDao {
   void insertReviews(List<Review> reviews);
 
   @Query("SELECT * FROM review_table WHERE movie_id=:movieId")
- LiveData<List<Review>> getAllReviewsForMovie(int movieId);
+  LiveData<List<Review>> getAllReviewsForMovie(int movieId);
 
   @Query("DELETE  FROM review_table")
-   void deleteAllReviews();
+  void deleteAllReviews();
 
 }

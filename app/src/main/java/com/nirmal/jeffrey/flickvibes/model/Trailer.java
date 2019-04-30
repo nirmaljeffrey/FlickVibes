@@ -9,12 +9,14 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 @Entity(tableName = "trailer_table", foreignKeys = @ForeignKey(parentColumns = "id",
-    childColumns = "movie_id", entity = Movie.class, onDelete = CASCADE))
+    childColumns = "movie_id", entity = Movie.class, onDelete = CASCADE), indices = {
+    @Index("movie_id")})
 public class Trailer implements Parcelable {
 
 

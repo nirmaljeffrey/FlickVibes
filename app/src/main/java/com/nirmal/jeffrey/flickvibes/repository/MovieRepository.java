@@ -2,7 +2,6 @@ package com.nirmal.jeffrey.flickvibes.repository;
 
 
 import android.content.Context;
-import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
@@ -33,7 +32,7 @@ import java.util.List;
 
 public class MovieRepository {
 
-  private static final String TAG = "MovieRepository";
+
   private static MovieRepository instance;
   private MovieDao movieDao;
   private ReviewDao reviewDao;
@@ -97,7 +96,6 @@ public class MovieRepository {
       protected LiveData<List<Movie>> loadFromDb() {
 
         SimpleSQLiteQuery query = DatabaseUtils.getMovieListQuery(type, pageNumber);
-        Log.d(TAG, "loadFromDb: Sql query" + query.getSql());
         return movieDao.getMoviesByType(query);
 
 

@@ -3,10 +3,10 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/movie_linear_layout_widget"
-  android:orientation="vertical"
   android:layout_width="120dp"
+  android:layout_height="wrap_content"
   android:layout_gravity="center"
-  android:layout_height="wrap_content">
+  android:orientation="vertical">
   <FrameLayout
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
@@ -18,27 +18,27 @@
       android:contentDescription="@string/poster_image_view_info"
       android:scaleType="centerCrop"
       tools:src="@drawable/poster"/>
-   <ImageView
+    <ImageView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:src="@drawable/ic_favorite_red_24dp"
       android:layout_gravity="end"
       android:padding="4dp"
       android:background="@drawable/appwidget_favorite_background"
       android:contentDescription="@string/appwidget_favorite_icon"
-      android:elevation="4dp"/>
+      android:elevation="4dp"
+      android:src="@drawable/ic_favorite_red_24dp"/>
   </FrameLayout>
 
-    <TextView
-      android:id="@+id/rating_widget_text_view"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:padding="4dp"
-      android:drawableStart="@drawable/ic_star_16dp"
-      android:drawablePadding="4dp"
-      android:background="@android:color/white"
-      android:textColor="@android:color/black"
-      android:textSize="14sp"
-      tools:text="8/10"/>
+  <TextView
+    android:id="@+id/rating_widget_text_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="4dp"
+    android:background="@android:color/white"
+    android:drawablePadding="4dp"
+    android:drawableStart="@drawable/ic_star_16dp"
+    android:textColor="@android:color/black"
+    android:textSize="14sp"
+    tools:text="8/10"/>
 
-  </LinearLayout>
+</LinearLayout>

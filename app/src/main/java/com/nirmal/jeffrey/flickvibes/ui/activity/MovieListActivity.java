@@ -8,7 +8,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuItem.OnActionExpandListener;
@@ -50,13 +49,11 @@ import java.util.List;
 
 public class MovieListActivity extends BaseActivity implements OnBackStackChangedListener {
 
-  private static final String TAG = "MovieId";
   private static final String FILE_PROVIDER_AUTHORITY = "com.nirmal.jeffrey.flickvibes.fileprovider";
   private static final int REQUEST_PHOTO_PICKER = 1;
   private static final int REQUEST_IMAGE_CAPTURE = 2;
   private static final int REQUEST_STORAGE_PERMISSION = 3;
   private static final String SEARCH_FRAGMENT_TAG = "search_fragment_tag";
-
   @BindView(R.id.bottom_navigation)
   BottomNavigationView bottomNavigationBar;
   @BindView(R.id.prediction_fab)
@@ -94,49 +91,46 @@ public class MovieListActivity extends BaseActivity implements OnBackStackChange
             @Override
             public void onChanged(List<Movie> movies) {
               MovieListFragment movieListFragment = MovieListFragment
-                  .getInstance(new ArrayList<>(movies),Constants.MOVIES_FROM_FAVORITES);
+                  .getInstance(new ArrayList<>(movies), Constants.MOVIES_FROM_FAVORITES);
               loadFragment(movieListFragment, null);
               movieList.removeObserver(this);
             }
           });
-
           break;
-
       }
       return true;
     }
   };
 
-  @Override
-  protected void onResume() {
-    super.onResume();
-    if(bottomNavigationBar.getSelectedItemId()== R.id.nav_favorites){
-      LiveData<List<Movie>> moviesList = movieListViewModel.getFavoriteMovies();
-      moviesList.observe(MovieListActivity.this, new Observer<List<Movie>>() {
-        @Override
-        public void onChanged(List<Movie> movies) {
-          MovieListFragment movieListFragment = MovieListFragment
-              .getInstance(new ArrayList<>(movies),Constants.MOVIES_FROM_FAVORITES);
-          loadFragment(movieListFragment, null);
-          moviesList.removeObserver(this);
-        }
-      });
-    }
-  }
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_list_movie);
     ButterKnife.bind(this);
-
     bottomNavigationBar.setOnNavigationItemSelectedListener(navListener);
     initFab();
     initFragmentManager();
     movieListViewModel = ViewModelProviders.of(this).get(MovieListViewModel.class);
     subscribeObservers();
-
     getMovieListByTypeApi(NetworkUtils.POPULAR_MOVIE_PATH);
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+    if (bottomNavigationBar.getSelectedItemId() == R.id.nav_favorites) {
+      LiveData<List<Movie>> moviesList = movieListViewModel.getFavoriteMovies();
+      moviesList.observe(MovieListActivity.this, new Observer<List<Movie>>() {
+        @Override
+        public void onChanged(List<Movie> movies) {
+          MovieListFragment movieListFragment = MovieListFragment
+              .getInstance(new ArrayList<>(movies), Constants.MOVIES_FROM_FAVORITES);
+          loadFragment(movieListFragment, null);
+          moviesList.removeObserver(this);
+        }
+      });
+    }
   }
 
   @Override
@@ -146,8 +140,6 @@ public class MovieListActivity extends BaseActivity implements OnBackStackChange
       if (requestCode == REQUEST_PHOTO_PICKER) {
         if (data != null) {
           Uri selectedImageUri = data.getData();
-
-          Log.d(TAG, "onActivityResult: imageUri " + selectedImageUri);
           Intent intent = new Intent(this, MoviePredictionActivity.class);
           if (selectedImageUri != null) {
             intent.putExtra(Constants.GALLERY_ACTIVITY_INTENT, selectedImageUri);
@@ -155,11 +147,9 @@ public class MovieListActivity extends BaseActivity implements OnBackStackChange
           }
         }
       } else if (requestCode == REQUEST_IMAGE_CAPTURE) {
-
         Intent intent = new Intent(this, MoviePredictionActivity.class);
         if (cameraImagePath != null && !cameraImagePath.isEmpty()) {
           intent.putExtra(Constants.CAMERA_ACTIVITY_INTENT, cameraImagePath);
-
           startActivity(intent);
         }
       }
@@ -236,17 +226,16 @@ public class MovieListActivity extends BaseActivity implements OnBackStackChange
               break;
             case ERROR:
               displayError(listResource.message);
-              movieListFragment = MovieListFragment.getInstance(new ArrayList<>(listResource.data),Constants.MOVIES_FROM_SEARCH);
+              movieListFragment = MovieListFragment
+                  .getInstance(new ArrayList<>(listResource.data), Constants.MOVIES_FROM_SEARCH);
               break;
             case SUCCESS:
               displayMovies();
-              movieListFragment = MovieListFragment.getInstance(new ArrayList<>(listResource.data),Constants.MOVIES_FROM_SEARCH);
+              movieListFragment = MovieListFragment
+                  .getInstance(new ArrayList<>(listResource.data), Constants.MOVIES_FROM_SEARCH);
               break;
           }
-
           loadFragment(movieListFragment, SEARCH_FRAGMENT_TAG);
-
-
         }
       }
     });
@@ -257,32 +246,24 @@ public class MovieListActivity extends BaseActivity implements OnBackStackChange
           MovieListFragment movieListFragment = null;
           switch (listResource.status) {
             case LOADING:
-              Log.d(TAG, "subscribeObservers: ApiLoading");
               displayLoading();
               break;
             case ERROR:
-              Log.d(TAG, "subscribeObservers: ApiError");
               displayError(listResource.message);
-              movieListFragment = MovieListFragment.getInstance(new ArrayList<>(listResource.data),Constants.MOVIES_BY_TYPE);
+              movieListFragment = MovieListFragment
+                  .getInstance(new ArrayList<>(listResource.data), Constants.MOVIES_BY_TYPE);
 
               break;
             case SUCCESS:
-              Log.d(TAG, "subscribeObservers: APiSuccess");
               displayMovies();
-              movieListFragment = MovieListFragment.getInstance(new ArrayList<>(listResource.data),Constants.MOVIES_BY_TYPE);
-
+              movieListFragment = MovieListFragment
+                  .getInstance(new ArrayList<>(listResource.data), Constants.MOVIES_BY_TYPE);
               break;
           }
-
           loadFragment(movieListFragment, null);
-
-
         }
-
       }
     });
-
-
   }
 
 
@@ -290,7 +271,6 @@ public class MovieListActivity extends BaseActivity implements OnBackStackChange
     //Method from BaseActivity.java
     showProgressBar(true);
     movieListContainer.setVisibility(View.GONE);
-
   }
 
   private void displayError(String message) {
@@ -337,7 +317,6 @@ public class MovieListActivity extends BaseActivity implements OnBackStackChange
           // Launch the camera if the permission exists
           launchCamera();
         }
-
       });
       galleryView.setOnClickListener(view12 -> launchGallery());
       dialog.show();

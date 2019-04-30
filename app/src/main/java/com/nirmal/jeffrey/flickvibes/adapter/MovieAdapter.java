@@ -20,6 +20,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieListViewHolder> {
   private OnMovieItemClickLister onMovieItemClickLister;
   private ArrayList<Movie> movieArrayList;
   private RequestManager requestManager;
+
   public MovieAdapter(RequestManager requestManager,
       OnMovieItemClickLister onMovieItemClickLister) {
     this.onMovieItemClickLister = onMovieItemClickLister;
@@ -47,7 +48,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieListViewHolder> {
     View view = LayoutInflater.from(parent.getContext())
         .inflate(R.layout.movie_list_item, parent, false);
 
-    return new MovieListViewHolder(view, onMovieItemClickLister,movieArrayList);
+    return new MovieListViewHolder(view, onMovieItemClickLister, movieArrayList);
   }
 
   @Override
@@ -77,7 +78,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieListViewHolder> {
 
   public interface OnMovieItemClickLister {
 
-    void onClickItem(Movie  movie);
+    void onClickItem(Movie movie);
   }
 
   static class MovieListViewHolder extends RecyclerView.ViewHolder {
@@ -86,14 +87,15 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieListViewHolder> {
     ImageView posterImageView;
 
 
-    MovieListViewHolder(@NonNull View itemView, OnMovieItemClickLister itemClickLister,ArrayList<Movie> movies) {
+    MovieListViewHolder(@NonNull View itemView, OnMovieItemClickLister itemClickLister,
+        ArrayList<Movie> movies) {
       super(itemView);
       ButterKnife.bind(this, itemView);
       posterImageView.setOnClickListener(view -> {
         if (itemClickLister != null) {
           int adapterPosition = getAdapterPosition();
           if (adapterPosition != RecyclerView.NO_POSITION) {
-            if(movies!=null && movies.size()>0) {
+            if (movies != null && movies.size() > 0) {
 
               itemClickLister.onClickItem(movies.get(adapterPosition));
             }

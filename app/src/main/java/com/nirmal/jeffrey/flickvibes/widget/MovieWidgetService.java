@@ -3,7 +3,6 @@ package com.nirmal.jeffrey.flickvibes.widget;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 import com.nirmal.jeffrey.flickvibes.R;
@@ -20,31 +19,30 @@ public class MovieWidgetService extends RemoteViewsService {
 
   @Override
   public RemoteViewsFactory onGetViewFactory(Intent intent) {
-    return new MovieWidgetItemFactory(getApplicationContext(),intent);
+    return new MovieWidgetItemFactory(getApplicationContext(), intent);
   }
 
-  class MovieWidgetItemFactory implements RemoteViewsFactory{
+  class MovieWidgetItemFactory implements RemoteViewsFactory {
 
-    private static final String TAG = "MovieWidgetItemFactory";
-private Context context;
-private int appWidgetId;
-private ArrayList<Movie> movies= new ArrayList<>();
-MovieWidgetItemFactory( Context context,Intent intent){
-  this.context=context;
-  this.appWidgetId=intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,AppWidgetManager.INVALID_APPWIDGET_ID);
-}
+
+    private Context context;
+    private int appWidgetId;
+    private ArrayList<Movie> movies = new ArrayList<>();
+
+    MovieWidgetItemFactory(Context context, Intent intent) {
+      this.context = context;
+      this.appWidgetId = intent
+          .getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+    }
 
     @Override
     public void onCreate() {
-
     }
 
     @Override
     public void onDataSetChanged() {
-     MovieDao movieDao =MovieDatabase.getInstance(context).getMovieDao();
+      MovieDao movieDao = MovieDatabase.getInstance(context).getMovieDao();
       movies = new ArrayList<>(movieDao.getFavoriteMoviesForWidget());
-      Log.d(TAG, "onDataSetChanged: data is passed to the widget ");
-
     }
 
     @Override
@@ -63,26 +61,21 @@ MovieWidgetItemFactory( Context context,Intent intent){
       Movie movie = movies.get(i);
       RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
           R.layout.movie_widget_item);
+      String imageUrl = NetworkUtils
+          .buildMovieImageURLString(NetworkUtils.POSTER_BASE_URL, movie.getPosterPath());
+      try {
+        WidgetUtils.loadImageIntoStackView(context, imageUrl, remoteViews);
 
-
-
-        String imageUrl = NetworkUtils
-            .buildMovieImageURLString(NetworkUtils.POSTER_BASE_URL, movie.getPosterPath());
-        try {
-          WidgetUtils.loadImageIntoStackView(context, imageUrl, remoteViews);
-
-        } catch (ExecutionException e) {
-          e.printStackTrace();
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        }
-        remoteViews
-            .setTextViewText(R.id.rating_widget_text_view, movie.getVoteAverage().toString());
-        Intent fillIntent = new Intent();
-        fillIntent.putExtra(Constants.MOVIE_LIST_INTENT, movie);
-        remoteViews.setOnClickFillInIntent(R.id.movie_linear_layout_widget, fillIntent);
-
-
+      } catch (ExecutionException e) {
+        e.printStackTrace();
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+      remoteViews
+          .setTextViewText(R.id.rating_widget_text_view, movie.getVoteAverage().toString());
+      Intent fillIntent = new Intent();
+      fillIntent.putExtra(Constants.MOVIE_LIST_INTENT, movie);
+      remoteViews.setOnClickFillInIntent(R.id.movie_linear_layout_widget, fillIntent);
       return remoteViews;
     }
 

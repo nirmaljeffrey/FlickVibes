@@ -14,11 +14,14 @@ import com.nirmal.jeffrey.flickvibes.model.Genre;
 import java.util.ArrayList;
 
 public class GenreAdapter extends RecyclerView.Adapter<GenreListViewHolder> {
+
   private ArrayList<Genre> genreArrayList;
-  public GenreAdapter(){
+
+  public GenreAdapter() {
 
   }
-  public void setGenreData(ArrayList<Genre> genreData){
+
+  public void setGenreData(ArrayList<Genre> genreData) {
     //Clear the previous data before swapping
     if (this.genreArrayList != null) {
       this.genreArrayList.clear();
@@ -28,35 +31,39 @@ public class GenreAdapter extends RecyclerView.Adapter<GenreListViewHolder> {
     }
     notifyDataSetChanged();
   }
+
   @NonNull
   @Override
   public GenreListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-    View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.genre_list_item,parent,false);
+    View view = LayoutInflater.from(parent.getContext())
+        .inflate(R.layout.genre_list_item, parent, false);
 
     return new GenreListViewHolder(view);
   }
 
   @Override
   public void onBindViewHolder(@NonNull GenreListViewHolder holder, int position) {
-Genre genre =genreArrayList.get(position);
-holder.genreTextView.setText(genre.getGenreName());
+    Genre genre = genreArrayList.get(position);
+    holder.genreTextView.setText(genre.getGenreName());
   }
 
   @Override
   public int getItemCount() {
-    if(genreArrayList==null) return 0;
+    if (genreArrayList == null) {
+      return 0;
+    }
     return genreArrayList.size();
   }
 
 
+  static class GenreListViewHolder extends RecyclerView.ViewHolder {
 
+    @BindView(R.id.genre_text_view)
+    TextView genreTextView;
 
-  static  class GenreListViewHolder extends RecyclerView.ViewHolder{
-@BindView(R.id.genre_text_view)
-TextView genreTextView;
-   GenreListViewHolder(@NonNull View itemView) {
-    super(itemView);
-     ButterKnife.bind(this,itemView);
+    GenreListViewHolder(@NonNull View itemView) {
+      super(itemView);
+      ButterKnife.bind(this, itemView);
+    }
   }
-}
 }

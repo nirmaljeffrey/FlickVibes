@@ -6,8 +6,9 @@ import com.nirmal.jeffrey.flickvibes.model.Trailer;
 import java.util.ArrayList;
 
 public class TrailerListResponse {
- @SerializedName("results")
- @Expose
+
+  @SerializedName("results")
+  @Expose
   private ArrayList<Trailer> trailerList;
 
   public ArrayList<Trailer> getTrailerList() {

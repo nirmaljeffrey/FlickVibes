@@ -6,11 +6,14 @@ import androidx.annotation.Nullable;
 
 // A generic class that contains data and status about loading this data.
 public class Resource<T> {
+
   @NonNull
   public final Status status;
   @Nullable
   public final T data;
-  @Nullable public final String message;
+  @Nullable
+  public final String message;
+
   public Resource(@NonNull Status status, @Nullable T data,
       @Nullable String message) {
     this.status = status;
@@ -30,6 +33,6 @@ public class Resource<T> {
     return new Resource<>(Status.LOADING, data, null);
   }
 
-  public enum Status { SUCCESS, ERROR, LOADING }
+  public enum Status {SUCCESS, ERROR, LOADING}
 }
 

@@ -9,12 +9,14 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-@Entity(tableName = "cast_table",foreignKeys = @ForeignKey(parentColumns = "id",
-    childColumns = "movie_id", entity = Movie.class, onDelete = CASCADE))
+@Entity(tableName = "cast_table", foreignKeys = @ForeignKey(parentColumns = "id",
+    childColumns = "movie_id", entity = Movie.class, onDelete = CASCADE), indices = {
+    @Index("movie_id")})
 public class Cast implements Parcelable {
 
 
@@ -32,7 +34,7 @@ public class Cast implements Parcelable {
   @SerializedName("cast_id")
   @Expose
   @ColumnInfo(name = "cast_id")
- @PrimaryKey
+  @PrimaryKey
   private int castId;
   @ColumnInfo(name = "movie_id")
   private int movieId;
