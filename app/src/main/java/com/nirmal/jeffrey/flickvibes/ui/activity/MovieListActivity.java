@@ -376,6 +376,7 @@ public class MovieListActivity extends BaseActivity implements OnBackStackChange
   public void onBackStackChanged() {
 
   }
+
   private void setExitTransition() {
     Fade exitTransition = new Fade();
     exitTransition.setDuration(500);

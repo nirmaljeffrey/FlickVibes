@@ -140,7 +140,7 @@ public class EmotionMoviesActivity extends BaseActivity implements OnMovieItemCl
   }
 
   private void setExitTransition() {
-   Fade exitTransition =new Fade();
+    Fade exitTransition = new Fade();
     exitTransition.setDuration(300);
     getWindow().setExitTransition(exitTransition);
   }

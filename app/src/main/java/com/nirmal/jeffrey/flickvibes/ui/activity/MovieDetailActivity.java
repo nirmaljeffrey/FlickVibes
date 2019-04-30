@@ -449,5 +449,4 @@ public class MovieDetailActivity extends BaseActivity implements TrailerClickLis
   }
 
 
-
 }
