@@ -2,6 +2,7 @@ package com.nirmal.jeffrey.flickvibes.repository;
 
 
 import android.content.Context;
+import android.os.AsyncTask;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
@@ -349,9 +350,7 @@ public class MovieRepository {
 
   }
 
-  public void removeMovieFromFavorite(int movieId) {
-    appExecutor.diskIO().execute(() -> movieDao.removeMovieFromFavorite(movieId));
-  }
+
 
   public LiveData<List<Movie>> getFavoriteMovies() {
     return movieDao.getFavoriteMovieList();
@@ -359,8 +358,26 @@ public class MovieRepository {
 
   public LiveData<Movie> getFavoriteMovie(int movieId) {
     return movieDao.getFavoriteMovie(movieId);
-
   }
+  public void removeMovieFromFavorite(int movieId) {
+    new removeMovieFromFavoritesAsyncTack(movieDao).execute(movieId);
+  }
+
+  //Create AsyncTask to meet the rubric specifications.
+private static class removeMovieFromFavoritesAsyncTack extends AsyncTask<Integer,Void,Void>{
+private MovieDao movieDao;
+
+  private removeMovieFromFavoritesAsyncTack(MovieDao movieDao) {
+    this.movieDao = movieDao;
+  }
+
+  @Override
+  protected Void doInBackground(Integer... integers) {
+    movieDao.removeMovieFromFavorite(integers[0]);
+    return null;
+  }
+}
+
 
 
 }
