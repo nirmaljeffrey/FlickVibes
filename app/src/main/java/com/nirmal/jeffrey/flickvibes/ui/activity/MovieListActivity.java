@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.transition.Fade;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuItem.OnActionExpandListener;
@@ -108,12 +109,14 @@ public class MovieListActivity extends BaseActivity implements OnBackStackChange
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_list_movie);
     ButterKnife.bind(this);
+    setExitTransition();
     bottomNavigationBar.setOnNavigationItemSelectedListener(navListener);
     initFab();
     initFragmentManager();
     movieListViewModel = ViewModelProviders.of(this).get(MovieListViewModel.class);
     subscribeObservers();
     getMovieListByTypeApi(NetworkUtils.POPULAR_MOVIE_PATH);
+
   }
 
   @Override
@@ -369,11 +372,16 @@ public class MovieListActivity extends BaseActivity implements OnBackStackChange
     }
   }
 
-
   @Override
   public void onBackStackChanged() {
 
   }
+  private void setExitTransition() {
+    Fade exitTransition = new Fade();
+    exitTransition.setDuration(500);
+    getWindow().setExitTransition(exitTransition);
+  }
+
 }
 
 

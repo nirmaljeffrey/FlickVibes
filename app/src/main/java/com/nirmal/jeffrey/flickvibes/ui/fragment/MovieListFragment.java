@@ -1,5 +1,6 @@
 package com.nirmal.jeffrey.flickvibes.ui.fragment;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -127,7 +128,8 @@ public class MovieListFragment extends Fragment implements OnMovieItemClickListe
   public void onClickItem(Movie movie) {
     Intent intent = new Intent(getActivity(), MovieDetailActivity.class);
     intent.putExtra(Constants.MOVIE_LIST_INTENT, movie);
-    startActivity(intent);
+    //Add activity options for actvity transitions
+    startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
   }
 
   private void displayEmptyScreen() {

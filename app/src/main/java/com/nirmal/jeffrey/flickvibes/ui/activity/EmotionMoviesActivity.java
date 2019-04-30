@@ -1,7 +1,9 @@
 package com.nirmal.jeffrey.flickvibes.ui.activity;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
+import android.transition.Fade;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,12 +39,13 @@ public class EmotionMoviesActivity extends BaseActivity implements OnMovieItemCl
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_emotion_movies);
+    setExitTransition();
     ButterKnife.bind(this);
-
     moviesByEmotionViewModel = ViewModelProviders.of(this).get(MoviesByEmotionViewModel.class);
     initRecyclerView();
     getIncomingIntent();
     subscribeObservers();
+
   }
 
   private void getIncomingIntent() {
@@ -132,7 +135,14 @@ public class EmotionMoviesActivity extends BaseActivity implements OnMovieItemCl
   public void onClickItem(Movie movie) {
     Intent intent = new Intent(EmotionMoviesActivity.this, MovieDetailActivity.class);
     intent.putExtra(Constants.EMOTION_MOVIE_LIST_INTENT, movie);
-    startActivity(intent);
+    //Add activity options for actvity transitions
+    startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+  }
+
+  private void setExitTransition() {
+   Fade exitTransition =new Fade();
+    exitTransition.setDuration(300);
+    getWindow().setExitTransition(exitTransition);
   }
 }
 
