@@ -70,6 +70,8 @@
           android:layout_marginStart="16dp"
           android:layout_marginEnd="16dp"
           android:textSize="24sp"
+          android:textStyle="bold"
+          android:textColor="@color/colorPrimaryText"
           android:textAlignment="center"
           app:layout_constrainedWidth="true"
           app:layout_constraintEnd_toEndOf="parent"
@@ -98,9 +100,10 @@
               android:drawableStart="@drawable/ic_star_16dp"
               android:padding="8dp"
               android:textSize="16sp"
+            android:textColor="@color/colorPrimaryText"
               tools:text="6.6/10"/>
           <View
-              android:layout_width="32dp"
+              android:layout_width="24dp"
               android:layout_height="match_parent"/>
             <TextView
                 android:id="@+id/release_date_text_view"
@@ -108,6 +111,7 @@
                 android:drawablePadding="4dp"
                 android:textSize="16sp"
                 android:padding="8dp"
+                android:textColor="@color/colorPrimaryText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="09-06-2016"/>
@@ -117,13 +121,13 @@
           android:id="@+id/storyline_text_view"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_marginTop="16dp"
-          android:layout_marginBottom="16dp"
-          android:layout_marginStart="8dp"
-          android:layout_marginEnd="8dp"
-          android:gravity="center_horizontal"
+          android:layout_margin="@dimen/margin_24dp"
+          android:gravity="center"
           android:textAlignment="center"
           app:layout_constrainedWidth="true"
+          android:textSize="@dimen/size_20sp"
+          android:textColor="@color/colorPrimaryText"
+          android:lineSpacingExtra="4dp"
           app:layout_constraintBottom_toBottomOf="parent"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
@@ -133,51 +137,67 @@
           android:id="@+id/storyline_label"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_marginTop="32dp"
-          android:layout_marginStart="8dp"
+          android:layout_marginStart="@dimen/margin_16dp"
           android:text="@string/storyline_label"
+          style="@style/Headline"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toBottomOf="@+id/linearLayout"/>
 
 
       </androidx.constraintlayout.widget.ConstraintLayout>
+
       <TextView
         android:id="@+id/genre_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/genre_label"/>
+        android:text="@string/genre_label"
+        style="@style/Headline"/>
+
       <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/genre_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+
       <TextView
         android:id="@+id/trailer_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/trailer_label"/>
+        android:text="@string/trailer_label"
+        style="@style/Headline"/>
+
       <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/trailer_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+
       <TextView
         android:id="@+id/cast_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/cast_label"/>
+        android:text="@string/cast_label"
+        style="@style/Headline"/>
+
+
       <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cast_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+
       <TextView
         android:id="@+id/review_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/review_label"/>
+        android:text="@string/review_label"
+        style="@style/Headline"/>
+
       <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/review_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+      />
+
     </LinearLayout>
+
 
   </androidx.core.widget.NestedScrollView>
   <com.google.android.material.floatingactionbutton.FloatingActionButton

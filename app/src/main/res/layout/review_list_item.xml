@@ -6,7 +6,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/review_constraint_layout"
     android:layout_width="match_parent"
-    android:layout_margin="8dp"
+    android:layout_margin="@dimen/margin_8dp"
     android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground">
 
@@ -15,8 +15,12 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginStart="8dp"
+      android:drawablePadding="4dp"
       android:layout_marginEnd="8dp"
-      android:layout_marginTop="16dp"
+      android:layout_marginTop="14dp"
+      android:textSize="@dimen/size_16sp"
+      android:textStyle="bold"
+      android:textColor="@color/colorPrimaryText"
       app:layout_constraintStart_toEndOf="@+id/review_account_profile_image"
       app:layout_constraintTop_toTopOf="parent"
       tools:text="Nirmal Jeffrey"/>
@@ -30,6 +34,8 @@
       android:gravity="center"
       android:ellipsize="end"
       app:animation_duration="750"
+      android:textSize="@dimen/size_16sp"
+      android:textColor="@color/colorPrimaryText"
       app:layout_constraintBottom_toBottomOf="@id/divider"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="@+id/review_account_profile_image"
@@ -61,7 +67,7 @@
   <View
     android:id="@+id/divider"
     android:layout_width="match_parent"
-    android:layout_height="1dp"
+    android:layout_height="2dp"
     android:background="@color/colorAccent"
     android:layout_margin="8dp"
     app:layout_constraintBottom_toBottomOf="parent"/>

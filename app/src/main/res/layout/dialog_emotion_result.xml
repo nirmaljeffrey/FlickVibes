@@ -63,7 +63,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="16dp"
-    android:textSize="16sp"
+    android:textSize="@dimen/size_20sp"
     android:textStyle="bold"
     android:layout_gravity="center_horizontal"
     tools:text="You are feeling sad"/>
@@ -78,7 +78,7 @@
     android:layout_gravity="center_horizontal"
     android:layout_marginTop="48dp"
     android:layout_alignParentBottom="true"
-    app:backgroundTint="@android:color/white"
+    android:backgroundTint="@color/colorAccent"
     app:cardCornerRadius="24dp"
     app:cardElevation="4dp"
     android:foreground="?android:attr/selectableItemBackground">
@@ -89,9 +89,12 @@
       android:layout_marginTop="16dp"
       android:layout_marginBottom="16dp"
       android:layout_gravity="center"
+      android:gravity="center"
       android:text="@string/movie_recommendation_button"
+      android:textSize="@dimen/size_16sp"
+      android:textStyle="bold"
       android:textAllCaps="true"
-      android:textColor="@android:color/black"/>
+      android:textColor="@android:color/white"/>
   </androidx.cardview.widget.CardView>
 
 </RelativeLayout>

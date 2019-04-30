@@ -50,7 +50,7 @@
   <!-- MoviePredictionsActivity -->
   <string name="error">Error finding image</string>
   <!-- dialog_emotion_result -->
-  <string name="movie_recommendation_button">Get Movie Recommendations</string>
+  <string name="movie_recommendation_button">Get Movies</string>
   <!-- EmotionMoviesActivity -->
   <string name="emotion_movie_activity_title">Movies for %s feelings</string>
   <!-- widget -->

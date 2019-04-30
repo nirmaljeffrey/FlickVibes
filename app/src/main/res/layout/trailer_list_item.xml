@@ -5,7 +5,10 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="wrap_content"
   android:layout_height="wrap_content"
- android:layout_margin="4dp">
+  android:elevation="4dp"
+  app:cardCornerRadius="8dp"
+  android:layout_margin="@dimen/margin_8dp"
+  >
  <androidx.constraintlayout.widget.ConstraintLayout
    android:layout_width="match_parent"
    android:layout_height="match_parent">
@@ -29,8 +32,12 @@
      android:layout_marginTop="8dp"
      android:layout_marginEnd="4dp"
      android:layout_marginBottom="8dp"
+     android:textColor="@color/colorPrimaryText"
      android:ellipsize="end"
      android:maxLines="1"
+     android:textSize="@dimen/size_14sp"
+     android:paddingStart="4dp"
+     android:paddingEnd="0dp"
      app:layout_constraintBottom_toBottomOf="parent"
      app:layout_constraintEnd_toStartOf="@+id/trailer_share_button"
      app:layout_constraintHorizontal_bias="0.087"

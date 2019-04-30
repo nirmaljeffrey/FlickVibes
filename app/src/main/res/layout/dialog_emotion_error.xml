@@ -76,7 +76,7 @@
       android:layout_gravity="center_horizontal"
       android:layout_marginTop="48dp"
       android:layout_alignParentBottom="true"
-      app:backgroundTint="@android:color/white"
+      android:backgroundTint="@color/colorAccent"
       app:cardCornerRadius="24dp"
       app:cardElevation="4dp"
       android:foreground="?android:attr/selectableItemBackground">
@@ -87,9 +87,12 @@
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:layout_gravity="center"
+        android:textSize="@dimen/size_16sp"
+        android:textStyle="bold"
+        android:gravity="center"
         android:text="@string/go_back_button"
         android:textAllCaps="true"
-        android:textColor="@android:color/black"/>
+        android:textColor="@android:color/white"/>
     </androidx.cardview.widget.CardView>
 
   </RelativeLayout>
