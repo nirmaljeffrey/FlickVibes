@@ -7,10 +7,7 @@
   android:layout_height="match_parent"
   tools:context=".ui.activity.MovieListActivity">
 
-
-
-
-    <FrameLayout
+  <FrameLayout
       android:id="@+id/movie_list_fragment"
       android:layout_width="match_parent"
       android:layout_height="match_parent"

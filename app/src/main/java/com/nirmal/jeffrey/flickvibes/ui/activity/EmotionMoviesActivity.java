@@ -106,7 +106,7 @@ private void displayMovies(){
   showProgressBar(false);
   recyclerView.setVisibility(View.VISIBLE);
 }
-public void getMoviesByEmotionApi(int genre){
+private void getMoviesByEmotionApi(int genre){
     moviesByEmotionViewModel.getMovieListByEmotionApi(genre,1);
 
   }

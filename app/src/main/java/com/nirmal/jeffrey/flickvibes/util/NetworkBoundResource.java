@@ -126,6 +126,6 @@ public abstract class NetworkBoundResource<CacheObject, RequestObject> {
     return results;
   }
 
-  ;
+
 }
 
