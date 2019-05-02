@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.transition.Fade;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -29,8 +28,6 @@ public class EmotionMoviesActivity extends BaseActivity implements OnMovieItemCl
 
   @BindView(R.id.emotion_movies_recycler_view)
   RecyclerView recyclerView;
-  @BindView(R.id.emotion_error_text_view)
-  TextView emotionErrorTextView;
   private MoviesByEmotionViewModel moviesByEmotionViewModel;
   private MovieAdapter emotionAdapter;
 
@@ -135,7 +132,7 @@ public class EmotionMoviesActivity extends BaseActivity implements OnMovieItemCl
   public void onClickItem(Movie movie) {
     Intent intent = new Intent(EmotionMoviesActivity.this, MovieDetailActivity.class);
     intent.putExtra(Constants.EMOTION_MOVIE_LIST_INTENT, movie);
-    //Add activity options for actvity transitions
+    //Add activity options for activity transitions
     startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
   }
 

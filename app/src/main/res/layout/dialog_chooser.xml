@@ -40,7 +40,7 @@
       android:layout_marginTop="24dp"
       android:layout_marginStart="24dp"
       android:layout_marginEnd="24dp"
-      android:contentDescription="@string/dialog_camera_info"
+      android:contentDescription="@string/dialog_gallery_info"
       android:src="@drawable/dialog_gallery"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toEndOf="@+id/dialog_camera_image_view"

@@ -128,7 +128,7 @@ public class MovieListFragment extends Fragment implements OnMovieItemClickListe
   public void onClickItem(Movie movie) {
     Intent intent = new Intent(getActivity(), MovieDetailActivity.class);
     intent.putExtra(Constants.MOVIE_LIST_INTENT, movie);
-    //Add activity options for actvity transitions
+    //Add activity options for activity transitions
     startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
   }
 

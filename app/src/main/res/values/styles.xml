@@ -9,7 +9,7 @@
     <item name="android:textColorPrimary">@color/colorPrimaryText</item>
     <item name="android:textColorSecondary">@color/colorSecondaryText</item>
     <item name="android:divider">@color/colorDivider</item>
-    <!-- Enable actvity transition in android -->
+    <!-- Enable activity transition in android -->
     <item name="android:windowContentTransitions">true</item>
   </style>
 

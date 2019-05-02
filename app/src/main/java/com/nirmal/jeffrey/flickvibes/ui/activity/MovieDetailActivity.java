@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -342,9 +343,9 @@ public class MovieDetailActivity extends BaseActivity implements TrailerClickLis
       getSupportActionBar().setDisplayHomeAsUpEnabled(true);
       getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
       collapsingToolbarLayout
-          .setExpandedTitleColor(getResources().getColor(android.R.color.transparent));
+          .setExpandedTitleColor(ContextCompat.getColor(this,android.R.color.transparent));
       collapsingToolbarLayout
-          .setCollapsedTitleTextColor(getResources().getColor(android.R.color.white));
+          .setCollapsedTitleTextColor(ContextCompat.getColor(this,android.R.color.white));
     }
 
   }

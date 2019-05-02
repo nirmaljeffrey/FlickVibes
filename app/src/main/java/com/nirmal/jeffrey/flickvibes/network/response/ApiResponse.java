@@ -52,11 +52,11 @@ public class ApiResponse<T> {
     }
   }
 
-  public class ApiErrorResponse<eT> extends ApiResponse<T> {
+  public class ApiErrorResponse<T> extends ApiResponse<T> {
 
     private String errorMessage;
 
-    public ApiErrorResponse(String errorMessage) {
+    ApiErrorResponse(String errorMessage) {
       this.errorMessage = errorMessage;
     }
 

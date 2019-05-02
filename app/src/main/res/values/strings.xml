@@ -16,14 +16,12 @@
 
   <!-- MovieDetailActivity -->
   <string name="trailer_share_intent_title">Share trailer using</string>
-  <string name="launch_gallery_intent_title">Complete action using</string>
   <string name="face_detection_failed">Face detection failed</string>
 
   <!-- MovieListActivity Dialog -->
   <string name="dialog_action_camera">Camera</string>
   <string name="dialog_action_gallery">Gallery</string>
-  <string name="dialog_permission_denied">Permission denied</string>
-  <string name="launch_gallery">Complete action using</string>
+  <string name="launch_gallery_intent_title">Complete action using</string>
 <!-- MovieListFragment -->
   <string name="fragment_empty_favorites">Add Movies to favorites</string>
   <string name="fragment_empty_search">No movies found</string>
@@ -32,7 +30,6 @@
   <string name="genre_label">GENRES</string>
   <string name="trailer_label">TRAILERS</string>
   <string name="cast_label">CAST</string>
-  <string name="similar_movies_label">SIMILAR MOVIES</string>
   <string name="review_label">REVIEWS</string>
   <string name="storyline_label">StoryLine</string>
   <string name="snackbar_movie_added">Movie added to favorites</string>
@@ -48,8 +45,7 @@
   <string name="many_faces_detected">More than one face detected</string>
   <string name="emotions_successfully_detected">Emotions detected</string>
   <string name="go_back_button">Go Back</string>
-  <!-- MoviePredictionsActivity -->
-  <string name="error">Error finding image</string>
+
   <!-- dialog_emotion_result -->
   <string name="movie_recommendation_button">Get Movies</string>
   <!-- EmotionMoviesActivity -->
@@ -65,7 +61,6 @@
   <string name="cast_image_info">Movie Cast</string>
   <string name="review_profile_info">Reviewer</string>
   <string name="expand_collapse_info">Read Full Review</string>
-  <string name="release_date_image_info">Release date</string>
   <string name="dialog_camera_info">Take a photo</string>
   <string name="dialog_gallery_info">Choose Image from gallery</string>
   <string name="face_image_view_info">Image to detected using machine learning</string>

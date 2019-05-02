@@ -124,8 +124,8 @@ public class EmotionResultFragment extends DialogFragment {
         emotionResultsText.setText(R.string.sad_emotion);
         break;
       case NORMAL:
-        emotionResultImage.setImageResource(R.drawable.ic_sad_feeling);
-        emotionResultsText.setText(R.string.sad_emotion);
+        emotionResultImage.setImageResource(R.drawable.ic_normal_feeling);
+        emotionResultsText.setText(R.string.normal_emotion);
         break;
 
     }

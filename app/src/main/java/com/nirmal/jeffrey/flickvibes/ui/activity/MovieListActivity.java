@@ -352,7 +352,7 @@ public class MovieListActivity extends BaseActivity implements OnBackStackChange
       // Create the File where the photo should go
       File photoFile = null;
       try {
-        photoFile = BitmapUtils.createImageFile(this);
+        photoFile = BitmapUtils.createImageFile();
 
 
       } catch (IOException ex) {

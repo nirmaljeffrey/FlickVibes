@@ -15,6 +15,7 @@ import com.nirmal.jeffrey.flickvibes.ui.activity.MovieDetailActivity;
  */
 public class MovieAppWidget extends AppWidgetProvider {
 
+  @SuppressWarnings("WeakerAccess")
   static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
       int appWidgetId) {
     // Construct the RemoteViews object

@@ -1,6 +1,7 @@
 package com.nirmal.jeffrey.flickvibes.ui.activity;
 
 
+import android.annotation.SuppressLint;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
@@ -14,7 +15,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
   @Override
   public void setContentView(int layoutResID) {
-    ConstraintLayout constraintLayout = (ConstraintLayout) getLayoutInflater()
+    @SuppressLint("InflateParams") ConstraintLayout constraintLayout = (ConstraintLayout) getLayoutInflater()
         .inflate(R.layout.activity_base, null);
     FrameLayout frameLayout = constraintLayout.findViewById(R.id.activity_content);
     mProgressBar = constraintLayout.findViewById(R.id.progress_bar);
@@ -22,6 +23,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     super.setContentView(constraintLayout);
   }
 
+  @SuppressWarnings("WeakerAccess")
   public void showProgressBar(boolean visibility) {
     mProgressBar.setVisibility(visibility ? View.VISIBLE : View.GONE);
   }

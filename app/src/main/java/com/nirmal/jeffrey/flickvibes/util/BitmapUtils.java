@@ -3,6 +3,7 @@ package com.nirmal.jeffrey.flickvibes.util;
 
 import static android.os.Environment.getExternalStoragePublicDirectory;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,9 +20,9 @@ import java.util.Date;
 public class BitmapUtils {
 
 
-  public static File createImageFile(Context context) throws IOException {
+  public static File createImageFile() throws IOException {
     // Create an image file name
-    String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+    @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
     String imageFileName = "JPEG_" + timeStamp + "_";
     File storageDir = getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
 

@@ -9,6 +9,7 @@ import retrofit2.CallAdapter;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+@SuppressWarnings("WeakerAccess")
 public class LiveDataCallAdapter<R> implements CallAdapter<R, LiveData<ApiResponse<R>>> {
 
   private Type responseType;
