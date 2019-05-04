@@ -51,7 +51,7 @@
   <!-- EmotionMoviesActivity -->
   <string name="emotion_movie_activity_title">Movies for %s feelings</string>
   <!-- widget -->
-  <string name="empty_favorite_movies_widget">No favorites movies found</string>
+  <string name="empty_favorite_movies_widget">Add to movies to favorites</string>
   <string name="favorite_movies_title_widget">Favorite Movies</string>
 
   <!-- Content Description -->

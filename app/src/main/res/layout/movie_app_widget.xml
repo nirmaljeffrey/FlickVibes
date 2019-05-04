@@ -10,6 +10,7 @@
     android:padding="8dp"
     android:background="@color/colorPrimaryLight"
     android:gravity="center"
+    android:textColor="@color/colorPrimaryText"
     android:text="@string/favorite_movies_title_widget"
     android:textSize="16sp"/>
   <FrameLayout
@@ -30,7 +31,7 @@
       android:background="@android:color/white"
       android:gravity="center"
       android:text="@string/empty_favorite_movies_widget"
-      android:textColor="@android:color/black"
+      android:textColor="@color/colorPrimaryText"
       android:textSize="16sp"
       />
   </FrameLayout>
