@@ -75,6 +75,7 @@ public class MovieWidgetService extends RemoteViewsService {
           .setTextViewText(R.id.rating_widget_text_view, movie.getVoteAverage().toString());
       Intent fillIntent = new Intent();
       fillIntent.putExtra(Constants.MOVIE_LIST_INTENT, movie);
+      fillIntent.putExtra(Constants.WIDGET_INTENT_IDENTIFIER,Constants.WIDGET_CLASS_NAME);
       remoteViews.setOnClickFillInIntent(R.id.movie_linear_layout_widget, fillIntent);
       return remoteViews;
     }

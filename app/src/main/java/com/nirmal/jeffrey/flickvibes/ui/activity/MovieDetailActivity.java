@@ -104,7 +104,16 @@ public class MovieDetailActivity extends BaseActivity implements TrailerClickLis
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     if (item.getItemId() == android.R.id.home) {
-      finish();
+      // Widget Item is clicked and opens a movieDetailActivity, at this point when the Up button is pressed,
+      // the app moves to mainActivity and kills the movieDetailActivity, instead of closing the app.
+      if (getIntent() != null && getIntent().getStringExtra(Constants.WIDGET_INTENT_IDENTIFIER)
+          .equals(Constants.WIDGET_CLASS_NAME)) {
+        Intent intent = new Intent(this, MovieListActivity.class);
+        startActivity(intent);
+        finish();
+      } else {
+        finish();
+      }
       return true;
     }
     return super.onOptionsItemSelected(item);
@@ -308,7 +317,6 @@ public class MovieDetailActivity extends BaseActivity implements TrailerClickLis
 
       } else if (getIntent().hasExtra(Constants.EMOTION_MOVIE_LIST_INTENT)) {
         movie = getIntent().getParcelableExtra(Constants.EMOTION_MOVIE_LIST_INTENT);
-
       }
 
       subscribeObservers(movie.getId());
@@ -343,9 +351,9 @@ public class MovieDetailActivity extends BaseActivity implements TrailerClickLis
       getSupportActionBar().setDisplayHomeAsUpEnabled(true);
       getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
       collapsingToolbarLayout
-          .setExpandedTitleColor(ContextCompat.getColor(this,android.R.color.transparent));
+          .setExpandedTitleColor(ContextCompat.getColor(this, android.R.color.transparent));
       collapsingToolbarLayout
-          .setCollapsedTitleTextColor(ContextCompat.getColor(this,android.R.color.white));
+          .setCollapsedTitleTextColor(ContextCompat.getColor(this, android.R.color.white));
     }
 
   }
@@ -449,5 +457,17 @@ public class MovieDetailActivity extends BaseActivity implements TrailerClickLis
     }
   }
 
-
+  @Override
+  public void onBackPressed() {
+    // Widget Item is clicked and opens a movieDetailActivity, at this point when the back button is pressed,
+    // the app moves to mainActivity and kills the movieDetailActivity, instead of closing the app.
+    if (getIntent() != null && getIntent().getStringExtra(Constants.WIDGET_INTENT_IDENTIFIER)
+        .equals(Constants.WIDGET_CLASS_NAME)) {
+      Intent intent = new Intent(this, MovieListActivity.class);
+      startActivity(intent);
+      finish();
+    }else {
+      super.onBackPressed();
+    }
+  }
 }
