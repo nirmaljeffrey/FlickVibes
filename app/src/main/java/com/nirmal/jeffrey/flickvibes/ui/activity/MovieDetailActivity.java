@@ -106,12 +106,14 @@ public class MovieDetailActivity extends BaseActivity implements TrailerClickLis
     if (item.getItemId() == android.R.id.home) {
       // Widget Item is clicked and opens a movieDetailActivity, at this point when the Up button is pressed,
       // the app moves to mainActivity and kills the movieDetailActivity, instead of closing the app.
-      if (getIntent() != null && getIntent().getStringExtra(Constants.WIDGET_INTENT_IDENTIFIER)
-          .equals(Constants.WIDGET_CLASS_NAME)) {
-        Intent intent = new Intent(this, MovieListActivity.class);
-        startActivity(intent);
-        finish();
-      } else {
+      if (getIntent() != null && getIntent().hasExtra(Constants.WIDGET_INTENT_IDENTIFIER)) {
+        if(getIntent().getStringExtra(Constants.WIDGET_INTENT_IDENTIFIER)
+            .equals(Constants.WIDGET_CLASS_NAME)){
+            Intent intent = new Intent(this, MovieListActivity.class);
+            startActivity(intent);
+            finish();
+          }
+        }else {
         finish();
       }
       return true;
@@ -461,11 +463,13 @@ public class MovieDetailActivity extends BaseActivity implements TrailerClickLis
   public void onBackPressed() {
     // Widget Item is clicked and opens a movieDetailActivity, at this point when the back button is pressed,
     // the app moves to mainActivity and kills the movieDetailActivity, instead of closing the app.
-    if (getIntent() != null && getIntent().getStringExtra(Constants.WIDGET_INTENT_IDENTIFIER)
-        .equals(Constants.WIDGET_CLASS_NAME)) {
-      Intent intent = new Intent(this, MovieListActivity.class);
-      startActivity(intent);
-      finish();
+    if (getIntent() != null && getIntent().hasExtra(Constants.WIDGET_INTENT_IDENTIFIER)) {
+     if(getIntent().getStringExtra(Constants.WIDGET_INTENT_IDENTIFIER)
+          .equals(Constants.WIDGET_CLASS_NAME)) {
+       Intent intent = new Intent(this, MovieListActivity.class);
+       startActivity(intent);
+       finish();
+     }
     }else {
       super.onBackPressed();
     }
