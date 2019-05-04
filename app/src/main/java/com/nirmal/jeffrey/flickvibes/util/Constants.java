@@ -15,6 +15,7 @@ public final class Constants {
   public static final String MOVIES_FROM_FAVORITES = "movies_from_favorites";
   public static final String MOVIES_FROM_SEARCH = "movies_from_search";
   public static final String MOVIES_BY_TYPE = "movies_by_type";
+
   //Emotion Detector probabilities
   public static final double HAPPINESS_PROB = 0.4;
   public static final double SADNESS_PROB = 0.2;

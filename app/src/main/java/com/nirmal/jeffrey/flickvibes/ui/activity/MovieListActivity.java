@@ -63,7 +63,6 @@ public class MovieListActivity extends BaseActivity implements OnBackStackChange
   FrameLayout movieListContainer;
   private String cameraImagePath;
   private FragmentManager fragmentManager;
-
   private MovieListViewModel movieListViewModel;
 
   private BottomNavigationView.OnNavigationItemSelectedListener navListener = new OnNavigationItemSelectedListener() {
@@ -156,8 +155,9 @@ public class MovieListActivity extends BaseActivity implements OnBackStackChange
           startActivity(intent);
         }
       }
+      }
     }
-  }
+
 
 
   @Override

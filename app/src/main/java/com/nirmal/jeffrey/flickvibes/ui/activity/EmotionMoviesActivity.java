@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.transition.Fade;
 import android.view.View;
 import android.widget.Toast;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,7 +32,8 @@ public class EmotionMoviesActivity extends BaseActivity implements OnMovieItemCl
   RecyclerView recyclerView;
   private MoviesByEmotionViewModel moviesByEmotionViewModel;
   private MovieAdapter emotionAdapter;
-
+  private Integer moviePositionInRecyclerView;
+  private Integer selectedMovieId;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -129,12 +132,38 @@ public class EmotionMoviesActivity extends BaseActivity implements OnMovieItemCl
   }
 
   @Override
-  public void onClickItem(Movie movie) {
-    Intent intent = new Intent(EmotionMoviesActivity.this, MovieDetailActivity.class);
-    intent.putExtra(Constants.EMOTION_MOVIE_LIST_INTENT, movie);
-    //Add activity options for activity transitions
-    startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+  public void onClickItem(int position) {
+    if (emotionAdapter.getMovieArrayList() != null) {
+      Movie movie = emotionAdapter.getMovieArrayList().get(position);
+      moviePositionInRecyclerView = position;
+      selectedMovieId = movie.getId();
+      Intent intent = new Intent(EmotionMoviesActivity.this, MovieDetailActivity.class);
+      intent.putExtra(Constants.EMOTION_MOVIE_LIST_INTENT, movie);
+      //Add activity options for activity transitions
+      startActivity(intent,ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+    }
   }
+
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+    if (emotionAdapter.getMovieArrayList() != null) {
+      if (moviePositionInRecyclerView != null && selectedMovieId != null) {
+        LiveData<Movie> movieLiveData = moviesByEmotionViewModel.getMovie(selectedMovieId);
+        movieLiveData.observe(this, new Observer<Movie>() {
+          @Override
+          public void onChanged(Movie movie) {
+            movieLiveData.removeObserver(this);
+            emotionAdapter.getMovieArrayList().set(moviePositionInRecyclerView, movie);
+            emotionAdapter.notifyItemChanged(moviePositionInRecyclerView);
+          }
+        });
+      }
+    }
+
+  }
+
 
   private void setExitTransition() {
     Fade exitTransition = new Fade();

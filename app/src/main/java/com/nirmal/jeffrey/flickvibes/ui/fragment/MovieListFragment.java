@@ -12,6 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
@@ -26,6 +29,7 @@ import com.nirmal.jeffrey.flickvibes.adapter.MovieAdapter.OnMovieItemClickLister
 import com.nirmal.jeffrey.flickvibes.model.Movie;
 import com.nirmal.jeffrey.flickvibes.ui.activity.MovieDetailActivity;
 import com.nirmal.jeffrey.flickvibes.util.Constants;
+import com.nirmal.jeffrey.flickvibes.viewmodel.MovieListViewModel;
 import java.util.ArrayList;
 
 public class MovieListFragment extends Fragment implements OnMovieItemClickLister {
@@ -42,7 +46,9 @@ public class MovieListFragment extends Fragment implements OnMovieItemClickListe
   ConstraintLayout emptyLayout;
   private Unbinder unbinder;
   private MovieAdapter movieAdapter;
-
+  private Integer moviePositionInRecyclerView;
+  private Integer selectedMovieId;
+  private MovieListViewModel fragmentMovieListViewModel;
   public static MovieListFragment getInstance(ArrayList<Movie> arrayList,
       String listTypeIdentifier) {
     MovieListFragment fragment = new MovieListFragment();
@@ -51,6 +57,15 @@ public class MovieListFragment extends Fragment implements OnMovieItemClickListe
     bundle.putString(EMPTY_MOVIE_FRAGMENT_BUNDLE, listTypeIdentifier);
     fragment.setArguments(bundle);
     return fragment;
+  }
+
+  @Override
+  public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+    if(getActivity()!=null) {
+      fragmentMovieListViewModel = ViewModelProviders.of(getActivity())
+          .get(MovieListViewModel.class);
+    }
   }
 
   @Nullable
@@ -125,21 +140,52 @@ public class MovieListFragment extends Fragment implements OnMovieItemClickListe
   }
 
   @Override
-  public void onClickItem(Movie movie) {
-    Intent intent = new Intent(getActivity(), MovieDetailActivity.class);
-    intent.putExtra(Constants.MOVIE_LIST_INTENT, movie);
-    //Add activity options for activity transitions
-    startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
+  public void onResume() {
+    super.onResume();
+    if (movieAdapter.getMovieArrayList() != null) {
+      if (moviePositionInRecyclerView != null && selectedMovieId != null) {
+        LiveData<Movie> movieLiveData =fragmentMovieListViewModel.getMovie(selectedMovieId);
+          movieLiveData.observe(this, new Observer<Movie>() {
+            @Override
+            public void onChanged(Movie movie) {
+              movieLiveData.removeObserver(this);
+              movieAdapter.getMovieArrayList().set(moviePositionInRecyclerView, movie);
+              movieAdapter.notifyItemChanged(moviePositionInRecyclerView);
+            }
+          });
+
+      }
+    }
   }
 
-  private void displayEmptyScreen() {
-    recyclerView.setVisibility(View.GONE);
-    emptyLayout.setVisibility(View.VISIBLE);
-  }
+        private void displayEmptyScreen () {
+          recyclerView.setVisibility(View.GONE);
+          emptyLayout.setVisibility(View.VISIBLE);
+        }
 
-  private void displayMovieData() {
-    recyclerView.setVisibility(View.VISIBLE);
-    emptyLayout.setVisibility(View.GONE);
-  }
+        private void displayMovieData () {
+          recyclerView.setVisibility(View.VISIBLE);
+          emptyLayout.setVisibility(View.GONE);
+        }
+
+        @Override
+        public void onClickItem ( int position){
+          if (movieAdapter.getMovieArrayList() != null) {
+            Movie movie = movieAdapter.getMovieArrayList().get(position);
+            moviePositionInRecyclerView = position;
+            selectedMovieId = movie.getId();
+            Intent intent = new Intent(getActivity(), MovieDetailActivity.class);
+            intent.putExtra(Constants.MOVIE_LIST_INTENT, movie);
+            //Add activity options for activity transitions
+            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
+
+          }
+        }
+
 
 }
+
+
+
+
+

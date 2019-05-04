@@ -66,6 +66,9 @@ public class MovieListViewModel extends AndroidViewModel {
       }
     });
   }
+  public LiveData<Movie> getMovie(int movieId){
+    return movieRepository.getMovie(movieId);
+  }
 }
 
 

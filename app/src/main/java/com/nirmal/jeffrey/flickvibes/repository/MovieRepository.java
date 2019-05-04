@@ -349,7 +349,9 @@ public class MovieRepository {
 
   }
 
-
+  public LiveData<Movie> getMovie(int movieId) {
+    return movieDao.getMovie(movieId);
+  }
 
   public LiveData<List<Movie>> getFavoriteMovies() {
     return movieDao.getFavoriteMovieList();
@@ -358,6 +360,7 @@ public class MovieRepository {
   public LiveData<Movie> getFavoriteMovie(int movieId) {
     return movieDao.getFavoriteMovie(movieId);
   }
+
   public void removeMovieFromFavorite(int movieId) {
     appExecutor.diskIO().execute(() -> movieDao.removeMovieFromFavorite(movieId));
   }
