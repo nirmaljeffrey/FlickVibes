@@ -19,8 +19,8 @@ public final class WidgetUtils {
       throws ExecutionException, InterruptedException {
     RequestOptions options = new RequestOptions()
         .centerCrop()
-        .error(R.drawable.poster_place_holder)
-        .fallback(R.drawable.poster_place_holder);
+        .error(R.drawable.ic_poster_place_holder)
+        .fallback(R.drawable.ic_poster_place_holder);
     Bitmap bitmap = Glide.with(context)
         .asBitmap()
         .apply(options)

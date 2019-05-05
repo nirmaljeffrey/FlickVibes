@@ -125,8 +125,8 @@ public class EmotionMoviesActivity extends BaseActivity implements OnMovieItemCl
    */
   private RequestManager initGlide() {
     RequestOptions requestOptions = new RequestOptions()
-        .error(R.drawable.poster_place_holder)
-        .fallback(R.drawable.poster_place_holder);
+        .error(R.drawable.ic_poster_place_holder)
+        .fallback(R.drawable.ic_poster_place_holder);
     return Glide.with(this)
         .setDefaultRequestOptions(requestOptions);
   }
