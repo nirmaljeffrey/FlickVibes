@@ -2,7 +2,7 @@ package com.nirmal.jeffrey.flickvibes.util;
 
 
 import androidx.lifecycle.LiveData;
-import com.nirmal.jeffrey.flickvibes.network.response.ApiResponse;
+import com.nirmal.jeffrey.flickvibes.network.apiResponse.ApiResponse;
 import java.lang.reflect.Type;
 import retrofit2.Call;
 import retrofit2.CallAdapter;

@@ -1,14 +1,22 @@
-package com.nirmal.jeffrey.flickvibes.network.response;
+package com.nirmal.jeffrey.flickvibes.network.apiResponse;
 
 import java.io.IOException;
 import retrofit2.Response;
 
 public class ApiResponse<T> {
-
+ private static final String networkError="Unable to resolve host \"api.themoviedb.org\": No address associated with hostname";
   public ApiResponse<T> create(Throwable error) {
-    return new ApiErrorResponse<>(
-        error.getMessage().equals("") ? "Unknown error \n Check the network Connection"
-            : error.getMessage());
+
+        if(error.getMessage().equals(networkError)){
+          return new ApiErrorResponse<>( "Check your network Connection");
+       }else if ( error.getMessage().equals("")){
+          return new ApiErrorResponse<>("Something went wrong");
+        }else {
+          return new ApiErrorResponse<>(error.getMessage());
+        }
+
+
+
   }
 
   public ApiResponse<T> create(Response<T> response) {

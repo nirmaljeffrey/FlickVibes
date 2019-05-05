@@ -19,7 +19,7 @@ import com.nirmal.jeffrey.flickvibes.model.Movie;
 import com.nirmal.jeffrey.flickvibes.model.Review;
 import com.nirmal.jeffrey.flickvibes.model.Trailer;
 import com.nirmal.jeffrey.flickvibes.network.WebServiceGenerator;
-import com.nirmal.jeffrey.flickvibes.network.response.ApiResponse;
+import com.nirmal.jeffrey.flickvibes.network.apiResponse.ApiResponse;
 import com.nirmal.jeffrey.flickvibes.network.response.CastListResponse;
 import com.nirmal.jeffrey.flickvibes.network.response.GenreListResponse;
 import com.nirmal.jeffrey.flickvibes.network.response.MovieListResponse;

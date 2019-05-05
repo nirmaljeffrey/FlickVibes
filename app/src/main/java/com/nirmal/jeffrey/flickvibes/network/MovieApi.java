@@ -2,7 +2,7 @@ package com.nirmal.jeffrey.flickvibes.network;
 
 
 import androidx.lifecycle.LiveData;
-import com.nirmal.jeffrey.flickvibes.network.response.ApiResponse;
+import com.nirmal.jeffrey.flickvibes.network.apiResponse.ApiResponse;
 import com.nirmal.jeffrey.flickvibes.network.response.CastListResponse;
 import com.nirmal.jeffrey.flickvibes.network.response.GenreListResponse;
 import com.nirmal.jeffrey.flickvibes.network.response.MovieListResponse;

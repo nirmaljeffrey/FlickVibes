@@ -8,7 +8,7 @@ import androidx.annotation.WorkerThread;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import com.nirmal.jeffrey.flickvibes.executor.AppExecutor;
-import com.nirmal.jeffrey.flickvibes.network.response.ApiResponse;
+import com.nirmal.jeffrey.flickvibes.network.apiResponse.ApiResponse;
 
 // CacheObject: Type for the Resource data.
 // RequestObject: Type for the API response.

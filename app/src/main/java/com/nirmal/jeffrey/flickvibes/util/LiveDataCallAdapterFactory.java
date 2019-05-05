@@ -1,7 +1,7 @@
 package com.nirmal.jeffrey.flickvibes.util;
 
 import androidx.lifecycle.LiveData;
-import com.nirmal.jeffrey.flickvibes.network.response.ApiResponse;
+import com.nirmal.jeffrey.flickvibes.network.apiResponse.ApiResponse;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
