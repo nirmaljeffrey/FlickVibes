@@ -32,6 +32,7 @@ import com.nirmal.jeffrey.flickvibes.model.Movie;
 import com.nirmal.jeffrey.flickvibes.ui.activity.MovieDetailActivity;
 import com.nirmal.jeffrey.flickvibes.ui.activity.MovieListActivity;
 import com.nirmal.jeffrey.flickvibes.util.Constants;
+import com.nirmal.jeffrey.flickvibes.util.NetworkUtils;
 import com.nirmal.jeffrey.flickvibes.viewmodel.MovieListViewModel;
 import java.util.ArrayList;
 
@@ -113,15 +114,21 @@ public class MovieListFragment extends Fragment implements OnMovieItemClickListe
             }
             break;
           case Constants.MOVIES_FROM_SEARCH:
-            if (movieArrayList == null || movieArrayList.isEmpty()) {
-              displayEmptyScreen();
-              emptyLayoutImageView.setImageResource(R.drawable.ic_no_results_found);
-              emptyLayoutTextView.setText(R.string.fragment_empty_search);
-            } else {
-              displayMovieData();
-              movieAdapter.setMovieData(movieArrayList);
+            if (getActivity() != null) {
+              if (movieArrayList == null || movieArrayList.isEmpty()) {
+                if(!NetworkUtils.isNetworkAvailable(getActivity())){
+                  displayInternetErrorScreen();
+                }else {
+                  displayEmptyScreen();
+                  emptyLayoutImageView.setImageResource(R.drawable.ic_no_results_found);
+                  emptyLayoutTextView.setText(R.string.fragment_empty_search);
+                }
+              } else {
+                displayMovieData();
+                movieAdapter.setMovieData(movieArrayList);
+              }
+              break;
             }
-            break;
         }
       }
     }
@@ -129,7 +136,22 @@ public class MovieListFragment extends Fragment implements OnMovieItemClickListe
   }
 
 private void initRetryButton(){
-  retryButton.setOnClickListener(view1 -> retryClickListener.retryClick());
+  if (getArguments() != null) {
+    String emptyListTag = getArguments().getString(EMPTY_MOVIE_FRAGMENT_BUNDLE);
+    retryButton.setOnClickListener(view -> {
+      if (emptyListTag != null) {
+        switch (emptyListTag) {
+          case Constants.MOVIES_BY_TYPE:
+            retryClickListener.retryClick();
+            break;
+          case Constants.MOVIES_FROM_SEARCH:
+            retryClickListener.offlineSearchClick();
+            break;
+        }
+      }
+    });
+
+  }
 }
   private void initRecyclerView() {
     int spanCount = getResources().getInteger(R.integer.grid_span_count);
@@ -224,6 +246,7 @@ private void initRetryButton(){
 
         public interface InternetRetryClickListener{
           void retryClick();
+          void offlineSearchClick();
         }
 
 

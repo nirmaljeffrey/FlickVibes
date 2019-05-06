@@ -66,6 +66,7 @@ public class MovieListActivity extends BaseActivity implements OnBackStackChange
   private String cameraImagePath;
   private FragmentManager fragmentManager;
   private MovieListViewModel movieListViewModel;
+  private SearchView searchView;
 
   private BottomNavigationView.OnNavigationItemSelectedListener navListener = new OnNavigationItemSelectedListener() {
     @Override
@@ -166,7 +167,7 @@ public class MovieListActivity extends BaseActivity implements OnBackStackChange
   public boolean onCreateOptionsMenu(Menu menu) {
     getMenuInflater().inflate(R.menu.movie_list_activity_menu, menu);
     MenuItem searchItem = menu.findItem(R.id.action_search);
-    SearchView searchView = (SearchView) searchItem.getActionView();
+    searchView = (SearchView) searchItem.getActionView();
     searchView.setQueryHint(getString(R.string.menu_search_hint));
     searchView.setIconified(false);
     searchView.setOnQueryTextListener(new OnQueryTextListener() {
@@ -403,6 +404,14 @@ public class MovieListActivity extends BaseActivity implements OnBackStackChange
       case R.id.nav_now_playing:
         getMovieListByTypeApi(NetworkUtils.NOW_PLAYING_MOVIE_PATH);
         break;
+    }
+  }
+
+  @Override
+  public void offlineSearchClick() {
+    if (searchView.getQuery() != null) {
+      String searchQuery = searchView.getQuery().toString();
+      getMovieListFromSearch(searchQuery);
     }
   }
 }

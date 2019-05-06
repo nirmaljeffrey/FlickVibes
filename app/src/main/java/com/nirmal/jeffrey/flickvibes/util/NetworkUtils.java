@@ -1,5 +1,7 @@
 package com.nirmal.jeffrey.flickvibes.util;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import com.nirmal.jeffrey.flickvibes.BuildConfig;
 
@@ -77,5 +79,22 @@ public final class NetworkUtils {
    */
   public static Uri buildCastWebUrl(String castName) {
     return Uri.parse(MOVIE_CAST_WEB_URL + castName + MOVIE_CAST_WEB_PARAMETER);
+  }
+
+  /**
+   * Method to check if the device is online or offline
+   * @param context context of the activity
+   * @return boolean to detect online or offline
+   */
+  public static boolean isNetworkAvailable(Context context) {
+    ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+// test for connection
+    if (cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isAvailable()
+        && cm.getActiveNetworkInfo().isConnected()) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
