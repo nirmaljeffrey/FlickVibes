@@ -25,6 +25,8 @@
 <!-- MovieListFragment -->
   <string name="fragment_empty_favorites">Add Movies to favorites</string>
   <string name="fragment_empty_search">No movies found</string>
+  <string name="fragment_internet_error">Check your Internet Connection</string>
+  <string name="fragment_internet_retry_button">Retry</string>
 
   <!--activity_detail_movie.xml -->
   <string name="genre_label">GENRES</string>

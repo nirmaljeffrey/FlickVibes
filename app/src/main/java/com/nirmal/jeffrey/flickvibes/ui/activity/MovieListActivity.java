@@ -38,6 +38,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.nirmal.jeffrey.flickvibes.R;
 import com.nirmal.jeffrey.flickvibes.model.Movie;
 import com.nirmal.jeffrey.flickvibes.ui.fragment.MovieListFragment;
+import com.nirmal.jeffrey.flickvibes.ui.fragment.MovieListFragment.InternetRetryClickListener;
 import com.nirmal.jeffrey.flickvibes.util.BitmapUtils;
 import com.nirmal.jeffrey.flickvibes.util.Constants;
 import com.nirmal.jeffrey.flickvibes.util.NetworkUtils;
@@ -48,7 +49,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MovieListActivity extends BaseActivity implements OnBackStackChangedListener {
+public class MovieListActivity extends BaseActivity implements OnBackStackChangedListener,
+    InternetRetryClickListener {
 
   private static final String FILE_PROVIDER_AUTHORITY = "com.nirmal.jeffrey.flickvibes.fileprovider";
   private static final int REQUEST_PHOTO_PICKER = 1;
@@ -383,6 +385,26 @@ public class MovieListActivity extends BaseActivity implements OnBackStackChange
     getWindow().setExitTransition(exitTransition);
   }
 
+
+
+  @Override
+  public void retryClick() {
+    switch (bottomNavigationBar.getSelectedItemId()){
+      case R.id.nav_popular:
+        getMovieListByTypeApi(NetworkUtils.POPULAR_MOVIE_PATH);
+        break;
+      case R.id.nav_top_rated:
+        getMovieListByTypeApi(NetworkUtils.TOP_RATER_MOVIE_PATH);
+        break;
+      case R.id.nav_Upcoming:
+        getMovieListByTypeApi(NetworkUtils.UPCOMING_MOVIE_PATH);
+
+        break;
+      case R.id.nav_now_playing:
+        getMovieListByTypeApi(NetworkUtils.NOW_PLAYING_MOVIE_PATH);
+        break;
+    }
+  }
 }
 
 

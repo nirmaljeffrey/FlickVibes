@@ -1,11 +1,13 @@
 package com.nirmal.jeffrey.flickvibes.ui.fragment;
 
 import android.app.ActivityOptions;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -28,6 +30,7 @@ import com.nirmal.jeffrey.flickvibes.adapter.MovieAdapter;
 import com.nirmal.jeffrey.flickvibes.adapter.MovieAdapter.OnMovieItemClickLister;
 import com.nirmal.jeffrey.flickvibes.model.Movie;
 import com.nirmal.jeffrey.flickvibes.ui.activity.MovieDetailActivity;
+import com.nirmal.jeffrey.flickvibes.ui.activity.MovieListActivity;
 import com.nirmal.jeffrey.flickvibes.util.Constants;
 import com.nirmal.jeffrey.flickvibes.viewmodel.MovieListViewModel;
 import java.util.ArrayList;
@@ -38,12 +41,18 @@ public class MovieListFragment extends Fragment implements OnMovieItemClickListe
   private static final String EMPTY_MOVIE_FRAGMENT_BUNDLE = "empty_movie_bundle";
   @BindView(R.id.movies_recycler_view)
   RecyclerView recyclerView;
-  @BindView(R.id.empty_layout_image_view)
+  @BindView(R.id.internet_error_image_view)
   ImageView emptyLayoutImageView;
   @BindView(R.id.empty_layout_text_view)
   TextView emptyLayoutTextView;
   @BindView(R.id.movie_list_empty_layout)
   ConstraintLayout emptyLayout;
+  @BindView(R.id.movie_list_internet_error_layout)
+  ConstraintLayout internetErrorLayout;
+  @BindView(R.id.internet_retry_button)
+  Button retryButton;
+  private InternetRetryClickListener retryClickListener;
+
   private Unbinder unbinder;
   private MovieAdapter movieAdapter;
   private Integer moviePositionInRecyclerView;
@@ -68,6 +77,8 @@ public class MovieListFragment extends Fragment implements OnMovieItemClickListe
     }
   }
 
+
+
   @Nullable
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -76,6 +87,7 @@ public class MovieListFragment extends Fragment implements OnMovieItemClickListe
     View view = inflater.inflate(R.layout.fragment_list_movie, container, false);
     unbinder = ButterKnife.bind(this, view);
     initRecyclerView();
+    initRetryButton();
     if (getArguments() != null) {
       String emptyListTag = getArguments().getString(EMPTY_MOVIE_FRAGMENT_BUNDLE);
       ArrayList<Movie> movieArrayList = getArguments()
@@ -83,8 +95,12 @@ public class MovieListFragment extends Fragment implements OnMovieItemClickListe
       if (emptyListTag != null) {
         switch (emptyListTag) {
           case Constants.MOVIES_BY_TYPE:
-            displayMovieData();
-            movieAdapter.setMovieData(movieArrayList);
+            if (movieArrayList == null || movieArrayList.isEmpty()) {
+              displayInternetErrorScreen();
+            } else {
+              displayMovieData();
+              movieAdapter.setMovieData(movieArrayList);
+            }
             break;
           case Constants.MOVIES_FROM_FAVORITES:
             if (movieArrayList == null || movieArrayList.isEmpty()) {
@@ -112,6 +128,9 @@ public class MovieListFragment extends Fragment implements OnMovieItemClickListe
     return view;
   }
 
+private void initRetryButton(){
+  retryButton.setOnClickListener(view1 -> retryClickListener.retryClick());
+}
   private void initRecyclerView() {
     int spanCount = getResources().getInteger(R.integer.grid_span_count);
     recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), spanCount));
@@ -138,6 +157,18 @@ public class MovieListFragment extends Fragment implements OnMovieItemClickListe
     super.onDestroyView();
     unbinder.unbind();
   }
+  @Override
+  public void onAttach(Context context) {
+    super.onAttach(context);
+    if (getActivity() instanceof MovieListActivity) {
+      try {
+        retryClickListener = (InternetRetryClickListener) context;
+      } catch (RuntimeException e) {
+        throw new RuntimeException("Implement the InternetRetryClickListener");
+      }
+    }
+  }
+
 
   @Override
   public void onResume() {
@@ -158,14 +189,24 @@ public class MovieListFragment extends Fragment implements OnMovieItemClickListe
     }
   }
 
+
+
+      private void displayInternetErrorScreen(){
+        recyclerView.setVisibility(View.GONE);
+        emptyLayout.setVisibility(View.GONE);
+        internetErrorLayout.setVisibility(View.VISIBLE);
+      }
+
         private void displayEmptyScreen () {
           recyclerView.setVisibility(View.GONE);
           emptyLayout.setVisibility(View.VISIBLE);
+          internetErrorLayout.setVisibility(View.GONE);
         }
 
         private void displayMovieData () {
           recyclerView.setVisibility(View.VISIBLE);
           emptyLayout.setVisibility(View.GONE);
+          internetErrorLayout.setVisibility(View.GONE);
         }
 
         @Override
@@ -178,8 +219,11 @@ public class MovieListFragment extends Fragment implements OnMovieItemClickListe
             intent.putExtra(Constants.MOVIE_LIST_INTENT, movie);
             //Add activity options for activity transitions
             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
-
           }
+        }
+
+        public interface InternetRetryClickListener{
+          void retryClick();
         }
 
 

@@ -11,4 +11,7 @@
   <include
     android:id="@+id/movie_list_empty_layout"
     layout="@layout/empty_results_layout"/>
+  <include
+    android:id="@+id/movie_list_internet_error_layout"
+    layout="@layout/internet_error_layout"/>
 </FrameLayout>

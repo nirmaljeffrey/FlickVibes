@@ -21,9 +21,9 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintVertical_bias="0.35000002"
-    tools:src="@drawable/ic_no_results_found"/>
+    android:src="@drawable/ic_internet_error"/>
   <TextView
-    android:id="@+id/empty_layout_text_view"
+    android:id="@+id/internet_error_layout_text_view"
     android:textStyle="bold"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -33,6 +33,20 @@
     app:layout_constraintEnd_toEndOf="@+id/internet_error_image_view"
     app:layout_constraintStart_toStartOf="@+id/internet_error_image_view"
     app:layout_constraintTop_toBottomOf="@+id/internet_error_image_view"
-    tools:text="No movies found"/>
+    android:text="@string/fragment_internet_error"/>
+  <Button
+    android:id="@+id/internet_retry_button"
+    android:textStyle="bold"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    android:padding="4dp"
+    android:background="@color/colorAccent"
+    android:text="@string/fragment_internet_retry_button"
+    android:textColor="@android:color/white"
+    android:textSize="@dimen/size_16sp"
+    app:layout_constraintEnd_toEndOf="@+id/internet_error_image_view"
+    app:layout_constraintStart_toStartOf="@+id/internet_error_image_view"
+    app:layout_constraintTop_toBottomOf="@+id/internet_error_layout_text_view"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
