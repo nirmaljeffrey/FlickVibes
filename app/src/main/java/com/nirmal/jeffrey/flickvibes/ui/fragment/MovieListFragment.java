@@ -41,7 +41,7 @@ public class MovieListFragment extends Fragment implements OnMovieItemClickListe
   private static final String EMPTY_MOVIE_FRAGMENT_BUNDLE = "empty_movie_bundle";
   @BindView(R.id.movies_recycler_view)
   RecyclerView recyclerView;
-  @BindView(R.id.internet_error_image_view)
+  @BindView(R.id.empty_layout_image_view)
   ImageView emptyLayoutImageView;
   @BindView(R.id.empty_layout_text_view)
   TextView emptyLayoutTextView;
