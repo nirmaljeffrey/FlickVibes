@@ -32,15 +32,14 @@ public class EmotionDetector {
       boolean happy = Constants.HAPPINESS_PROB <= face.getSmilingProbability();
       boolean sad = Constants.SADNESS_PROB >= face.getSmilingProbability();
       boolean normal =
-          (Constants.HAPPINESS_PROB > face.getSmilingProbability()) && (face.getSmilingProbability()
-              > Constants.SADNESS_PROB);
-
-      if (happy) {
+          ((Constants.HAPPINESS_PROB > face.getSmilingProbability()) && (face.getSmilingProbability()
+              > Constants.SADNESS_PROB));
+      if (normal) {
+        return Emotions.NORMAL;
+      }else if (happy) {
         return Emotions.HAPPY;
       } else if (sad) {
         return Emotions.SAD;
-      } else if (normal) {
-        return Emotions.NORMAL;
       }
     }
     return null;

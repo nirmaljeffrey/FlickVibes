@@ -18,8 +18,8 @@ public final class Constants {
   public static final String WIDGET_INTENT_IDENTIFIER="widget_intent";
   public static final String WIDGET_CLASS_NAME="movie_widget";
   //Emotion Detector probabilities
-  public static final double HAPPINESS_PROB = 0.4;
-  public static final double SADNESS_PROB = 0.2;
+  public static final double HAPPINESS_PROB = 0.5;
+  public static final double SADNESS_PROB = 0.1;
 
   private Constants() {
   }

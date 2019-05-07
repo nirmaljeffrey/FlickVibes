@@ -73,24 +73,29 @@ public class EmotionMoviesActivity extends BaseActivity implements OnMovieItemCl
     moviesByEmotionViewModel.getMoviesByEmotion().observe(this,
         listResource -> {
           if (listResource != null) {
-            if (listResource.data != null && !listResource.data.isEmpty()) {
-              displayMovieData();
+            if (listResource.data != null) {
+             ArrayList<Movie> movieArrayList =null;
               switch (listResource.status) {
                 case LOADING:
                   displayLoading();
                   break;
                 case ERROR:
                   showErrorMessage(listResource.message);
-                  emotionAdapter.setMovieData(new ArrayList<>(listResource.data));
+                  movieArrayList =new ArrayList<>(listResource.data);
                   break;
                 case SUCCESS:
                   displayMovies();
-                  emotionAdapter.setMovieData(new ArrayList<>(listResource.data));
+                  movieArrayList =new ArrayList<>(listResource.data);
+
                   break;
+              }if(movieArrayList!=null && !movieArrayList.isEmpty()){
+                displayMovieData();
+                emotionAdapter.setMovieData(movieArrayList);
+              }else {
+                displayErrorScreen();
               }
 
-            }else {
-              displayErrorScreen();
+
             }
           }
         });
@@ -109,22 +114,22 @@ public class EmotionMoviesActivity extends BaseActivity implements OnMovieItemCl
   }
 
   private void displayLoading() {
+    recyclerView.setVisibility(View.GONE);
+    errorLayout.setVisibility(View.GONE);
     //Method from BaseActivity.java
     showProgressBar(true);
-    recyclerView.setVisibility(View.GONE);
+
   }
 
   private void showErrorMessage(String message) {
     //Method from BaseActivity.java
     showProgressBar(false);
-    recyclerView.setVisibility(View.VISIBLE);
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
   }
 
   private void displayMovies() {
     //Method from BaseActivity.java
     showProgressBar(false);
-    recyclerView.setVisibility(View.VISIBLE);
   }
 
   private void getMoviesByEmotionApi(int genre) {

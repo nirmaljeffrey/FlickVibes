@@ -120,7 +120,6 @@ public class MoviePredictionActivity extends BaseActivity {
 
   private void showEmotionSuccessDialog(Emotions emotions) {
     FragmentManager fragmentManager = getSupportFragmentManager();
-
     EmotionResultFragment emotionResultFragment = EmotionResultFragment.getInstance(emotions);
     emotionResultFragment.show(fragmentManager, Constants.EMOTION_DIALOG_TAG);
 
