@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.transition.Fade;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.LiveData;
@@ -29,7 +30,8 @@ import com.nirmal.jeffrey.flickvibes.viewmodel.MoviesByEmotionViewModel;
 import java.util.ArrayList;
 
 public class EmotionMoviesActivity extends BaseActivity implements OnMovieItemClickLister {
-
+@BindView(R.id.emotion_movie_frame_layout)
+  FrameLayout emotionMovieListContainer;
   @BindView(R.id.emotion_movies_recycler_view)
   RecyclerView recyclerView;
   @BindView(R.id.emotion_internet_error_layout)
@@ -114,8 +116,7 @@ public class EmotionMoviesActivity extends BaseActivity implements OnMovieItemCl
   }
 
   private void displayLoading() {
-    recyclerView.setVisibility(View.GONE);
-    errorLayout.setVisibility(View.GONE);
+    emotionMovieListContainer.setVisibility(View.GONE);
     //Method from BaseActivity.java
     showProgressBar(true);
 
@@ -123,11 +124,13 @@ public class EmotionMoviesActivity extends BaseActivity implements OnMovieItemCl
 
   private void showErrorMessage(String message) {
     //Method from BaseActivity.java
+    emotionMovieListContainer.setVisibility(View.VISIBLE);
     showProgressBar(false);
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
   }
 
   private void displayMovies() {
+    emotionMovieListContainer.setVisibility(View.VISIBLE);
     //Method from BaseActivity.java
     showProgressBar(false);
   }

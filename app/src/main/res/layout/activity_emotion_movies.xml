@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <FrameLayout
+  android:id="@+id/emotion_movie_frame_layout"
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
   android:layout_height="match_parent">
@@ -11,7 +12,8 @@
   android:scrollbars="vertical"/>
   <include
     android:id="@+id/emotion_internet_error_layout"
-    layout="@layout/internet_error_layout"/>
+    layout="@layout/internet_error_layout"
+    android:visibility="gone"/>
 </FrameLayout>
 
 
