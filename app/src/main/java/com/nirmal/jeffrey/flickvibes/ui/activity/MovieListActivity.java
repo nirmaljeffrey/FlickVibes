@@ -108,6 +108,7 @@ public class MovieListActivity extends BaseActivity implements OnBackStackChange
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
+    setTheme(R.style.AppTheme);
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_list_movie);
     ButterKnife.bind(this);

@@ -2,6 +2,7 @@ package com.nirmal.jeffrey.flickvibes.util;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import com.nirmal.jeffrey.flickvibes.BuildConfig;
 
@@ -90,11 +91,13 @@ public final class NetworkUtils {
     ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
 // test for connection
-    if (cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isAvailable()
-        && cm.getActiveNetworkInfo().isConnected()) {
-      return true;
-    } else {
-      return false;
+
+    NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+    boolean isAvailable = false;
+    if (networkInfo != null && networkInfo.isConnected()) {
+      // Network is present and connected
+      isAvailable = true;
     }
+    return isAvailable;
   }
 }

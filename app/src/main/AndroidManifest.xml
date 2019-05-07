@@ -23,6 +23,7 @@
 
 
     <activity android:name=".ui.activity.MovieListActivity"
+      android:theme="@style/AppTheme.splashScreenLauncher"
       android:launchMode="singleTop"
       android:screenOrientation="portrait"
       android:windowSoftInputMode="stateAlwaysHidden|adjustNothing">
