@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.transition.Fade;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -30,6 +32,10 @@ public class EmotionMoviesActivity extends BaseActivity implements OnMovieItemCl
 
   @BindView(R.id.emotion_movies_recycler_view)
   RecyclerView recyclerView;
+  @BindView(R.id.emotion_internet_error_layout)
+  ConstraintLayout errorLayout;
+  @BindView(R.id.internet_retry_button)
+  Button retryButton;
   private MoviesByEmotionViewModel moviesByEmotionViewModel;
   private MovieAdapter emotionAdapter;
   private Integer moviePositionInRecyclerView;
@@ -53,8 +59,8 @@ public class EmotionMoviesActivity extends BaseActivity implements OnMovieItemCl
 
       Emotions emotions = (Emotions) getIntent()
           .getSerializableExtra(Constants.EMOTION_ACTIVITY_INTENT);
-
       getMoviesByEmotionApi(GenreByEmotion.getGenreByEmotion(emotions));
+      initRetryButton(emotions);
       if (getSupportActionBar() != null) {
         getSupportActionBar().setTitle(
             getString(R.string.emotion_movie_activity_title, emotions.toString().toLowerCase()));
@@ -67,13 +73,14 @@ public class EmotionMoviesActivity extends BaseActivity implements OnMovieItemCl
     moviesByEmotionViewModel.getMoviesByEmotion().observe(this,
         listResource -> {
           if (listResource != null) {
-            if (listResource.data != null) {
+            if (listResource.data != null && !listResource.data.isEmpty()) {
+              displayMovieData();
               switch (listResource.status) {
                 case LOADING:
                   displayLoading();
                   break;
                 case ERROR:
-                  displayError(listResource.message);
+                  showErrorMessage(listResource.message);
                   emotionAdapter.setMovieData(new ArrayList<>(listResource.data));
                   break;
                 case SUCCESS:
@@ -82,6 +89,8 @@ public class EmotionMoviesActivity extends BaseActivity implements OnMovieItemCl
                   break;
               }
 
+            }else {
+              displayErrorScreen();
             }
           }
         });
@@ -94,13 +103,18 @@ public class EmotionMoviesActivity extends BaseActivity implements OnMovieItemCl
     recyclerView.setAdapter(emotionAdapter);
   }
 
+  private void initRetryButton(Emotions emotions){
+    retryButton.setOnClickListener(
+        view -> getMoviesByEmotionApi(GenreByEmotion.getGenreByEmotion(emotions)));
+  }
+
   private void displayLoading() {
     //Method from BaseActivity.java
     showProgressBar(true);
     recyclerView.setVisibility(View.GONE);
   }
 
-  private void displayError(String message) {
+  private void showErrorMessage(String message) {
     //Method from BaseActivity.java
     showProgressBar(false);
     recyclerView.setVisibility(View.VISIBLE);
@@ -169,6 +183,15 @@ public class EmotionMoviesActivity extends BaseActivity implements OnMovieItemCl
     Fade exitTransition = new Fade();
     exitTransition.setDuration(300);
     getWindow().setExitTransition(exitTransition);
+  }
+  private void displayMovieData () {
+    recyclerView.setVisibility(View.VISIBLE);
+    errorLayout.setVisibility(View.GONE);
+  }
+
+  private void displayErrorScreen(){
+    recyclerView.setVisibility(View.GONE);
+    errorLayout.setVisibility(View.VISIBLE);
   }
 }
 
