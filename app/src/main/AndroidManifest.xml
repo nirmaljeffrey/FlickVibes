@@ -17,7 +17,8 @@
     android:name=".application.MyApplication"
     android:roundIcon="@mipmap/ic_launcher_round"
     android:supportsRtl="true"
-    android:theme="@style/AppTheme">
+    android:theme="@style/AppTheme"
+    android:networkSecurityConfig="@xml/network_security_config">
 <!-- Remove the bottom navigation when keyboard is present in activity using  "android:windowSoftInputMode",
      Make all the activities to use portrait mode only using "android:screenOrientation"-->
 

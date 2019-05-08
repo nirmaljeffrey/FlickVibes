@@ -54,7 +54,6 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerListViewHolder> 
     holder.trailerSite.setText(trailer.getSite());
     String trailerUrl = NetworkUtils.buildTrailerThumbnailUrl(trailer.getKey());
     requestManager.load(trailerUrl)
-        .placeholder(R.drawable.ic_poster_place_holder)
         .error(R.drawable.ic_poster_place_holder)
         .fallback(R.drawable.ic_poster_place_holder)
         .centerCrop()
