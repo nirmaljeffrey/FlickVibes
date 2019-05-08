@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "d02b5ae576e1a3b17c3d85c6da524d2b",
+    "identityHash": "8c60eeea31d7350389c950df35f321b8",
     "entities": [
       {
         "tableName": "movie_table",
@@ -228,7 +228,7 @@
       },
       {
         "tableName": "cast_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`cast_id` INTEGER NOT NULL, `movie_id` INTEGER NOT NULL, `castName` TEXT, `castProfilePath` TEXT, PRIMARY KEY(`cast_id`), FOREIGN KEY(`movie_id`) REFERENCES `movie_table`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`cast_id` INTEGER NOT NULL, `movie_id` INTEGER NOT NULL, `cast_name` TEXT, `cast_profile_path` TEXT, `cast_order` INTEGER NOT NULL, PRIMARY KEY(`cast_id`), FOREIGN KEY(`movie_id`) REFERENCES `movie_table`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "castId",
@@ -244,15 +244,21 @@
           },
           {
             "fieldPath": "castName",
-            "columnName": "castName",
+            "columnName": "cast_name",
             "affinity": "TEXT",
             "notNull": false
           },
           {
             "fieldPath": "castProfilePath",
-            "columnName": "castProfilePath",
+            "columnName": "cast_profile_path",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "castOrder",
+            "columnName": "cast_order",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -287,7 +293,7 @@
       },
       {
         "tableName": "genre_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`movie_id` INTEGER NOT NULL, `genreId` INTEGER NOT NULL, `genreName` TEXT, PRIMARY KEY(`genreId`), FOREIGN KEY(`movie_id`) REFERENCES `movie_table`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`movie_id` INTEGER NOT NULL, `genre_id` INTEGER NOT NULL, `genre_name` TEXT, PRIMARY KEY(`genre_id`), FOREIGN KEY(`movie_id`) REFERENCES `movie_table`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "movieId",
@@ -297,20 +303,20 @@
           },
           {
             "fieldPath": "genreId",
-            "columnName": "genreId",
+            "columnName": "genre_id",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
             "fieldPath": "genreName",
-            "columnName": "genreName",
+            "columnName": "genre_name",
             "affinity": "TEXT",
             "notNull": false
           }
         ],
         "primaryKey": {
           "columnNames": [
-            "genreId"
+            "genre_id"
           ],
           "autoGenerate": false
         },
@@ -341,7 +347,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"d02b5ae576e1a3b17c3d85c6da524d2b\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"8c60eeea31d7350389c950df35f321b8\")"
     ]
   }
 }

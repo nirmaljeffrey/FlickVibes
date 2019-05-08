@@ -35,9 +35,11 @@ public class Genre implements Parcelable {
   @SerializedName("id")
   @Expose
   @PrimaryKey
+  @ColumnInfo(name = "genre_id")
   private int genreId;
   @SerializedName("name")
   @Expose
+  @ColumnInfo(name = "genre_name")
   private String genreName;
 
   public Genre(int movieId, int genreId, String genreName) {

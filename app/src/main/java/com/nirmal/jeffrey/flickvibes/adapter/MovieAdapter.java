@@ -59,17 +59,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieListViewHolder> {
     } else {
       holder.favoriteTag.setVisibility(View.GONE);
     }
-    if (movie.getPosterPath() != null) {
       // Method to create complete url string of the poster
       String posterUrl = NetworkUtils
           .buildMovieImageURLString(NetworkUtils.POSTER_BASE_URL, movie.getPosterPath());
       requestManager
           .load(posterUrl)
           .into(holder.posterImageView);
-
-    }
-
-
   }
 
   @Override

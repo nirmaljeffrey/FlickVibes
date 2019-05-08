@@ -50,11 +50,15 @@ public class CastAdapter extends RecyclerView.Adapter<CastListViewHolder> {
   public void onBindViewHolder(@NonNull CastListViewHolder holder, int position) {
     Cast cast = castArrayList.get(position);
     holder.castName.setText(cast.getCastName());
-    if (cast.getCastProfilePath() != null) {
       String castUrl = NetworkUtils
           .buildMovieImageURLString(NetworkUtils.POSTER_BASE_URL, cast.getCastProfilePath());
-      requestManager.load(castUrl).centerCrop().into(holder.castImage);
-    }
+      requestManager.load(castUrl)
+          .placeholder(R.drawable.ic_cast_fallback)
+          .error(R.drawable.ic_cast_fallback)
+          .fallback(R.drawable.ic_cast_fallback)
+          .centerCrop()
+          .into(holder.castImage);
+
   }
 
   @Override

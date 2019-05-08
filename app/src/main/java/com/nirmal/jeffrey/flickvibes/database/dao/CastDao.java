@@ -15,7 +15,7 @@ public interface CastDao {
   @Insert(onConflict = REPLACE)
   void insertCasts(List<Cast> casts);
 
-  @Query("SELECT * FROM cast_table WHERE movie_id=:movieId")
+  @Query("SELECT * FROM cast_table WHERE movie_id=:movieId ORDER BY cast_order ASC")
   LiveData<List<Cast>> getAllCastForMovie(int movieId);
 
   @Query("DELETE  FROM cast_table")

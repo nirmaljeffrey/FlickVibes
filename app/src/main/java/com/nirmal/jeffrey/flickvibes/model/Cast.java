@@ -40,22 +40,29 @@ public class Cast implements Parcelable {
   private int movieId;
   @SerializedName("name")
   @Expose
+  @ColumnInfo(name = "cast_name")
   private String castName;
   @SerializedName("profile_path")
   @Expose
+  @ColumnInfo(name = "cast_profile_path")
   private String castProfilePath;
+  @SerializedName("order")
+  @Expose
+  @ColumnInfo(name = "cast_order")
+  private int castOrder;
 
-  public Cast(int movieId, String castName, String castProfilePath) {
+  public Cast(int movieId, String castName, String castProfilePath, int castOrder) {
     this.movieId = movieId;
     this.castName = castName;
     this.castProfilePath = castProfilePath;
+    this.castOrder = castOrder;
   }
 
-
   @Ignore
-  public Cast(String castName, String castProfilePath) {
+  public Cast(String castName, String castProfilePath, int castOrder) {
     this.castName = castName;
     this.castProfilePath = castProfilePath;
+    this.castOrder = castOrder;
   }
 
   protected Cast(Parcel in) {
@@ -63,6 +70,15 @@ public class Cast implements Parcelable {
     movieId = in.readInt();
     castName = in.readString();
     castProfilePath = in.readString();
+    castOrder = in.readInt();
+  }
+
+  public int getCastOrder() {
+    return castOrder;
+  }
+
+  public void setCastOrder(int castOrder) {
+    this.castOrder = castOrder;
   }
 
   public int getCastId() {
@@ -109,5 +125,6 @@ public class Cast implements Parcelable {
     parcel.writeInt(movieId);
     parcel.writeString(castName);
     parcel.writeString(castProfilePath);
+    parcel.writeInt(castOrder);
   }
 }

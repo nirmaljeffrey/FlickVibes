@@ -132,7 +132,6 @@ public class MovieDetailActivity extends BaseActivity implements TrailerClickLis
     castList.setAdapter(castAdapter);
     //Trailer
     trailerAdapter = new TrailerAdapter(initGlide(), MovieDetailActivity.this);
-
     trailerList.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
     trailerList.setAdapter(trailerAdapter);
     //Genre
@@ -388,18 +387,14 @@ public class MovieDetailActivity extends BaseActivity implements TrailerClickLis
   }
 
   /**
-   * Method for creating request manager for recycler view
+   * Method for creating request manager for trailer recycler view
    *
    * @return RequestManager (Glide)
    */
   private RequestManager initGlide() {
-    RequestOptions requestOptions = new RequestOptions()
-        .error(R.drawable.ic_poster_place_holder)
-        .fallback(R.drawable.ic_poster_place_holder);
-    return Glide.with(this)
-        .setDefaultRequestOptions(requestOptions);
-
+    return Glide.with(this);
   }
+
 
   private void toastMessage(String message) {
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show();

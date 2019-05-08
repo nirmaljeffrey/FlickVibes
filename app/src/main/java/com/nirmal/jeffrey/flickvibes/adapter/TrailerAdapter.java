@@ -52,11 +52,13 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerListViewHolder> 
     Trailer trailer = trailerArrayList.get(position);
     holder.trailerTitleTextView.setText(trailer.getName());
     holder.trailerSite.setText(trailer.getSite());
-    if (trailer.getKey() != null) {
-      String trailerUrl = NetworkUtils.buildTrailerThumbnailUrl(trailer.getKey());
-
-      requestManager.load(trailerUrl).centerCrop().into(holder.trailerImageView);
-    }
+    String trailerUrl = NetworkUtils.buildTrailerThumbnailUrl(trailer.getKey());
+    requestManager.load(trailerUrl)
+        .placeholder(R.drawable.ic_poster_place_holder)
+        .error(R.drawable.ic_poster_place_holder)
+        .fallback(R.drawable.ic_poster_place_holder)
+        .centerCrop()
+        .into(holder.trailerImageView);
   }
 
   @Override
