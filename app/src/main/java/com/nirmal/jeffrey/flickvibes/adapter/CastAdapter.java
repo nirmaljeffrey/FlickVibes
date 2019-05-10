@@ -19,8 +19,8 @@ import java.util.ArrayList;
 public class CastAdapter extends RecyclerView.Adapter<CastListViewHolder> {
 
   private ArrayList<Cast> castArrayList;
-  private RequestManager requestManager;
-  private CastClickListener castClickListener;
+  private final RequestManager requestManager;
+  private final CastClickListener castClickListener;
 
   public CastAdapter(RequestManager requestManager, CastClickListener castClickListener) {
     this.requestManager = requestManager;

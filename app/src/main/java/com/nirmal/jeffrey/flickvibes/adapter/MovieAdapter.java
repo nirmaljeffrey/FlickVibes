@@ -17,9 +17,9 @@ import java.util.ArrayList;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieListViewHolder> {
 
-  private OnMovieItemClickLister onMovieItemClickLister;
+  private final OnMovieItemClickLister onMovieItemClickLister;
   private ArrayList<Movie> movieArrayList;
-  private RequestManager requestManager;
+  private final RequestManager requestManager;
 
   public MovieAdapter(RequestManager requestManager,
       OnMovieItemClickLister onMovieItemClickLister) {

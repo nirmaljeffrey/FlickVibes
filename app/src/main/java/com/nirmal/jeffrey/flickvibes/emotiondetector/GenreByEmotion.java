@@ -6,15 +6,15 @@ public final class GenreByEmotion {
 
   //Refer the below link to get the integer value of genre
   //https://developers.themoviedb.org/3/genres/get-movie-list
-  private static int[] sadGenreArray = {35,//Comedy Genre
+  private static final int[] sadGenreArray = {35,//Comedy Genre
       10402,//Music Genre
       10751//Family Genre
   };
-  private static int[] happyGenreArray = {14,//Fantasy Genre
+  private static final int[] happyGenreArray = {14,//Fantasy Genre
       10749,//Romance Genre
       53//Thriller Genre
   };
-  private static int[] normalGenreArray = {18,//Drama Genre
+  private static final int[] normalGenreArray = {18,//Drama Genre
       28,//Action Genre
       36//History Genre
   };

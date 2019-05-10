@@ -30,7 +30,7 @@ public class AppExecutor {
 
   private class MainThreadExecutor implements Executor {
 
-    private Handler mainThreadHandler = new Handler(Looper.getMainLooper());
+    private final Handler mainThreadHandler = new Handler(Looper.getMainLooper());
 
     @Override
     public void execute(Runnable runnable) {
