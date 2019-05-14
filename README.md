@@ -20,7 +20,9 @@ FlickVibes is an android application that suggests movies to users based on thei
 <img src="./Design/mockups/5.png">&ensp;<img src="./Design/mockups/6.png">
 <img src="./Design/mockups/7.png">&ensp;<img src="./Design/mockups/8.png">
 
+## Architecture
 
+* [Model View ViewModel(MVVM)](https://developer.android.com/jetpack/docs/guide)
 ## Libraries Used
 
 * [Glide](https://bumptech.github.io/glide/)
