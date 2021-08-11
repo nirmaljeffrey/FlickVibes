@@ -1,5 +1,5 @@
 ## FlickVibes
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 FlickVibes is an android application that suggests movies to users based on their feelings. Most of the people tend to watch movies when they are feeling bored, depressed or a multitude of other feelings. This app uses emotion recognition APIs to detect the user's feelings and recommend movies based on their feelings. Users can view most-popular, top-rated and upcoming movies and also bookmark movies. This app allows users to view trailers, ratings, reviews and cast of a selected movie.
 
